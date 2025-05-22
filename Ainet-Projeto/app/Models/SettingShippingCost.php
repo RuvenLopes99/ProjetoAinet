@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use SoftDeletes;
 
-class Settigns_shipping_costs extends Model
+class SettingShippingCost extends Model
 {
     protected $table = 'settings_shipping_costs';
     protected $fillable = [

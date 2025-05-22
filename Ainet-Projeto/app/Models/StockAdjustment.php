@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use SoftDeletes;
-class Stock_adjustment extends Model
+class StockAdjustment extends Model
 {
     protected $fillable = [
         'product_id',

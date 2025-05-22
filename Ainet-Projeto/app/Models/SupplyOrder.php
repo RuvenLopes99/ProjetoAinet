@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use SoftDeletes;
-class Supply_order extends Model
+class SupplyOrder extends Model
 {
     protected $fillable = [
-        'produtct_id',
+        'id',
+        'product_id',
         'registered_by_user_id',
         'status',
         'quantity',

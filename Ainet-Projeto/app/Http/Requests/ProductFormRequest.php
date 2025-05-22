@@ -28,10 +28,16 @@ class ProductFormRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'photo' => 'nullable|image|max:2048',
-            'discount_min_qty' => 'nullable|integer|min:1',
-            'discount' => 'nullable|numeric|min:0|max:100',
-            'stock_lowe_limit' => 'nullable|integer|min:0',
+            'discount_min_qty' => 'nullable|integer',
+            'discount' => 'nullable|numeric',
+            'stock_lower_limit' => 'nullable|integer|min:0',
             'stock_upper_limit' => 'nullable|integer|min:0',
         ];
+            if ($this->input('discount_min_qty') === null) {
+                $this->merge(['discount_min_qty' => 0]);
+            }
+            if ($this->input('dicount') === null) {
+                $this->merge(['discount' => 0]);
+            }
     }
 }

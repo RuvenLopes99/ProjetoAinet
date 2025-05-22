@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Operation;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 
 class OperationController extends Controller
@@ -10,7 +11,7 @@ class OperationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
         // Fetch all operations with pagination
         $operations = Operation::paginate(20);

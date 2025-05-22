@@ -31,7 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'default_delivery_address',
         'default_payment_type',
         'default_payment_reference',
-
     ];
 
     /**

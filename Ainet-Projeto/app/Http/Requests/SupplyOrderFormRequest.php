@@ -22,7 +22,7 @@ class SupplyOrderFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'produtct_id' => 'required|exists:products,id',
+            'product_id' => 'required|exists:products,id',
             'registered_by_user_id' => 'required|exists:users,id',
             'status' => 'required|in:pending,approved,rejected',
             'quantity' => 'required|integer|min:1',

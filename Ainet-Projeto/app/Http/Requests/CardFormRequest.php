@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingsShippingCostsFormRequest extends FormRequest
+class CardFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,9 +22,9 @@ class SettingsShippingCostsFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'min_value_threshold' => 'required|numeric|lt:max_value_threshold',
-            'max_value_threshold' => 'required|numeric|gt:min_value_threshold',
-            'shipping_cost' => 'required|numeric|min:0',
+            'id' => 'required|integer',
+            'card_number' => 'required|numeric|min:100000|max:999999',
+            'balance' => 'required|numeric|min:0',
         ];
     }
 }

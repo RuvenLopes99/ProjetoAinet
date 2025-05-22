@@ -15,7 +15,7 @@ class Product extends Model
         'photo',
         'discount_min_qty',
         'discount',
-        'stock_lowe_limit',
+        'stock_lower_limit',
         'stock_upper_limit',
     ];
 }

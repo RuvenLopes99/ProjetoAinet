@@ -13,5 +13,5 @@ class Card extends Model
         'balance',
     ];
 
-    public &incrementing=false;
+    public $incrementing = false;
 }

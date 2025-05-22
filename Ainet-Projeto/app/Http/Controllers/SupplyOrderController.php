@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Models\SupplyOrder;
 use Illuminate\Http\Request;
 
@@ -10,13 +11,13 @@ class SupplyOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
         // Fetch all supply orders with pagination
         $supplyOrders = SupplyOrder::paginate(20);
 
         // Return the view with the supply orders
-        return view('supply_orders.index', compact('supplyOrders'));
+        return view('supplyOrders.index', compact('supplyOrders'));
     }
 
     /**
@@ -25,7 +26,7 @@ class SupplyOrderController extends Controller
     public function create()
     {
         // Return the view for creating a new supply order
-        return view('supply_orders.create');
+        return view('supplyOrders.create');
     }
 
     /**
@@ -37,10 +38,10 @@ class SupplyOrderController extends Controller
         $newSupplyOrder = SupplyOrder::create($request->validated());
 
         // Redirect to the supply orders index with a success message
-        $url = route('supply_orders.show', ['supply_order' => $newSupplyOrder]);
+        $url = route('supplyOrders.show', ['supplyOrders' => $newSupplyOrder]);
         $htmlMessage = "Supply Order <a href='$url'><strong>{$newSupplyOrder->id}</strong>
                     - </a> New Supply Order has been created successfully!";
-        return redirect()->route('supply_orders.index')
+        return redirect()->route('supplyOrders.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }
@@ -48,34 +49,34 @@ class SupplyOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SupplyOrder $supply_order)
+    public function show(SupplyOrder $supplyOrders)
     {
         // Return the view for showing a specific supply order
-        return view('supply_orders.show', compact('supply_order'));
+        return view('supplyOrders.show', compact('supplyOrders'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SupplyOrder $supply_order)
+    public function edit(SupplyOrder $supplyOrders)
     {
         // Return the view for editing a specific supply order
-        return view('supply_orders.edit', compact('supply_order'));
+        return view('supplyOrders.edit', compact('supplyOrders'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SupplyOrder $supply_order)
+    public function update(Request $request, SupplyOrder $supplyOrders)
     {
         // Validate and update the supply order
-        $supply_order->update($request->validated());
+        $supplyOrders->update($request->validated());
 
         // Redirect back to the supply orders index with a success message
-        $url = route('supply_orders.show', ['supply_order' => $supply_order]);
-        $htmlMessage = "Supply Order <a href='$url'><strong>{$supply_order->id}</strong>
+        $url = route('supply_orders.show', ['supply_order' => $supplyOrders]);
+        $htmlMessage = "Supply Order <a href='$url'><strong>{$supplyOrders->id}</strong>
                     - </a> Supply Order has been updated successfully!";
-        return redirect()->route('supply_orders.index')
+        return redirect()->route('supplyOrders.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }
@@ -83,13 +84,13 @@ class SupplyOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SupplyOrder $supply_order)
+    public function destroy(SupplyOrder $supplyOrders)
     {
         // Delete the supply order
-        $supply_order->delete();
+        $supplyOrders->delete();
 
         // Redirect back to the supply orders index with a success message
-        return redirect()->route('supply_orders.index')
+        return redirect()->route('supplyOrders.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', 'Supply Order deleted successfully!');
     }

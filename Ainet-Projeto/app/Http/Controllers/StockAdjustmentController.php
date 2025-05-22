@@ -16,7 +16,7 @@ class StockAdjustmentController extends Controller
         $stockAdjustments = StockAdjustment::paginate(20);
 
         // Return the view with the stock adjustments
-        return view('stock_adjustments.index', compact('stockAdjustments'));
+        return view('stockAdjustments.index', compact('stockAdjustments'));
     }
 
     /**
@@ -25,7 +25,7 @@ class StockAdjustmentController extends Controller
     public function create()
     {
         // Return the view for creating a new stock adjustment
-        return view('stock_adjustments.create');
+        return view('stockAdjustments.create');
     }
 
     /**
@@ -37,10 +37,10 @@ class StockAdjustmentController extends Controller
         $newStockAdjustment = StockAdjustment::create($request->validated());
 
         // Redirect to the stock adjustments index with a success message
-        $url = route('stock_adjustments.show', ['stock_adjustment' => $newStockAdjustment]);
+        $url = route('stockAdjustments.show', ['stockAdjustments' => $newStockAdjustment]);
         $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$newStockAdjustment->id}</strong>
                     - </a> New Stock Adjustment has been created successfully!";
-        return redirect()->route('stock_adjustments.index')
+        return redirect()->route('stockAdjustments.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }
@@ -48,34 +48,34 @@ class StockAdjustmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(StockAdjustment $stock_adjustment)
+    public function show(StockAdjustment $stockAdjustments)
     {
         // Return the view for showing a specific stock adjustment
-        return view('stock_adjustments.show', compact('stock_adjustment'));
+        return view('stockAdjustments.show', compact('stockAdjustments'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(StockAdjustment $stock_adjustment)
+    public function edit(StockAdjustment $stockAdjustments)
     {
         // Return the view for editing a specific stock adjustment
-        return view('stock_adjustments.edit', compact('stock_adjustment'));
+        return view('stockAdjustments.edit', compact('stockAdjustments'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StockAdjustment $stock_adjustment)
+    public function update(Request $request, StockAdjustment $stockAdjustments)
     {
         // Validate and update the stock adjustment
-        $stock_adjustment->update($request->validated());
+        $stockAdjustments->update($request->validated());
 
         // Redirect back to the stock adjustments index with a success message
-        $url = route('stock_adjustments.show', ['stock_adjustment' => $stock_adjustment]);
-        $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$stock_adjustment->id}</strong>
+        $url = route('stockAdjustments.show', ['stockAdjustments' => $stockAdjustments]);
+        $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$stockAdjustments->id}</strong>
                     - </a> has been updated successfully!";
-        return redirect()->route('stock_adjustments.index')
+        return redirect()->route('stockAdjustments.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }
@@ -83,13 +83,13 @@ class StockAdjustmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StockAdjustment $stock_adjustment)
+    public function destroy(StockAdjustment $stockAdjustments)
     {
         // Delete the stock adjustment
-        $stock_adjustment->delete();
+        $stockAdjustments->delete();
 
         // Redirect back to the stock adjustments index with a success message
-        return redirect()->route('stock_adjustments.index')
+        return redirect()->route('stockAdjustments.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', 'Stock Adjustment deleted successfully!');
     }

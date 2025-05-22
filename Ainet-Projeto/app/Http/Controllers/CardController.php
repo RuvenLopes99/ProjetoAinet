@@ -12,7 +12,11 @@ class CardController extends Controller
      */
     public function index()
     {
-        
+        // Fetch all cards with pagination
+        $cards = Card::paginate(20);
+
+        // Return the view with the cards
+        return view('cards.index', compact('cards'));
     }
 
     /**
@@ -20,7 +24,8 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+        // Return the view for creating a new card
+        return view('cards.create');
     }
 
     /**
@@ -28,7 +33,13 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newCard = Card::create($request->validated());
+        $url = route('cards.show', ['card' => $newCard]);
+        $htmlMessage = "Card <a href='$url'><strong>{$newCard->id}</strong>
+                    - </a>Card has been created successfully!";
+        return redirect()->route('cards.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -36,7 +47,8 @@ class CardController extends Controller
      */
     public function show(Card $card)
     {
-        //
+        // Return the view for showing a specific card
+        return view('cards.show', compact('card'));
     }
 
     /**
@@ -44,7 +56,8 @@ class CardController extends Controller
      */
     public function edit(Card $card)
     {
-        //
+        // Return the view for editing a specific card
+        return view('cards.edit', compact('card'));
     }
 
     /**
@@ -52,7 +65,13 @@ class CardController extends Controller
      */
     public function update(Request $request, Card $card)
     {
-        //
+        // Validate and update the card
+        $card->update($request->validated());
+
+        // Redirect back to the cards index with a success message
+        return redirect()->route('cards.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Card updated successfully!');
     }
 
     /**
@@ -60,6 +79,12 @@ class CardController extends Controller
      */
     public function destroy(Card $card)
     {
-        //
+        // Delete the card
+        $card->delete();
+
+        // Redirect back to the cards index with a success message
+        return redirect()->route('cards.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Card deleted successfully!');
     }
 }

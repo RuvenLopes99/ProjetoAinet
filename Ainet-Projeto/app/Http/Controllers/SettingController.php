@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -10,7 +11,7 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
         // Fetch all settings with pagination
         $settings = Setting::paginate(20);

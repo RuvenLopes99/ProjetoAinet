@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -10,9 +11,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
-        //
+        // Fetch all users with pagination
+        $users = User::paginate(20);
+
+        // Return the view with the users
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -20,7 +25,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // Return the view for creating a new user
+        return view('users.create');
     }
 
     /**
@@ -28,7 +34,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate and create a new user
+        $newUser = User::create($request->validated());
+
+        // Redirect to the users index with a success message
+        $url = route('users.show', ['user' => $newUser]);
+        $htmlMessage = "User <a href='$url'><strong>{$newUser->id}</strong>
+                    - </a> New User has been created successfully!";
+        return redirect()->route('users.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -36,7 +51,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        // Return the view for showing a specific user
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -44,7 +60,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        // Return the view for editing a specific user
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -52,7 +69,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        // Validate and update the user
+        $user->update($request->validated());
+
+        // Redirect back to the users index with a success message
+        return redirect()->route('users.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'User updated successfully!');
     }
 
     /**
@@ -60,6 +83,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        // Delete the user
+        $user->delete();
+
+        // Redirect back to the users index with a success message
+        return redirect()->route('users.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'User deleted successfully!');
     }
 }
