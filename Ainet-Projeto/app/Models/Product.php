@@ -17,6 +17,5 @@ class Product extends Model
         'discount',
         'stock_lowe_limit',
         'stock_upper_limit',
-
     ];
 }

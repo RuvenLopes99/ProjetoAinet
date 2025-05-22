@@ -12,7 +12,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        // Fetch all products with pagination
+        $products = Product::paginate(20);
+
+        // Return the view with the products
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -20,7 +24,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        // Return the view for creating a new product
+        return view('products.create');
     }
 
     /**
@@ -28,7 +33,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate and create a new product
+        $newProduct = Product::create($request->validated());
+
+        // Redirect to the products index with a success message
+        $url = route('products.show', ['product' => $newProduct]);
+        $htmlMessage = "Product <a href='$url'><strong>{$newProduct->id}</strong>
+                    - </a> New Product has been created successfully!";
+        return redirect()->route('products.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -36,7 +50,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        // Return the view for showing a specific product
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -44,7 +59,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        // Return the view for editing a specific product
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -52,7 +68,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        // Validate and update the product
+        $product->update($request->validated());
+
+        // Redirect back to the products index with a success message
+        return redirect()->route('products.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Product updated successfully!');
     }
 
     /**
@@ -60,6 +82,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        // Delete the product
+        $product->delete();
+
+        // Redirect back to the products index with a success message
+        return redirect()->route('products.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Product deleted successfully!');
     }
 }

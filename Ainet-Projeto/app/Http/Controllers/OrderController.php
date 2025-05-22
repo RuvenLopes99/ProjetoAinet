@@ -12,7 +12,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        // Fetch all orders with pagination
+        $orders = Order::paginate(20);
+
+        // Return the view with the orders
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -20,7 +24,8 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        // Return the view for creating a new order
+        return view('orders.create');
     }
 
     /**
@@ -28,7 +33,13 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newOrder = Order::create($request->validated());
+        $url = route('categories.show', ['category' => $newOrder]);
+        $htmlMessage = "Category <a href='$url'><strong>{$newOrder->id}</strong>
+                    - </a> New Order has been created successfully!";
+        return redirect()->route('categories.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
@@ -36,7 +47,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        // Return the view for showing a specific order
+        return view('orders.show', compact('order'));
     }
 
     /**
@@ -44,7 +56,8 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        // Return the view for editing a specific order
+        return view('orders.edit', compact('order'));
     }
 
     /**
@@ -52,7 +65,13 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        // Validate and update the order
+        $order->update($request->validated());
+
+        // Redirect back to the orders index with a success message
+        return redirect()->route('orders.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Order updated successfully!');
     }
 
     /**
@@ -60,6 +79,12 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        // Delete the order
+        $order->delete();
+
+        // Redirect back to the orders index with a success message
+        return redirect()->route('orders.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Order deleted successfully!');
     }
 }

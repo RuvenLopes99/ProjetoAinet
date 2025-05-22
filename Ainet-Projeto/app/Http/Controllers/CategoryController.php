@@ -85,7 +85,7 @@ class CategoryController extends Controller
                     $totalProducts > 1 => "there are $totalProducts products enrolled in it",
                 };
 
-                $justification = $productsStr";
+                $justification = $productsStr;
                 $alertMsg = "Category <a href='$url'><u>{$category->name}</u></a> ({$category->id}) cannot be deleted because $justification.";
             }
         } catch (\Exception $error) {

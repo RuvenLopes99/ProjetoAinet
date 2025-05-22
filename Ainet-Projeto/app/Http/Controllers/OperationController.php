@@ -12,7 +12,11 @@ class OperationController extends Controller
      */
     public function index()
     {
-        //
+        // Fetch all operations with pagination
+        $operations = Operation::paginate(20);
+
+        // Return the view with the operations
+        return view('operations.index', compact('operations'));
     }
 
     /**
@@ -20,7 +24,8 @@ class OperationController extends Controller
      */
     public function create()
     {
-        //
+        // Return the view for creating a new operation
+        return view('operations.create');
     }
 
     /**
@@ -28,7 +33,7 @@ class OperationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -36,7 +41,8 @@ class OperationController extends Controller
      */
     public function show(Operation $operation)
     {
-        //
+        // Return the view for showing a specific operation
+        return view('operations.show', compact('operation'));
     }
 
     /**
@@ -44,7 +50,8 @@ class OperationController extends Controller
      */
     public function edit(Operation $operation)
     {
-        //
+        // Return the view for editing a specific operation
+        return view('operations.edit', compact('operation'));
     }
 
     /**
@@ -52,7 +59,13 @@ class OperationController extends Controller
      */
     public function update(Request $request, Operation $operation)
     {
-        //
+        // Validate and update the operation
+        $operation->update($request->validated());
+
+        // Redirect back to the operations index with a success message
+        return redirect()->route('operations.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Operation updated successfully!');
     }
 
     /**
@@ -60,6 +73,12 @@ class OperationController extends Controller
      */
     public function destroy(Operation $operation)
     {
-        //
+        // Delete the operation
+        $operation->delete();
+
+        // Redirect back to the operations index with a success message
+        return redirect()->route('operations.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Operation deleted successfully!');
     }
 }
