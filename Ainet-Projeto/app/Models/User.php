@@ -89,4 +89,27 @@ class User extends Authenticatable implements MustVerifyEmail
             ->append(Str::of($lastName));
     }
 
+    public function registeredStockAdjustments()
+    {
+        return $this->hasMany(StockAdjustment::class, 'registered_by_user_id');
+    }
+
+    // A user can register many stock orders
+    public function registeredStockOrders()
+    {
+        return $this->hasMany(SupplyOrder::class, 'registered_by_user_id');
+    }
+
+    // A user can have many orders (as member)
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'member_id');
+    }
+
+    // A user can have many cards
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
 }

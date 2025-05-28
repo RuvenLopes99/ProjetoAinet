@@ -13,4 +13,15 @@ class SupplyOrder extends Model
         'status',
         'quantity',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    // Each stock order is registered by a user
+    public function registeredByUser()
+    {
+        return $this->belongsTo(User::class, 'registered_by_user_id');
+    }
 }

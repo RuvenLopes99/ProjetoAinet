@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StockAdjustment;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\StockAdjustment;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class StockAdjustmentController extends Controller
 {
@@ -22,16 +25,18 @@ class StockAdjustmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : View
     {
+        $stockAdjustment = new StockAdjustment();
+        
         // Return the view for creating a new stock adjustment
-        return view('stockAdjustments.create');
+        return view('stockAdjustments.create', compact('stockAdjustment'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
         // Validate and create a new stock adjustment
         $newStockAdjustment = StockAdjustment::create($request->validated());

@@ -18,4 +18,27 @@ class Product extends Model
         'stock_lower_limit',
         'stock_upper_limit',
     ];
+
+    public function stockAdjustments()
+    {
+        return $this->hasMany(StockAdjustment::class);
+    }
+
+    // A product has many stock orders
+    public function supplyOrder()
+    {
+        return $this->hasMany(supplyOrder::class);
+    }
+
+    // A product belongs to a category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // A product has many order_products (pivot)
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

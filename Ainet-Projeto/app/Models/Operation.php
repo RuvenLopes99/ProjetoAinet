@@ -17,4 +17,14 @@ class Operation extends Model
         'payment_reference',
         'order_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

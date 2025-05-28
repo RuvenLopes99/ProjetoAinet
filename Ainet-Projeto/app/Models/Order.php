@@ -18,4 +18,15 @@ class Order extends Model
         'pdf_receipt',
         'cancel_reason',
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(User::class, 'member_id');
+    }
+
+    // Each order has many order_products (pivot)
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
