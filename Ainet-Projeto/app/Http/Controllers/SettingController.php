@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Requests\SettingFormRequest;
 
 class SettingController extends Controller
 {
@@ -32,7 +33,7 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SettingFormRequest $request)
     {
         // Validate and create a new setting
         $newSetting = Setting::create($request->validated());
@@ -67,7 +68,7 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Setting $setting)
+    public function update(SettingFormRequest $request, Setting $setting)
     {
         // Validate and update the setting
         $setting->update($request->validated());

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CardFormRequest;
 use App\Models\Card;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CardFormRequest $request)
     {
         $newCard = Card::create($request->validated());
         $url = route('cards.show', ['card' => $newCard]);
@@ -63,7 +64,7 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Card $card)
+    public function update(CardFormRequest $request, Card $card)
     {
         // Validate and update the card
         $card->update($request->validated());

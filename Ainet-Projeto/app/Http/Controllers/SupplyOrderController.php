@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SupplyOrderFormRequest;
 use Illuminate\View\View;
 use App\Models\SupplyOrder;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class SupplyOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplyOrderFormRequest $request)
     {
         // Validate and create a new supply order
         $newSupplyOrder = SupplyOrder::create($request->validated());
@@ -49,32 +50,32 @@ class SupplyOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SupplyOrder $supplyOrders)
+    public function show(SupplyOrder $supplyOrder)
     {
         // Return the view for showing a specific supply order
-        return view('supplyOrders.show', compact('supplyOrders'));
+        return view('supplyOrders.show', compact('supplyOrder'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SupplyOrder $supplyOrders)
+    public function edit(SupplyOrder $supplyOrder)
     {
         // Return the view for editing a specific supply order
-        return view('supplyOrders.edit', compact('supplyOrders'));
+        return view('supplyOrders.edit', compact('supplyOrder'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SupplyOrder $supplyOrders)
+    public function update(SupplyOrderFormRequest $request, SupplyOrder $supplyOrder)
     {
         // Validate and update the supply order
-        $supplyOrders->update($request->validated());
+        $supplyOrder->update($request->validated());
 
         // Redirect back to the supply orders index with a success message
-        $url = route('supply_orders.show', ['supply_order' => $supplyOrders]);
-        $htmlMessage = "Supply Order <a href='$url'><strong>{$supplyOrders->id}</strong>
+        $url = route('supplyOrders.show', ['supplyOrder' => $supplyOrder]);
+        $htmlMessage = "Supply Order <a href='$url'><strong>{$supplyOrder->id}</strong>
                     - </a> Supply Order has been updated successfully!";
         return redirect()->route('supplyOrders.index')
             ->with('alert-type', 'success')
@@ -84,10 +85,10 @@ class SupplyOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SupplyOrder $supplyOrders)
+    public function destroy(SupplyOrder $supplyOrder)
     {
         // Delete the supply order
-        $supplyOrders->delete();
+        $supplyOrder->delete();
 
         // Redirect back to the supply orders index with a success message
         return redirect()->route('supplyOrders.index')

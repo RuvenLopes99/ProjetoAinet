@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StockAdjustmentFormRequest;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\StockAdjustment;
@@ -28,7 +29,7 @@ class StockAdjustmentController extends Controller
     public function create() : View
     {
         $stockAdjustment = new StockAdjustment();
-        
+
         // Return the view for creating a new stock adjustment
         return view('stockAdjustments.create', compact('stockAdjustment'));
     }
@@ -36,7 +37,7 @@ class StockAdjustmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(StockAdjustmentFormRequest $request) : RedirectResponse
     {
         // Validate and create a new stock adjustment
         $newStockAdjustment = StockAdjustment::create($request->validated());
@@ -53,32 +54,32 @@ class StockAdjustmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(StockAdjustment $stockAdjustments)
+    public function show(StockAdjustment $stockAdjustment)
     {
         // Return the view for showing a specific stock adjustment
-        return view('stockAdjustments.show', compact('stockAdjustments'));
+        return view('stockAdjustments.show', compact('stockAdjustment'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(StockAdjustment $stockAdjustments)
+    public function edit(StockAdjustment $stockAdjustment)
     {
         // Return the view for editing a specific stock adjustment
-        return view('stockAdjustments.edit', compact('stockAdjustments'));
+        return view('stockAdjustments.edit', compact('stockAdjustment'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StockAdjustment $stockAdjustments)
+    public function update(StockAdjustmentFormRequest $request, StockAdjustment $stockAdjustment)
     {
         // Validate and update the stock adjustment
-        $stockAdjustments->update($request->validated());
+        $stockAdjustment->update($request->validated());
 
         // Redirect back to the stock adjustments index with a success message
-        $url = route('stockAdjustments.show', ['stockAdjustments' => $stockAdjustments]);
-        $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$stockAdjustments->id}</strong>
+        $url = route('stockAdjustments.show', ['stockAdjustments' => $stockAdjustment]);
+        $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$stockAdjustment->id}</strong>
                     - </a> has been updated successfully!";
         return redirect()->route('stockAdjustments.index')
             ->with('alert-type', 'success')
@@ -88,10 +89,10 @@ class StockAdjustmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StockAdjustment $stockAdjustments)
+    public function destroy(StockAdjustment $stockAdjustment)
     {
         // Delete the stock adjustment
-        $stockAdjustments->delete();
+        $stockAdjustment->delete();
 
         // Redirect back to the stock adjustments index with a success message
         return redirect()->route('stockAdjustments.index')

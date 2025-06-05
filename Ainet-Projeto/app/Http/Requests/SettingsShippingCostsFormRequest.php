@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingFormRequest extends FormRequest
+class SettingsShippingCostsFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,9 @@ class SettingFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'membership_fee' => 'required|numeric',
+            'min_value_threshold' => 'required|numeric|lt:max_value_threshold',
+            'max_value_threshold' => 'required|numeric|gt:min_value_threshold',
+            'shipping_cost' => 'required|numeric|min:0',
         ];
     }
 }

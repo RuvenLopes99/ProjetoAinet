@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OperationFormRequest;
 use App\Models\Operation;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -32,9 +33,15 @@ class OperationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OperationFormRequest $request)
     {
+        $newOperation = Operation::create($request->validated());
+        $url = route('operations.show', ['operation' => $newOperation]);
+        $htmlMessage = "Operation <a href='$url'><strong>{$newOperation->name}</strong>";
 
+        return redirect()->route('operations.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', "Operation <strong>{$newOperation->name}</strong> created successfully!");
     }
 
     /**
@@ -58,7 +65,7 @@ class OperationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Operation $operation)
+    public function update(OperationFormRequest $request, Operation $operation)
     {
         // Validate and update the operation
         $operation->update($request->validated());

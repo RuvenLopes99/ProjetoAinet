@@ -1,5 +1,5 @@
 @php
-    $operation = $operation ?? new \App\Models\Operation();
+    $order = $order ?? new \App\Models\Order();
     $mode = $mode ?? 'edit';
     $readonly = $mode == 'show';
 @endphp
@@ -7,25 +7,16 @@
 <div class="flex flex-wrap space-x-8">
     <div class="grow mt-6 space-y-4">
         <flux:input
-            name="card_id"
-            label="Card ID"
-            :value="old('card_id', $operation->card_id)"
+            name="member_id"
+            label="Member (User ID)"
+            :value="old('member_id', $order->member_id)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="type"
-            label="Type"
-            :value="old('type', $operation->type)"
-            :disabled="$readonly"
-        />
-
-        <flux:input
-            name="value"
-            label="Value"
-            type="number"
-            step="0.01"
-            :value="old('value', $operation->value)"
+            name="status"
+            label="Status"
+            :value="old('status', $order->status)"
             :disabled="$readonly"
         />
 
@@ -33,42 +24,61 @@
             name="date"
             label="Date"
             type="date"
-            :value="old('date', $operation->date)"
+            :value="old('date', $order->date)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="debit_type"
-            label="Debit Type"
-            :value="old('debit_type', $operation->debit_type)"
+            name="total_items"
+            label="Total Items"
+            type="number"
+            :value="old('total_items', $order->total_items)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="credit_type"
-            label="Credit Type"
-            :value="old('credit_type', $operation->credit_type)"
+            name="shipping_cost"
+            label="Shipping Cost"
+            type="number"
+            step="0.01"
+            :value="old('shipping_cost', $order->shipping_cost)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="payment_type"
-            label="Payment Type"
-            :value="old('payment_type', $operation->payment_type)"
+            name="total"
+            label="Total"
+            type="number"
+            step="0.01"
+            :value="old('total', $order->total)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="payment_reference"
-            label="Payment Reference"
-            :value="old('payment_reference', $operation->payment_reference)"
+            name="nif"
+            label="NIF"
+            :value="old('nif', $order->nif)"
             :disabled="$readonly"
         />
 
         <flux:input
-            name="order_id"
-            label="Order ID"
-            :value="old('order_id', $operation->order_id)"
+            name="delivery_address"
+            label="Delivery Address"
+            :value="old('delivery_address', $order->delivery_address)"
+            :disabled="$readonly"
+        />
+
+        <flux:input
+            name="pdf_receipt"
+            label="PDF Receipt"
+            :value="old('pdf_receipt', $order->pdf_receipt)"
+            :disabled="$readonly"
+        />
+
+        <flux:input
+            name="cancel_reason"
+            label="Cancel Reason"
+            :value="old('cancel_reason', $order->cancel_reason)"
             :disabled="$readonly"
         />
     </div>

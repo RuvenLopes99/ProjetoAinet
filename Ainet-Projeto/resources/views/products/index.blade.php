@@ -9,6 +9,9 @@
                 </div>
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                     <x-products.table :products="$products"
+                                        :showView="true"
+                                        :showEdit="true"
+                                        :showDelete="true"
                     />
                 </div>
                 <div class="mt-4">

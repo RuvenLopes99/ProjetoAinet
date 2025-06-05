@@ -11,7 +11,7 @@ use App\Http\Controllers\ItemOrderController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
-use App\Http\Controllers\SettingShippingCostController;
+use App\Http\Controllers\SettingsShippingCostController;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -48,7 +48,7 @@ Route::resource('products', ProductController::class);
 Route::resource('settings', SettingController::class);
 
 //Routes Setting Shipping Cost
-Route::resource('settingsShippingCosts', SettingShippingCostController::class);
+Route::resource('settingsShippingCosts', SettingsShippingCostController::class);
 
 //Routes Stock Adjustment
 Route::resource('stockAdjustments', StockAdjustmentController::class);

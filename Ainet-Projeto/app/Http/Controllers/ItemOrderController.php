@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemOrderFormRequest;
 use App\Models\ItemOrder;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class ItemOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ItemOrderFormRequest $request)
     {
         $newItemOrder = ItemOrder::create($request->validated());
         $url = route('item_orders.show', ['item_order' => $newItemOrder]);
@@ -63,7 +64,7 @@ class ItemOrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ItemOrder $item_order)
+    public function update(ItemOrderFormRequest $request, ItemOrder $item_order)
     {
         $item_order->update($request->validated());
         $url = route('item_orders.show', ['item_order' => $item_order]);
