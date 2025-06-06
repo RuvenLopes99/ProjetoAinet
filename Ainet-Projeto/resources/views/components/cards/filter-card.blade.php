@@ -7,7 +7,6 @@
                 <x-cards.filter-card
                     :filterAction="route('cards.index')"
                     :resetUrl="route('cards.index')"
-                    :id="old('id', $id ?? '')"
                     :cardNumber="old('card_number', $cardNumber ?? '')"
                     :balance="old('balance', $balance ?? '')"
                     class="mb-6"

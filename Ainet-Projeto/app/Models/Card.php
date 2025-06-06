@@ -8,7 +8,6 @@ use SoftDeletes;
 class Card extends Model
 {
     protected $fillable = [
-        'id',
         'card_number',
         'balance',
     ];

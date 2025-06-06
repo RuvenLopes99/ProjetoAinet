@@ -5,6 +5,16 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl ">
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
+                <x-supplyOrders.filter-card
+                    :filterAction="route('supplyOrders.index')"
+                    :resetUrl="route('supplyOrders.index')"
+                    :supplyOrders="$supplyOrders"
+                    :productId="old('productId', $filterByProductId)"
+                    :quantity="old('quantity', $filterByQuantity)"
+                    :userId="old('userId', $filterByUser)"
+                    :status="old('status', $filterByStatus)"
+                    class="mb-6"
+                />
                 <div class="flex items-center gap-4 mb-4">
                     <flux:button variant="primary" href="{{ route('supplyOrders.create') }}">Create a new Supply Order</flux:button>
                 </div>

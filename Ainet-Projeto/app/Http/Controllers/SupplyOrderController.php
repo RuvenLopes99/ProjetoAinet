@@ -12,13 +12,38 @@ class SupplyOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all supply orders with pagination
         $supplyOrders = SupplyOrder::paginate(20);
 
-        // Return the view with the supply orders
-        return view('supplyOrders.index', compact('supplyOrders'));
+        $filterByQuantity = $request->input('quantity');
+        $filterByStatus = $request->input('status');
+        $filterByUser = $request->input('registered_by_user_id');
+        $filterByProductId = $request->input('product_id');
+
+        if( $filterByQuantity || $filterByStatus || $filterByUser || $filterByProductId ) {
+            $supplyOrders = SupplyOrder::query();
+
+            if ($filterByQuantity) {
+                $supplyOrders->where('quantity', '>=', $filterByQuantity);
+            }
+
+            if ($filterByStatus) {
+                $supplyOrders->where('status', $filterByStatus);
+            }
+
+            if ($filterByUser) {
+                $supplyOrders->where('registered_by_user_id', $filterByUser);
+            }
+
+            if ($filterByProductId) {
+                $supplyOrders->where('product_id', $filterByProductId);
+            }
+
+            $supplyOrders = $supplyOrders->paginate(20);
+        }
+
+        return view('supplyOrders.index', compact('supplyOrders', 'filterByStatus', 'filterByUser', 'filterByQuantity', 'filterByProductId'));
     }
 
     /**

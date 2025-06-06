@@ -12,13 +12,32 @@ class OperationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all operations with pagination
-        $operations = Operation::paginate(20);
+        $cardId = $request->input('card_id');
+        $type = $request->input('type');
+        $orderId = $request->input('order_id');
 
-        // Return the view with the operations
-        return view('operations.index', compact('operations'));
+        $query = Operation::query();
+
+        if ($cardId) {
+            $query->where('card_id', $cardId);
+        }
+        if ($type) {
+            $query->where('type', $type);
+        }
+        if ($orderId) {
+            $query->where('order_id', $orderId);
+        }
+
+        $operations = $query->paginate(20);
+
+        return view('operations.index', [
+            'operations' => $operations,
+            'cardId' => $cardId,
+            'type' => $type,
+            'orderId' => $orderId,
+        ]);
     }
 
     /**

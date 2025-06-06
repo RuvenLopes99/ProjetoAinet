@@ -12,13 +12,32 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all orders with pagination
-        $orders = Order::paginate(20);
+        $memberId = $request->input('member_id');
+        $status = $request->input('status');
+        $nif = $request->input('nif');
 
-        // Return the view with the orders
-        return view('orders.index', compact('orders'));
+        $query = Order::query();
+
+        if ($memberId) {
+            $query->where('member_id', $memberId);
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
+        if ($nif) {
+            $query->where('nif', $nif);
+        }
+
+        $orders = $query->paginate(20);
+
+        return view('orders.index', [
+            'orders' => $orders,
+            'memberId' => $memberId,
+            'status' => $status,
+            'nif' => $nif,
+        ]);
     }
 
     /**

@@ -12,13 +12,32 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all products with pagination
-        $products = Product::paginate(20);
+        $name = $request->input('name');
+        $categoryId = $request->input('category_id');
+        $price = $request->input('price');
 
-        // Return the view with the products
-        return view('products.index', compact('products'));
+        $query = Product::query();
+
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+        if ($price) {
+            $query->where('price', '>=', $price);
+        }
+
+        $products = $query->paginate(20);
+
+        return view('products.index', [
+            'products' => $products,
+            'name' => $name,
+            'categoryId' => $categoryId,
+            'price' => $price,
+        ]);
     }
 
     /**

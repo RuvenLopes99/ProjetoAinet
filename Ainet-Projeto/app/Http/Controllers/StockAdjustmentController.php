@@ -14,13 +14,35 @@ class StockAdjustmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) : View
     {
         // Fetch all stock adjustments with pagination
         $stockAdjustments = StockAdjustment::paginate(20);
 
+        $filterByQuantityChanged = $request->input('quantity_changed');
+        $filterByUser = $request->input('registered_by_user_id');
+        $filterByProductId = $request->input('product_id');
+
+        if( $filterByQuantityChanged || $filterByUser || $filterByProductId ) {
+            $stockAdjustments = stockAdjustment::query();
+
+            if ($filterByQuantityChanged) {
+                $stockAdjustments->where('quantity_changed', '>=', $filterByQuantityChanged);
+            }
+
+            if ($filterByUser) {
+                $stockAdjustments->where('registered_by_user_id', $filterByUser);
+            }
+
+            if ($filterByProductId) {
+                $stockAdjustments->where('product_id', $filterByProductId);
+            }
+
+            $supplyOrders = $stockAdjustments->paginate(20);
+        }
+
         // Return the view with the stock adjustments
-        return view('stockAdjustments.index', compact('stockAdjustments'));
+        return view('stockAdjustments.index', compact('stockAdjustments', 'filterByQuantityChanged', 'filterByUser', 'filterByProductId'));
     }
 
     /**

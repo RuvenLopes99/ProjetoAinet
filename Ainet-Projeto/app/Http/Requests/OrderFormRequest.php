@@ -23,7 +23,7 @@ class OrderFormRequest extends FormRequest
     {
         return [
             'member_id' => 'required|integer',
-            'status' => 'required|string',
+            'status' => 'required|in:pending,completed,canceled',
             'date' => 'required|date',
             'total_items' => 'required|integer',
             'shipping_cost' => 'required|numeric',

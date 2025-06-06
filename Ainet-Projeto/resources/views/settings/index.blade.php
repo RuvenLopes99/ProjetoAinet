@@ -4,6 +4,12 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl ">
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
+                <x-settings.filter-card
+                    :filterAction="route('settings.index')"
+                    :resetUrl="route('settings.index')"
+                    :membershipFee="old('membership_fee', $filterByMembershipFee)"
+                    class="mb-6"
+                />
                 <div class="flex items-center gap-4 mb-4">
                     <flux:button variant="primary" href="{{ route('settings.create') }}">Create a new Setting</flux:button>
                 </div>

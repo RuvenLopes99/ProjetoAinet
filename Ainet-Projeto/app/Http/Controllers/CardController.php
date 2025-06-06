@@ -11,13 +11,29 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Fetch all cards with pagination
-        $cards = Card::paginate(20);
 
-        // Return the view with the cards
-        return view('cards.index', compact('cards'));
+    public function index(Request $request)
+    {
+        $id = $request->input('id');
+        $cardNumber = $request->input('card_number');
+        $balance = $request->input('balance');
+
+        $query = Card::query();
+
+        if ($cardNumber) {
+            $query->where('card_number', 'like', '%' . $cardNumber . '%');
+        }
+        if ($balance) {
+            $query->where('balance', '>=', $balance);
+        }
+
+        $cards = $query->paginate(20);
+
+        return view('cards.index', [
+            'cards' => $cards,
+            'cardNumber' => $cardNumber,
+            'balance' => $balance,
+        ]);
     }
 
     /**

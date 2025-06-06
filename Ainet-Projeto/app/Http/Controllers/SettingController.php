@@ -12,13 +12,22 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all settings with pagination
-        $settings = Setting::paginate(20);
+        $filterByMembershipFee = $request->input('membership_fee');
 
-        // Return the view with the settings
-        return view('Settings.index', compact('settings'));
+        $query = Setting::query();
+
+        if ($filterByMembershipFee !== null && $filterByMembershipFee !== '') {
+            $query->where('membership_fee', $filterByMembershipFee);
+        }
+
+        $settings = $query->paginate(20);
+
+        return view('settings.index', [
+            'settings' => $settings,
+            'filterByMembershipFee' => $filterByMembershipFee,
+        ]);
     }
 
     /**
