@@ -11,12 +11,39 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        // Fetch all users with pagination
-        $users = User::paginate(20);
+        // Get filter inputs
+        $query = User::query();
 
-        // Return the view with the users
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        if ($request->filled('blocked')) {
+            $query->where('blocked', $request->input('blocked'));
+        }
+
+        if($request->filled('gender')) {
+            $query->where('gender', $request->input('gender'));
+        }
+
+        if ($request->filled('nif')) {
+            $query->where('nif', $request->input('nif'));
+        }
+
+        // Fetch filtered users with pagination
+        $users = $query->paginate(20)->appends($request->except('page'));
+
+        // Return the view with the users and current filters
         return view('users.index', compact('users'));
     }
 

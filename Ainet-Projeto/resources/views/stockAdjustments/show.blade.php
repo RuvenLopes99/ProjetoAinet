@@ -14,12 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Stock Adjustment ID:</strong> {{ $stockAdjustment->id }}</div>
-                    <div><strong>Product ID:</strong> {{ $stockAdjustment->product_id }}</div>
-                    <div><strong>Registered By (User ID):</strong> {{ $stockAdjustment->registered_by_user_id }}</div>
-                    <div><strong>Quantity Changed:</strong> {{ $stockAdjustment->quantity_changed }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('stockAdjustments.partials.fields', ['stockAdjustment' => $stockAdjustment, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

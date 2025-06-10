@@ -11,13 +11,28 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function index(): View
+    public function index(Request $request)
     {
-        $allCategories = Category::paginate(20);
-        debug($allCategories);
-        return view('categories.index')->with('allCategories', $allCategories);
-    }
+        $name = $request->input('name');
+        $image = $request->input('image');
 
+        $query = Category::query();
+
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+        if ($image) {
+            $query->where('image', 'like', '%' . $image . '%');
+        }
+
+        $categories = $query->paginate(20);
+
+        return view('categories.index', [
+            'allCategories' => $categories,
+            'name' => $name,
+            'image' => $image,
+        ]);
+    }
     public function showCase(): View
     {
         // No need to pass the variable $categories to the view, because it is available through View::share

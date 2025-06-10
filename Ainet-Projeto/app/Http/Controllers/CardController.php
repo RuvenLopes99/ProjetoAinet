@@ -31,6 +31,7 @@ class CardController extends Controller
 
         return view('cards.index', [
             'cards' => $cards,
+            'id' => $id,
             'cardNumber' => $cardNumber,
             'balance' => $balance,
         ]);

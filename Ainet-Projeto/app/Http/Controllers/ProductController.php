@@ -40,6 +40,12 @@ class ProductController extends Controller
         ]);
     }
 
+    public function showCase(): View
+    {
+        $products = Product::paginate(24);
+        return view('products.showcase', compact('products'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -3,11 +3,13 @@
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ItemOrderController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemsOrderController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
@@ -35,13 +37,17 @@ Route::view('dashboard', 'dashboard')
 //Routes User
 Route::resource('users', UserController::class);
 
+//Routes Category
+Route::resource('categories', CategoryController::class);
+
 //Routes Order
 Route::resource('orders', OrderController::class);
 
 //Routes Item Order
-Route::resource('itemOrders', ItemOrderController::class);
+Route::resource('itemsOrders', ItemsOrderController::class);
 
 //Routes Product
+Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
 Route::resource('products', ProductController::class);
 
 //Routes Setting
@@ -61,5 +67,13 @@ Route::resource('operations', OperationController::class);
 
 //Routes Card
 Route::resource('cards', CardController::class);
+
+//Route Cart
+Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::put('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/cart/clear', [CartController::class, 'destroy'])->name('cart.destroy');
 
 require __DIR__.'/auth.php';

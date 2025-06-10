@@ -14,19 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>User ID:</strong> {{ $user->id }}</div>
-                    <div><strong>Name:</strong> {{ $user->name }}</div>
-                    <div><strong>Email:</strong> {{ $user->email }}</div>
-                    <div><strong>Type:</strong> {{ $user->type }}</div>
-                    <div><strong>Blocked:</strong> {{ $user->blocked ? 'Yes' : 'No' }}</div>
-                    <div><strong>Gender:</strong> {{ $user->gender }}</div>
-                    <div><strong>Photo:</strong> {{ $user->photo }}</div>
-                    <div><strong>NIF:</strong> {{ $user->nif }}</div>
-                    <div><strong>Default Delivery Address:</strong> {{ $user->default_delivery_address }}</div>
-                    <div><strong>Default Payment Type:</strong> {{ $user->default_payment_type }}</div>
-                    <div><strong>Default Payment Reference:</strong> {{ $user->default_payment_reference }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('users.partials.fields', ['user' => $user, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

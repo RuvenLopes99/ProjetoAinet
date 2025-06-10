@@ -14,18 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Operation ID:</strong> {{ $operation->id }}</div>
-                    <div><strong>Card ID:</strong> {{ $operation->card_id }}</div>
-                    <div><strong>Type:</strong> {{ $operation->type }}</div>
-                    <div><strong>Value:</strong> {{ $operation->value }}</div>
-                    <div><strong>Date:</strong> {{ $operation->date }}</div>
-                    <div><strong>Debit Type:</strong> {{ $operation->debit_type }}</div>
-                    <div><strong>Credit Type:</strong> {{ $operation->credit_type }}</div>
-                    <div><strong>Payment Type:</strong> {{ $operation->payment_type }}</div>
-                    <div><strong>Payment Reference:</strong> {{ $operation->payment_reference }}</div>
-                    <div><strong>Order ID:</strong> {{ $operation->order_id }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('operations.partials.fields', ['operation' => $operation, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

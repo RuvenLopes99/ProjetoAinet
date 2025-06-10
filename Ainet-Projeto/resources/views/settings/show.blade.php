@@ -14,9 +14,8 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Setting ID:</strong> {{ $setting->id }}</div>
-                    <div><strong>Membership Fee:</strong> {{ $setting->membership_fee }}</div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('settings.partials.fields', ['setting' => $setting, 'readonly' => true, 'disabled' => true])
                 </div>
             </section>
         </div>

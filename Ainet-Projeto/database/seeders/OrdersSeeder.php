@@ -18,12 +18,12 @@ class OrdersSeeder extends Seeder
     private $deltaAvgOrdersDay = [5, 7, 5, 5, 10, 15, 30]; // Delta (minus or plus) to the average orders per day
                                                            // maximum orders per week = 282 (30000 order in 2 years)
     private $differentProducts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 6, 7, 8, 9, 10];
-    private $qtys = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-                     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-                     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 
-                     4, 4, 4, 4, 4, 4, 4, 
-                     5, 5, 5, 5,  
+    private $qtys = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+                     4, 4, 4, 4, 4, 4, 4,
+                     5, 5, 5, 5,
                      6, 6,
                      7,
                      8,
@@ -33,13 +33,13 @@ class OrdersSeeder extends Seeder
     private $totalProductsWeight = 0;
 
     private $orders_ids = [];
-    
+
     public function run(): void
     {
         //$this->faker = Factory::create('pt_PT');
         $this->faker = Factory::create();
 
-        $this->cleanStorageFolder('receipts', false);        
+        $this->cleanStorageFolder('receipts', false);
         $this->initProductsWeigth();
         $startDate = $this->latestCardDate()->copy()->addMinutes(mt_rand(1000, 3000));
         $startDate->addDay();
@@ -63,10 +63,10 @@ class OrdersSeeder extends Seeder
         $nextChangeDate = $d->copy()->addDays(mt_rand(15,25));
         $arrayToStore = [];
         while($d->lessThanOrEqualTo($yesterday)) {
-            $totalOrdersForDay = $this->avgOrdersDay[$d->dayOfWeek] + 
+            $totalOrdersForDay = $this->avgOrdersDay[$d->dayOfWeek] +
                 mt_rand(-1*$this->deltaAvgOrdersDay[$d->dayOfWeek],$this->deltaAvgOrdersDay[$d->dayOfWeek]);
             $totalOrders += $totalOrdersForDay;
-            // From 6:00 to 24:00 (typical usage) = 18 hours = 64800 seconds    
+            // From 6:00 to 24:00 (typical usage) = 18 hours = 64800 seconds
             $maxIntervalBetweenOrdersInSeconds = max(2, intdiv(64800 , $totalOrdersForDay));
             $orderDate = $d->copy()->addHours(6)->addSeconds(mt_rand(1, $maxIntervalBetweenOrdersInSeconds));
             for($i=1; $i <= $totalOrdersForDay; $i++) {
@@ -110,12 +110,12 @@ class OrdersSeeder extends Seeder
             'created_at' => $orderDate,
             'updated_at' => $orderDate,
         ];
-    }    
+    }
 
     private function addItemOrdersToDB()
     {
         $this->command->line("Adding Item Orders to the database.");
-        
+
         $arrayToStore = [];
         foreach($this->orders_ids as $order_id) {
             $arrayToStore = array_merge($arrayToStore, $this->createItemsOrderArrayToSaveOnDB($order_id));
@@ -139,7 +139,7 @@ class OrdersSeeder extends Seeder
         $selectedProducts = [];
         $arrayToStore = [];
         for ($i = 1; $i <= $numberOfItems; $i++) {
-            $product = $this->randomProduct();            
+            $product = $this->randomProduct();
             $j = 0;
             while (in_array($product->id, $selectedProducts, false)) {
                 $product = $this->randomProduct();
@@ -168,7 +168,7 @@ class OrdersSeeder extends Seeder
                     'discount' => $discount,
                     'subtotal' => $subTotal
                 ];
-            } 
+            }
         }
         return $arrayToStore;
     }
@@ -198,7 +198,7 @@ class OrdersSeeder extends Seeder
     }
 
 
-    private function changeAvgsPerDay($month) 
+    private function changeAvgsPerDay($month)
     {
         $randomIncrements = [1, 2, 3, 2, 2, 3, 4, 4, 1, 2, 8, 10];
         foreach ($this->avgOrdersDay as $key => $value) {
@@ -208,8 +208,8 @@ class OrdersSeeder extends Seeder
             }
         }
     }
-    
-    private function latestCardDate() 
+
+    private function latestCardDate()
     {
         return Carbon::parse(DB::select('select max(created_at) as m from cards')[0]->m);
     }
@@ -225,7 +225,7 @@ class OrdersSeeder extends Seeder
         $this->command->line("Updating 'shipping_costs' of all orders");
         $shippingCosts = DB::table('settings_shipping_costs')->get();
         foreach($shippingCosts as $shippingCostRule) {
-            DB::update("update orders set shipping_cost = ? 
+            DB::update("update orders set shipping_cost = ?
                             where (total_items >= ?) and (total_items < ?)",
                             [
                                 $shippingCostRule->shipping_cost,
@@ -233,7 +233,7 @@ class OrdersSeeder extends Seeder
                                 $shippingCostRule->max_value_threshold
                             ]);
         }
-        $this->command->line("Completed updating 'shipping_costs' of all orders");        
+        $this->command->line("Completed updating 'shipping_costs' of all orders");
     }
 
     private function updateTotal() {
@@ -243,7 +243,7 @@ class OrdersSeeder extends Seeder
     }
 
 
-    private function addReceiptsFiles() 
+    private function addReceiptsFiles()
     {
         $totalOrders = DB::table('orders')->count();
         $i = 0;
@@ -287,7 +287,7 @@ class OrdersSeeder extends Seeder
     {
         // We'll add the order status and created_at deate to the custom field of items_orders
         // This will simplify filling up the stock of the products
-        // When ending the stock seeder, the custom field should reverts to null 
+        // When ending the stock seeder, the custom field should reverts to null
         $this->command->line("Updating 'items orders' custom field to simplify stock handling. This may take a very long time!");
         if (DB::getDriverName() === 'sqlite') {
             DB::update('UPDATE items_orders SET custom = (SELECT status || "," || created_at FROM orders WHERE items_orders.order_id = orders.id)');

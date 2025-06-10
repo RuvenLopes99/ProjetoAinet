@@ -14,12 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Card ID:</strong> {{ $card->id }}</div>
-                    <div><strong>Card Number:</strong> {{ $card->card_number }}</div>
-                    <div><strong>Balance:</strong> {{ $card->balance }}</div>
-                    <div><strong>User ID:</strong> {{ $card->user_id }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('cards.partials.fields', ['card' => $card, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

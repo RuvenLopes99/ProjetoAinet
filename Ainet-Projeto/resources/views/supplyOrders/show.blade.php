@@ -14,13 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Supply Order ID:</strong> {{ $supplyOrder->id }}</div>
-                    <div><strong>Product ID:</strong> {{ $supplyOrder->product_id }}</div>
-                    <div><strong>Registered By (User ID):</strong> {{ $supplyOrder->registered_by_user_id }}</div>
-                    <div><strong>Status:</strong> {{ $supplyOrder->status }}</div>
-                    <div><strong>Quantity:</strong> {{ $supplyOrder->quantity }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('supplyOrders.partials.fields', ['supplyOrder' => $supplyOrder, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

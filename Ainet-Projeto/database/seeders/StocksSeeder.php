@@ -13,7 +13,7 @@ class StocksSeeder extends Seeder
     private $boardEmployeeUserIds = [];
 
     private $faker = null;
-    
+
     public function run(): void
     {
         //$this->faker = Factory::create('pt_PT');
@@ -72,8 +72,8 @@ class StocksSeeder extends Seeder
         if ($product) {
             if (($product->stock - $orderedQuantity) <= $product->stock_lower_limit) {
                 $resupplyQuantity = max(
-                    $orderedQuantity - $product->stock, 
-                    $product->stock_lower_limit, 
+                    $orderedQuantity - $product->stock,
+                    $product->stock_lower_limit,
                     $product->stock_upper_limit + mt_rand(-2, 10));
             }
             if ($resupplyQuantity > 0) {
@@ -99,27 +99,27 @@ class StocksSeeder extends Seeder
 
     private function createSupplyOrdersToUpdateInventoryWhenOrdering()
     {
-        $totalItemOrders = DB::table('items_orders')->count();
+        $totalItemsOrders = DB::table('items_orders')->count();
         $handledItems = 0;
         $arrayToStore = [];
         DB::table('items_orders')->orderBy('id')->chunk(
             1000,
-            function ($itemsOrders) use (&$arrayToStore, &$handledItems, $totalItemOrders) {
-                foreach ($itemsOrders as $itemOrder) {
-                    $product = $this->getProduct($itemOrder->product_id);
+            function ($itemsOrders) use (&$arrayToStore, &$handledItems, $totalItemsOrders) {
+                foreach ($itemsOrders as $itemsOrder) {
+                    $product = $this->getProduct($itemsOrder->product_id);
                     if (DB::getDriverName() === 'sqlite') {
-                        $orderValues = explode(',', $itemOrder->custom);
+                        $orderValues = explode(',', $itemsOrder->custom);
                     } else {
-                        $orderValues = explode(',', json_decode($itemOrder->custom, true)['value']);
+                        $orderValues = explode(',', json_decode($itemsOrder->custom, true)['value']);
                     }
                     $orderStatus = $orderValues[0];
                     $orderCreatedAt = Carbon::parse($orderValues[1]);
                     if ($orderStatus == 'completed') {
-                        $this->handleStockUpdate($product, $itemOrder->quantity, $orderCreatedAt, $arrayToStore);
-                    }                    
+                        $this->handleStockUpdate($product, $itemsOrder->quantity, $orderCreatedAt, $arrayToStore);
+                    }
                 }
                 $handledItems +=  1000;
-                $this->command->line("Analysed $handledItems/$totalItemOrders order items and restock the products if necessary!");
+                $this->command->line("Analysed $handledItems/$totalItemsOrders order items and restock the products if necessary!");
             }
         );
         if (count($arrayToStore) >= 1) {
@@ -128,7 +128,7 @@ class StocksSeeder extends Seeder
             $arrayToStore = [];
         }
     }
-    private function cleanItemsOrdersCustomField() 
+    private function cleanItemsOrdersCustomField()
     {
         DB::table('items_orders')->update(['custom' => null]);
         $this->command->line("Cleaned all items_orders custom field");

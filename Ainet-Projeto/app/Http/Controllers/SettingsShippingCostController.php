@@ -12,6 +12,7 @@ class SettingsShippingCostController extends Controller
     /**
      * Display the shipping cost settings.
      */
+
     public function index(Request $request) : View
     {
         // Fetch the shipping cost settings from the database
@@ -43,32 +44,55 @@ class SettingsShippingCostController extends Controller
         return view('settingsShippingCosts.index', compact('settingsShippingCosts', 'filterByMinValue', 'filterByMaxValue', 'filterByShippingCost'));
     }
 
+    public function show($id)
+    {
+        $settingsShippingCost = \App\Models\SettingsShippingCost::findOrFail($id);
+        return view('settingsShippingCosts.show', compact('settingsShippingCost'));
+    }
+
     /**
      * Show the form for editing the shipping cost settings.
      */
-    public function edit()
+    public function edit($id)
     {
-        // Fetch the current shipping cost settings
-        $shippingCostSettings = SettingsShippingCost::first();
-
-        // Return the edit view with the current settings
-        return view('settingsShippingCosts.edit', compact('shippingCostSettings'));
+        $settingsShippingCost = SettingsShippingCost::findOrFail($id);
+        return view('settingsShippingCosts.edit', compact('settingsShippingCost'));
     }
 
     /**
      * Update the shipping cost settings in storage.
      */
-    public function update(SettingsShippingCostFormRequest $settingsShippingCost)
+    public function update(SettingsShippingCostFormRequest $request, SettingsShippingCost $settingsShippingCost)
     {
-        // Update with validated data
-        $settingsShippingCost->update($settingsShippingCost->validated());
+        $settingsShippingCost->update($request->validated());
         $url = route('settingsShippingCosts.index');
         $htmlMessage = "Shipping cost settings have been updated successfully!";
         $htmlMessage .= " <a href='$url'>View Settings</a>";
 
-        // Redirect back with a success message
         return redirect()
             ->route('settingsShippingCosts.index')
             ->with('success', 'Shipping cost updated successfully.');
     }
+
+    public function create()
+    {
+        return view('settingsShippingCosts.create');
+    }
+
+    public function destroy($id)
+    {
+        $settingsShippingCost = SettingsShippingCost::findOrFail($id);
+        $settingsShippingCost->delete();
+        return redirect()->route('settingsShippingCosts.index')
+            ->with('success', 'Shipping cost settings deleted successfully.');
+    }
+
+    public function store(SettingsShippingCostFormRequest $request)
+    {
+        SettingsShippingCost::create($request->validated());
+        return redirect()
+            ->route('settingsShippingCosts.index')
+            ->with('success', 'Shipping cost settings created successfully.');
+    }
 }
+

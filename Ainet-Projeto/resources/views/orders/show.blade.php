@@ -14,19 +14,9 @@
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
-                <div class="mt-6 space-y-4">
-                    <div><strong>Order ID:</strong> {{ $order->id }}</div>
-                    <div><strong>Member (User ID):</strong> {{ $order->member_id }}</div>
-                    <div><strong>Status:</strong> {{ $order->status }}</div>
-                    <div><strong>Date:</strong> {{ $order->date }}</div>
-                    <div><strong>Total Items:</strong> {{ $order->total_items }}</div>
-                    <div><strong>Shipping Cost:</strong> {{ $order->shipping_cost }}</div>
-                    <div><strong>Total:</strong> {{ $order->total }}</div>
-                    <div><strong>NIF:</strong> {{ $order->nif }}</div>
-                    <div><strong>Delivery Address:</strong> {{ $order->delivery_address }}</div>
-                    <div><strong>PDF Receipt:</strong> {{ $order->pdf_receipt }}</div>
-                    <div><strong>Cancel Reason:</strong> {{ $order->cancel_reason }}</div>
-                </div>
+                <div style="user-select: none; pointer-events: none;">
+                        @include('orders.partials.fields', ['order' => $order, 'readonly' => true, 'disabled' => true])
+                    </div>
             </section>
         </div>
     </div>

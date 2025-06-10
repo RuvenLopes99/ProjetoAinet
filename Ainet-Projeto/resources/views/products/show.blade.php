@@ -15,17 +15,9 @@
                     </form>
                 </div>
                 <div class="mt-6 space-y-4">
-                    <div><strong>Product ID:</strong> {{ $product->id }}</div>
-                    <div><strong>Category ID:</strong> {{ $product->category_id }}</div>
-                    <div><strong>Name:</strong> {{ $product->name }}</div>
-                    <div><strong>Price:</strong> {{ $product->price }}</div>
-                    <div><strong>Stock:</strong> {{ $product->stock }}</div>
-                    <div><strong>Description:</strong> {{ $product->description }}</div>
-                    <div><strong>Photo:</strong> {{ $product->photo }}</div>
-                    <div><strong>Discount Min Qty:</strong> {{ $product->discount_min_qty }}</div>
-                    <div><strong>Discount:</strong> {{ $product->discount }}</div>
-                    <div><strong>Stock Lower Limit:</strong> {{ $product->stock_lower_limit }}</div>
-                    <div><strong>Stock Upper Limit:</strong> {{ $product->stock_upper_limit }}</div>
+                    <div style="user-select: none; pointer-events: none;">
+                        @include('products.partials.fields', ['product' => $product, 'readonly' => true, 'disabled' => true])
+                    </div>
                 </div>
             </section>
         </div>
