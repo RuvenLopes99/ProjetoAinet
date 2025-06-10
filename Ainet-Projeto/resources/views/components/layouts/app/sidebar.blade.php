@@ -25,7 +25,7 @@
                 <flux:navlist.group :heading="'Pages'" class="grid">
                     <flux:navlist.item icon="cube" :href="route('products.showcase')" :current="request()->routeIs('products.showcase')" wire:navigate>Products</flux:navlist.item>
                     <flux:navlist.item icon="shopping-cart" :href="route('cart.show')" :current="request()->routeIs('cart.show')" wire:navigate>My Cart</flux:navlist.item>
-                    <flux:navlist.item icon="list-bullet" :href="'#'" wire:navigate>My Orders</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>My Orders</flux:navlist.item>
                </flux:navlist.group>
             </flux:navlist>
 

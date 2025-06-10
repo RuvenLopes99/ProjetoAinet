@@ -13,10 +13,7 @@ class CartController extends Controller
 
     public function add(Request $request, $id)
     {
-        $quantity = max(0, (int) $request->input('quantity', 0));
-        if ($quantity < 1) {
-            return back()->with('error', 'Quantity must be at least 1.');
-        }
+        $quantity = max(1, (int) $request->input('quantity', 1));
 
         $cart = session()->get('cart', []);
         if (isset($cart[$id])) {
@@ -24,6 +21,22 @@ class CartController extends Controller
         } else {
             $cart[$id] = $quantity;
         }
+
+        session(['cart' => $cart]);
+        return back()->with('success', 'Product added to cart!');
+    }
+
+    public function addQuantity($id)
+    {
+        $quantity = 1;
+
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            $cart[$id] += $quantity;
+        } else {
+            return back()->with('error', 'Product not found in cart.');
+        }
+
         session(['cart' => $cart]);
         return back()->with('success', 'Product added to cart!');
     }
@@ -47,6 +60,18 @@ class CartController extends Controller
         unset($cart[$id]);
         session(['cart' => $cart]);
         return back()->with('success', 'Product removed from cart!');
+    }
+
+    public function removeQuantity($id)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id]) && $cart[$id] > 1) {
+            $cart[$id]--;
+        } else {
+            unset($cart[$id]);
+        }
+        session(['cart' => $cart]);
+        return back()->with('success', 'One quantity removed from cart!');
     }
 
     public function confirm()

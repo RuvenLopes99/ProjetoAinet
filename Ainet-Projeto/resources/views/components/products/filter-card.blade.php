@@ -1,3 +1,7 @@
+@php
+    $outOfStock = $outOfStock ?? false;
+@endphp
+
 <div {{ $attributes }}>
     <form method="GET" action="{{ $filterAction }}">
         <div class="flex justify-between space-x-3">
@@ -6,6 +10,10 @@
                     <flux:input name="name" label="Name" class="grow" value="{{ $name }}"/>
                     <flux:input name="category_id" label="Category ID" class="grow" value="{{ $categoryId }}"/>
                     <flux:input name="price" label="Min Price" class="grow" value="{{ $price }}"/>
+                    <div class="flex items-center mt-2">
+                        <input type="checkbox" id="outOfStock" name="outOfStock" value="1" {{ $outOfStock ? 'checked' : '' }} class="mr-2">
+                        <label for="outOfStock" class="text-sm">Show only out of stock</label>
+                    </div>
                 </div>
             </div>
             <div class="grow-0 flex flex-col space-y-3 justify-start">

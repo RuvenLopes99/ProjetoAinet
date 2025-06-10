@@ -4,9 +4,13 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl ">
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
-                <x-items-orders.filter-table
+                <x-items-orders.filter-card
                     :filterAction="route('itemsOrders.index')"
                     :resetUrl="route('itemsOrders.index')"
+                    :orderId="old('order_id', $orderId)"
+                    :productId="old('product_id', $productId)"
+                    :quantity="old('quantity', $quantity)"
+                    :subtotal="old('subtotal', $subtotal)"
                     class="mb-6"
                 />
                 <div class="flex items-center gap-4 mb-4">
@@ -20,7 +24,7 @@
                     />
                 </div>
                 <div class="mt-4">
-                    {{ $itemsOrders->links() }}
+                    {{ $itemsOrders->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

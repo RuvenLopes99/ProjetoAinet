@@ -17,14 +17,19 @@
 
                     <div class="mt-12">
                         <div class="flex justify-between items-start space-x-10">
-                            <form action="{{ route('cart.confirm') }}" method="post">
+                            <form action="{{ route('cart.confirm') }}" method="POST">
                                 @csrf
-                                <flux:button type="submit">Confirm</flux:button>
+                                @method('POST')
+                                <flux:button type="submit" class="mt-[0.7rem]" variant="primary">
+                                    Order Now
+                                </flux:button>
                             </form>
-                            <form action="{{ route('cart.destroy') }}" method="post">
+                            <form action="{{ route('cart.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <flux:button variant="danger" type="submit" class="mt-[1.7rem]">Clear Cart</flux:button>
+                                <flux:button type="submit" class="mt-[0.7rem]" variant="danger">
+                                    Clear Cart
+                                </flux:button>
                             </form>
                         </div>
                     </div>

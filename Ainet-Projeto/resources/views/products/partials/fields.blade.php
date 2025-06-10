@@ -45,6 +45,23 @@
         />
 
         <flux:input
+            name="discount_min_qty"
+            label="Discount Min Quantity"
+            type="number"
+            :value="old('discount_min_qty', $product->discount_min_qty)"
+            :disabled="$readonly"
+        />
+
+        <flux:input
+            name="discount"
+            label="Discount Value"
+            type="number"
+            step="0.01"
+            :value="old('discount', $product->discount)"
+            :disabled="$readonly"
+        />
+        
+        <flux:input
             name="stock_lower_limit"
             label="Stock Lower Limit"
             type="number"

@@ -2,22 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ItemsOrderFormRequest;
+use Illuminate\View\View;
 use App\Models\ItemsOrder;
 use Illuminate\Http\Request;
+use App\Http\Requests\ItemsOrderFormRequest;
 
 class ItemsOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all item orders with pagination
-        $itemsOrders = ItemsOrder::paginate(20);
+        $orderId = $request->input('order_id');
+        $productId = $request->input('product_id');
+        $quantity = $request->input('quantity');
+        $subtotal = $request->input('subtotal');
 
-        // Return the view with the item orders
-        return view('itemsOrders.index', compact('itemsOrders'));
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'asc');
+
+        $allowedSorts = [
+            'id', 'order_id', 'product_id', 'quantity', 'subtotal'
+        ];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        $query = \App\Models\ItemsOrder::query();
+
+        if ($orderId) {
+            $query->where('order_id', $orderId);
+        }
+        if ($productId) {
+            $query->where('product_id', $productId);
+        }
+        if ($quantity) {
+            $query->where('quantity', $quantity);
+        }
+        if ($subtotal) {
+            $query->where('subtotal', $subtotal);
+        }
+
+        $query->orderBy($sort, $direction);
+
+        $itemsOrders = $query->paginate(20);
+
+        return view('itemsOrders.index', [
+            'itemsOrders' => $itemsOrders,
+            'orderId' => $orderId,
+            'productId' => $productId,
+            'quantity' => $quantity,
+            'subtotal' => $subtotal,
+        ]);
     }
 
     /**

@@ -41,6 +41,7 @@ Route::resource('users', UserController::class);
 Route::resource('categories', CategoryController::class);
 
 //Routes Order
+Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
 Route::resource('orders', OrderController::class);
 
 //Routes Item Order
@@ -72,8 +73,10 @@ Route::resource('cards', CardController::class);
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+Route::put('/cart/add-quantity/{id}', [CartController::class, 'addQuantity'])->name('cart.addQuantity');
 Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::put('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::patch('/cart/remove-quantity/{id}', [CartController::class, 'removeQuantity'])->name('cart.removeQuantity');
 Route::delete('/cart/clear', [CartController::class, 'destroy'])->name('cart.destroy');
 
 require __DIR__.'/auth.php';

@@ -18,6 +18,19 @@ class OrderController extends Controller
         $status = $request->input('status');
         $nif = $request->input('nif');
 
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'asc');
+
+        $allowedSorts = [
+            'id', 'member_id', 'status', 'date', 'total_items', 'shipping_cost', 'total', 'nif', 'delivery_address'
+        ];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
         $query = Order::query();
 
         if ($memberId) {
@@ -30,6 +43,8 @@ class OrderController extends Controller
             $query->where('nif', $nif);
         }
 
+        $query->orderBy($sort, $direction);
+
         $orders = $query->paginate(20);
 
         return view('orders.index', [
@@ -38,6 +53,19 @@ class OrderController extends Controller
             'status' => $status,
             'nif' => $nif,
         ]);
+    }
+
+    public function showCase(Request $request)
+    {
+        $query = Order::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->orderByDesc('date')->paginate(12);
+
+        return view('orders.showcase', compact('orders'));
     }
 
     /**

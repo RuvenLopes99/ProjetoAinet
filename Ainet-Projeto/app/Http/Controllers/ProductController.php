@@ -7,6 +7,8 @@ use App\Models\Product;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\call;
+
 class ProductController extends Controller
 {
     /**
@@ -17,9 +19,25 @@ class ProductController extends Controller
         $name = $request->input('name');
         $categoryId = $request->input('category_id');
         $price = $request->input('price');
+        $outOfStock = $request->boolean('outOfStock');
+         // Use boolean for checkbox
 
         $query = Product::query();
 
+        $sort = $request->input('sort', 'id');
+        $direction = $request->input('direction', 'asc');
+
+        $allowedSorts = [
+            'id', 'name', 'description', 'price', 'stock', 'category_id', 'stock_lower_limit', 'stock_upper_limit'
+        ];
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'id';
+        }
+        if (!in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        $query->orderBy($sort, $direction);
         if ($name) {
             $query->where('name', 'like', '%' . $name . '%');
         }
@@ -29,6 +47,10 @@ class ProductController extends Controller
         if ($price) {
             $query->where('price', '>=', $price);
         }
+        if ($outOfStock) {
+            // Show products where stock is less than stock_lower_limit
+            $query->whereColumn('stock', '<', 'stock_lower_limit');
+        }
 
         $products = $query->paginate(20);
 
@@ -37,12 +59,40 @@ class ProductController extends Controller
             'name' => $name,
             'categoryId' => $categoryId,
             'price' => $price,
+            'outOfStock' => $outOfStock,
         ]);
     }
 
-    public function showCase(): View
+    public function showCase(Request $request)
     {
-        $products = Product::paginate(24);
+        $query = Product::query();
+
+        // Filter by product name
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
+
+        // Filter only products with discount
+        if ($request->boolean('only_discount')) {
+            $query->whereNotNull('discount')
+                ->where('discount', '>', 0)
+                ->whereNotNull('discount_min_qty')
+                ->where('discount_min_qty', '>', 0);
+        }
+
+        // Order by price
+        if ($request->filled('price_order')) {
+            $direction = $request->input('price_order') === 'desc' ? 'desc' : 'asc';
+            $query->orderBy('price', $direction);
+        }
+
+        $products = $query->paginate(24);
+
         return view('products.showcase', compact('products'));
     }
 

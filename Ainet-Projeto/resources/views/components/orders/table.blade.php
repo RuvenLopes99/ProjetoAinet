@@ -1,17 +1,28 @@
-<!-- filepath: c:\laragon\www\Ainet-Projeto\resources\views\components\orders\table.blade.php -->
+@php
+    function sortUrl($column) {
+        $direction = (request('sort') === $column && request('direction') === 'asc') ? 'desc' : 'asc';
+        return request()->fullUrlWithQuery(['sort' => $column, 'direction' => $direction]);
+    }
+    function sortArrow($column) {
+        if (request('sort') === $column) {
+            return request('direction') === 'asc' ? '↑' : '↓';
+        }
+        return '';
+    }
+@endphp
 <div>
     <table class="table-auto border-collapse w-full">
         <thead>
         <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
-            <th class="px-2 py-2 text-left">ID</th>
-            <th class="px-2 py-2 text-left">Member ID</th>
-            <th class="px-2 py-2 text-left">Status</th>
-            <th class="px-2 py-2 text-left">Date</th>
-            <th class="px-2 py-2 text-left">Total Items</th>
-            <th class="px-2 py-2 text-left">Shipping Cost</th>
-            <th class="px-2 py-2 text-left">Total</th>
-            <th class="px-2 py-2 text-left">NIF</th>
-            <th class="px-2 py-2 text-left">Delivery Address</th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('id') }}">ID {!! sortArrow('id') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('member_id') }}">Member ID {!! sortArrow('member_id') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('status') }}">Status {!! sortArrow('status') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('date') }}">Date {!! sortArrow('date') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('total_items') }}">Total Items {!! sortArrow('total_items') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('shipping_cost') }}">Shipping Cost {!! sortArrow('shipping_cost') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('total') }}">Total {!! sortArrow('total') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('nif') }}">NIF {!! sortArrow('nif') !!}</a></th>
+            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('delivery_address') }}">Delivery Address {!! sortArrow('delivery_address') !!}</a></th>
             <th class="px-2 py-2 text-left">PDF Receipt</th>
             <th class="px-2 py-2 text-left">Cancel Reason</th>
             @if($showView ?? false)

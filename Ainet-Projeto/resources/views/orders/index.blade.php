@@ -6,7 +6,9 @@
             <div class="my-4 p-6 ">
                 <x-orders.filter-card
                     :filterAction="route('orders.index')"
-                    :resetUrl="route('orders.index')"
+                    :resetUrl="route('orders.index')"~
+                    :orderId="old('order_id', $orderId)"
+                    :productId="old('product_id', $productId)"
                     :memberId="old('member_id', $memberId)"
                     :status="old('status', $status)"
                     :nif="old('nif', $nif)"
@@ -23,7 +25,7 @@
                     />
                 </div>
                 <div class="mt-4">
-                    {{ $orders->links() }}
+                    {{ $orders->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>
