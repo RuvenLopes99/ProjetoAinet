@@ -119,18 +119,21 @@ Route::middleware(['auth', 'employee'])->group(function () {
 Route::middleware(['auth', 'is_employee_or_admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
 
-    //encomenda especifica
+    // encomenda especifica
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     
-    //atualizar estado da encomenda
+    // atualizar estado da encomenda
     Route::patch('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
     // gestão de invetário
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
 
-    //encomenads de fornecimento
+    // encomenads de fornecimento
+    Route::get('/supply-orders', [SupplyOrderController::class, 'index'])->name('supply-orders.index');
     Route::get('/supply-orders/create', [SupplyOrderController::class, 'create'])->name('supply-orders.create');
     Route::post('/supply-orders', [SupplyOrderController::class, 'store'])->name('supply-orders.store');
+    Route::patch('/supply-orders/{supply_order}', [SupplyOrderController::class, 'update'])->name('supply-orders.update');
+    Route::delete('/supply-orders/{supply_order}', [SupplyOrderController::class, 'destroy'])->name('supply-orders.destroy');
 
 });
 
