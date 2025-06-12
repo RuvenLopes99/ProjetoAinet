@@ -12,6 +12,7 @@ use App\Http\Controllers\OperationController;
 use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SettingsShippingCostController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -46,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('settings', SettingController::class);
 });
+
 /*
 //Member Routes
 Route::middleware(['auth', 'member'])->group(function () {
@@ -109,8 +111,21 @@ Route::middleware(['auth', 'employee'])->group(function () {
     //Routes Setting
     Route::resource('settings', SettingController::class)->only(['index', 'show']);
 });
+*/
 
 // Admin Routes
+Route::middleware(['auth', 'is_employee_or_admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+
+    //encomenda especifica
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    
+    //atualizar estado da encomenda
+    Route::patch('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+});
+
+/*
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 

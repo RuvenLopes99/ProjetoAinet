@@ -1,6 +1,6 @@
 <?php
 
 protected $routeMiddleware = [
-    // ... outros middlewares
     'role' => \App\Http\Middleware\RoleMiddleware::class,
+    'is_employee_or_admin' => \App\Http\Middleware\CheckEmployeeOrAdmin::class,
 ];
