@@ -1,6 +1,26 @@
 <?php
 
-// ... (imports continuam os mesmos)
+use Illuminate\Support\Facades\Route;
+
+use Livewire\Volt\Volt;
+// Importação de todos os controladores necessários
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemsOrderController;
+use App\Http\Controllers\OperationController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SettingsShippingCostController;
+use App\Http\Controllers\StockAdjustmentController;
+use App\Http\Controllers\SupplyOrderController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\StatisticsController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
