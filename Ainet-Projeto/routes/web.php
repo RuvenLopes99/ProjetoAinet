@@ -26,6 +26,15 @@ use App\Http\Middleware\CheckEmployeeOrAdmin;
 
 use App\Http\Middleware\RoleMiddleware;
 
+
+
+Route::middleware('auth')->group(function () {
+    // ...
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update'); // A rota está aqui!
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // ...
+});
 /*
 |--------------------------------------------------------------------------
 | Rotas Públicas e do Carrinho (Sem alterações)
