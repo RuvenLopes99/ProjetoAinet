@@ -56,7 +56,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-secondary btn-sm">Ajustar Stock</a>
+                                <a href="{{ route('admin.inventory.adjust.form', $product) }}" class="btn btn-secondary btn-sm">Ajustar Stock</a>
                             </td>
                         </tr>
                     @empty

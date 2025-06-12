@@ -28,6 +28,12 @@ use App\Http\Controllers\Admin\InventoryController;
 | Rotas Públicas
 |--------------------------------------------------------------------------
 */
+
+//Route::get('/', function () {
+//    return view('welcome');
+//})->name('home');
+
+// Public Routes
 Route::view('/', 'home')->name('home');
 Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
@@ -79,13 +85,16 @@ Route::middleware(['auth', 'is_employee_or_admin'])->prefix('admin')->name('admi
     // gestão de invetário
     Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
 
-    // encomenads de fornecimento
+    // encomendas de fornecimento
     Route::get('/supply-orders', [SupplyOrderController::class, 'index'])->name('supply-orders.index');
     Route::get('/supply-orders/create', [SupplyOrderController::class, 'create'])->name('supply-orders.create');
     Route::post('/supply-orders', [SupplyOrderController::class, 'store'])->name('supply-orders.store');
     Route::patch('/supply-orders/{supply_order}', [SupplyOrderController::class, 'update'])->name('supply-orders.update');
     Route::delete('/supply-orders/{supply_order}', [SupplyOrderController::class, 'destroy'])->name('supply-orders.destroy');
 
+    // ajustes de stock
+    Route::get('/inventory/adjust/{product}', [InventoryController::class, 'showAdjustmentForm'])->name('inventory.adjust.form');
+    Route::post('/inventory/adjust/{product}', [InventoryController::class, 'storeAdjustment'])->name('inventory.adjust.store');
 });
 
 
