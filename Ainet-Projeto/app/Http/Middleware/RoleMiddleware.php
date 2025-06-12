@@ -18,7 +18,8 @@ class RoleMiddleware
 
         $user = Auth::user();
         foreach ($roles as $role) {
-            if ($user->type->value == $role) {
+            // A linha foi corrigida aqui para uma comparação de strings simples
+            if ($user->type == $role) {
                 return $next($request);
             }
         }

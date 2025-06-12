@@ -5,7 +5,7 @@
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
                 <x-orders.filter-card
-                    :filterAction="route('orders.index')"
+                    :filterAction="route('admin.orders.index')"
                     :resetUrl="route('orders.index')"~
                     :orderId="old('order_id', $orderId)"
                     :productId="old('product_id', $productId)"

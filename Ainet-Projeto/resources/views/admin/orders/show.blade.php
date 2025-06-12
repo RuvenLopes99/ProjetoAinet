@@ -2,8 +2,7 @@
 
 @section('content')
 <div class="container">
-    <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary mb-3">‹ Voltar para Encomendas Pendentes</a>
-    
+    <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">‹ Voltar para Encomendas Pendentes</a>    
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

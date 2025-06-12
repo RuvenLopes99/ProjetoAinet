@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use Illuminate\Http\Request;
 use App\Mail\OrderCompletedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,14 +15,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class OrderController extends Controller
 {
     /**
-     * Mostra uma lista de todas as encomendas para o administrador.
-     */
-    public function index()
-    {
-        // Lógica para buscar todas as encomendas
-        $orders = Order::latest()->paginate(10); // Exemplo
-
-        return view('admin.orders.index', compact('orders'));
      * Mostra uma lista de encomendas pendentes.
      */
     public function index()
@@ -40,12 +32,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        // Lógica para mostrar uma encomenda
-        return view('admin.orders.show', compact('order'));
-    }
-
-    /**
-     * Atualiza o estado de uma encomenda.
+        // Carrega as relações para aceder aos dados na vista de forma eficiente
         $order->load('member', 'items_orders.product');
 
         return view('admin.orders.show', ['order' => $order]);
@@ -57,46 +44,36 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|string', // Adicione as regras de validação necessárias
-        ]);
-
-        // Lógica para atualizar o estado
-        $order->status = $request->status;
-        $order->save();
-
-        return back()->with('success', 'Estado da encomenda atualizado com sucesso!');
-    }
-}
             'status' => 'required|in:completed,canceled',
         ]);
 
         $newStatus = $request->input('status');
 
-        // concluir encomenda
+        // --- LÓGICA PARA CONCLUIR UMA ENCOMENDA ---
         if ($newStatus === 'completed') {
-            // verificar stock
+            // 1. VERIFICAR STOCK
             foreach ($order->items_orders as $item) {
                 if ($item->quantity > $item->product->stock) {
                     return redirect()->back()->with('error', 'Não é possível concluir. Stock insuficiente para o produto: ' . $item->product->name);
                 }
             }
 
-            // atualizar stock
+            // 2. ATUALIZAR STOCK
             foreach ($order->items_orders as $item) {
                 $item->product->decrement('stock', $item->quantity);
             }
 
-            // gerar PDF da fatura
+            // 3. GERAR E GUARDAR PDF
             $pdf = Pdf::loadView('receipts.template', ['order' => $order->load('member', 'items_orders.product')]);
             $filename = 'receipts/order_' . $order->id . '_' . time() . '.pdf';
             Storage::put('public/' . $filename, $pdf->output());
 
-            // atualizar encomenda
+            // 4. ATUALIZAR A ENCOMENDA
             $order->status = 'completed';
             $order->pdf_receipt = $filename;
             $order->save();
 
-            // notificar o email
+            // 5. ENVIAR EMAIL DE NOTIFICAÇÃO
             try {
                 Mail::to($order->member->email)->send(new OrderCompletedMail($order));
             } catch (\Exception $e) {
@@ -106,16 +83,16 @@ class OrderController extends Controller
             return redirect()->route('admin.orders.show', $order)->with('success', 'Encomenda marcada como concluída com sucesso!');
         }
 
-        // cancelar encomenda
+        // --- LÓGICA PARA CANCELAR UMA ENCOMENDA ---
         if ($newStatus === 'canceled' && Auth::user()->type === 'board') {
-            // reembolsar valor ao cartão virtual
+            // 1. REEMBOLSAR VALOR AO CARTÃO VIRTUAL DO MEMBRO
             $memberCard = $order->member->card;
             if ($memberCard) {
                 $memberCard->balance += $order->total;
                 $memberCard->save();
             }
 
-            // atualizar encomenda
+            // 2. ATUALIZAR A ENCOMENDA
             $order->status = 'canceled';
             $order->cancel_reason = $request->input('cancel_reason', 'Cancelado pelo administrador.');
             $order->save();
@@ -126,4 +103,3 @@ class OrderController extends Controller
         return redirect()->back()->with('error', 'Ação não permitida.');
     }
 }
-

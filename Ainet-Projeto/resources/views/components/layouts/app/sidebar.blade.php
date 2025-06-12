@@ -58,40 +58,42 @@
                     </flux:navlist.group>
                 </flux:navlist>
 
+                {{-- ########## SECÇÃO STAFF CORRIGIDA ########## --}}
                 @if($isEmployee || $isBoard)
                     <section class="mt-4">
                         <h3 class="px-4 py-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Staff</h3>
                         <flux:navlist variant="outline" class="grid">
                             <flux:navlist.group :heading="'Gestão de Loja'" class="grid">
-                                <flux:navlist.item icon="shopping-cart" :href="route('orders.index')" :current="request()->routeIs('orders.index')" wire:navigate>Encomendas</flux:navlist.item>
-                                <flux:navlist.item icon="truck" :href="route('supplyOrders.index')" :current="request()->routeIs('supplyOrders.index')" wire:navigate>Ordens de Fornecimento</flux:navlist.item>
-                                <flux:navlist.item icon="adjustments-horizontal" :href="route('stockAdjustments.index')" :current="request()->routeIs('stockAdjustments.index')" wire:navigate>Ajustes de Stock</flux:navlist.item>
+                                <flux:navlist.item icon="shopping-cart" :href="route('admin.orders.index')" :current="request()->routeIs('admin.orders.*')" wire:navigate>Encomendas</flux:navlist.item>
+                                <flux:navlist.item icon="truck" :href="route('admin.supply-orders.index')" :current="request()->routeIs('admin.supply-orders.*')" wire:navigate>Ordens de Fornecimento</flux:navlist.item>
+                                <flux:navlist.item icon="adjustments-horizontal" :href="route('admin.stock-adjustments.index')" :current="request()->routeIs('admin.stock-adjustments.*')" wire:navigate>Ajustes de Stock</flux:navlist.item>
                             </flux:navlist.group>
                         </flux:navlist>
                     </section>
                 @endif
 
+                {{-- ########## SECÇÃO ADMIN CORRIGIDA ########## --}}
                 @if($isBoard)
                     <section class="mt-4">
                         <h3 class="px-4 py-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Admin</h3>
                         <flux:navlist variant="outline">
                             <flux:navlist.group :heading="'Catálogo'" class="grid">
-                                <flux:navlist.item icon="cube" :href="route('products.index')" :current="request()->routeIs('products.index')" wire:navigate>Produtos</flux:navlist.item>
-                                <flux:navlist.item icon="tag" :href="route('categories.index')" :current="request()->routeIs('categories.index')" wire:navigate>Categorias</flux:navlist.item>
+                                <flux:navlist.item icon="cube" :href="route('admin.products.index')" :current="request()->routeIs('admin.products.*')" wire:navigate>Produtos</flux:navlist.item>
+                                <flux:navlist.item icon="tag" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.*')" wire:navigate>Categorias</flux:navlist.item>
                             </flux:navlist.group>
                         </flux:navlist>
                         <flux:navlist variant="outline">
                             <flux:navlist.group :heading="'Utilizadores'" class="grid">
-                                <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.index')" wire:navigate>Utilizadores</flux:navlist.item>
-                                <flux:navlist.item icon="credit-card" :href="route('cards.index')" :current="request()->routeIs('cards.index')" wire:navigate>Cartões</flux:navlist.item>
+                                <flux:navlist.item icon="users" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.*')" wire:navigate>Utilizadores</flux:navlist.item>
+                                <flux:navlist.item icon="credit-card" :href="route('admin.cards.index')" :current="request()->routeIs('admin.cards.*')" wire:navigate>Cartões</flux:navlist.item>
                             </flux:navlist.group>
                         </flux:navlist>
                         <flux:navlist variant="outline">
                             <flux:navlist.group :heading="'Definições & Relatórios'" class="grid">
-                                <flux:navlist.item icon="chart-bar" :href="route('admin.statistics.index')" :current="request()->routeIs('admin.statistics.index')" wire:navigate>Estatísticas</flux:navlist.item>
-                                <flux:navlist.item icon="wrench-screwdriver" :href="route('operations.index')" :current="request()->routeIs('operations.index')" wire:navigate>Operações</flux:navlist.item>
-                                <flux:navlist.item icon="cog" :href="route('settings.index')" :current="request()->routeIs('settings.index')" wire:navigate>Definições Gerais</flux:navlist.item>
-                                <flux:navlist.item icon="truck" :href="route('settingsShippingCosts.index')" :current="request()->routeIs('settingsShippingCosts.index')" wire:navigate>Custos de Envio</flux:navlist.item>
+                                <flux:navlist.item icon="chart-bar" :href="route('admin.statistics.index')" :current="request()->routeIs('admin.statistics.*')" wire:navigate>Estatísticas</flux:navlist.item>
+                                <flux:navlist.item icon="wrench-screwdriver" :href="route('admin.operations.index')" :current="request()->routeIs('admin.operations.*')" wire:navigate>Operações</flux:navlist.item>
+                                <flux:navlist.item icon="cog" :href="route('admin.settings.index')" :current="request()->routeIs('admin.settings.*')" wire:navigate>Definições Gerais</flux:navlist.item>
+                                <flux:navlist.item icon="truck" :href="route('admin.settingsShippingCosts.index')" :current="request()->routeIs('admin.settingsShippingCosts.*')" wire:navigate>Custos de Envio</flux:navlist.item>
                             </flux:navlist.group>
                         </flux:navlist>
                     </section>

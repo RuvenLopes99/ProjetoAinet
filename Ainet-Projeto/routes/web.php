@@ -22,6 +22,10 @@ use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\InventoryController;
 
+use App\Http\Middleware\CheckEmployeeOrAdmin;
+
+use App\Http\Middleware\RoleMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Rotas Públicas e do Carrinho (Sem alterações)
@@ -33,6 +37,7 @@ Route::resource('products', ProductController::class)->only(['index', 'show']);
 
 // Cart Routes
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 // ... (outras rotas do carrinho sem alterações)
 Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm')->middleware('auth');
 
@@ -54,7 +59,7 @@ Route::middleware('auth')->group(function() {
 | Área do Membro (Member Area - Sem alterações)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:member,board'])->group(function () {
+Route::middleware(['auth', RoleMiddleware::class . ':member,board'])->group(function () {
     Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
     Route::resource('orders', OrderController::class)->only(['show', 'create', 'store']);
     Route::prefix('member')->name('member.')->group(function () {
@@ -69,8 +74,8 @@ Route::middleware(['auth', 'role:member,board'])->group(function () {
 | Unifica todas as rotas de funcionários e administradores
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'is_employee_or_admin']) // Middleware base para todo o painel
-    ->prefix('admin')                           // Prefixo de URL /admin para todas as rotas
+Route::middleware(['auth', CheckEmployeeOrAdmin::class]) // Middleware base para todo o painel                         // Prefixo de URL /admin para todas as rotas
+    ->prefix('admin')
     ->name('admin.')                            // Prefixo de nome admin. para todas as rotas
     ->group(function () {
 
@@ -92,6 +97,7 @@ Route::middleware(['auth', 'is_employee_or_admin']) // Middleware base para todo
         Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 
         // Resources para a direção com nomes prefixados (ex: admin.users.index)
+        Route::resource('products', ProductController::class);
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('cards', CardController::class);
