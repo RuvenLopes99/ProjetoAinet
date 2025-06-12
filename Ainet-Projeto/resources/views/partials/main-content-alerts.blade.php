@@ -11,9 +11,10 @@
     @if (!$errors->isEmpty())
         <flux:callout x-data="{ visible: true }" x-show="visible"
                       variant="warning" icon="exclamation-circle"
-                      heading="Operation failed because there are validation errors!" />
+                      heading="Operation failed because there are validation errors!">
             <x-slot name="controls">
                 <flux:button icon="x-mark" variant="ghost" x-on:click="visible = false" />
             </x-slot>
+        </flux:callout>
     @endif
 </div>
