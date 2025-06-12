@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductFormRequest;
 use App\Http\Requests\SupplyOrderFormRequest;
 use Illuminate\View\View;
 use App\Models\SupplyOrder;
@@ -49,10 +50,17 @@ class SupplyOrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request) : View
     {
         // Return the view for creating a new supply order
-        return view('supplyOrders.create');
+        if ($request->has('product_id')) {
+            $productId = $request->input('product_id');
+            $request->session()->put('product_id', $productId);
+        }
+
+        $registed_by_user_id = auth()->user->id;
+
+        return view('supplyOrders.create', ['productId' => $productId ?? null, 'registed_by_user_id' => $registed_by_user_id]);
     }
 
     /**

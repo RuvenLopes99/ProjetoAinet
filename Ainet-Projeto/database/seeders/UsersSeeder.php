@@ -35,9 +35,9 @@ class UsersSeeder extends Seeder
     ];
 
     public static $userTypes = [
-        'member' => 500, 
+        'member' => 500,
         'board' => 6,
-        'employee' => 10];
+        'employee' => 10;
 
     public function run(): void
     {
@@ -95,7 +95,7 @@ class UsersSeeder extends Seeder
         $this->command->line("Adding users to the database");
         $usersToAdd = Self::$fixedUsers;
         foreach (self::$userTypes as $userType => $totalUsers) {
-            for ($i = 0; $i < $totalUsers; $i++) {                
+            for ($i = 0; $i < $totalUsers; $i++) {
                 $gender = null;
                 $name = null;
                 $email = null;
@@ -128,12 +128,12 @@ class UsersSeeder extends Seeder
         self::$dbUsers = DB::table('users')->get();
     }
 
-    private function addPhotoFiles() 
+    private function addPhotoFiles()
     {
         $this->command->line("Copying users' photos");
         $this->fillPhotoFilesNames();
         $total = count($this->files_M) + count($this->files_F);
-        $sortedUsers = self::$dbUsers->sortBy(function (stdClass $user) { 
+        $sortedUsers = self::$dbUsers->sortBy(function (stdClass $user) {
             if ($user->id < 10 ) {
                 return $user->id;
             }
@@ -158,8 +158,8 @@ class UsersSeeder extends Seeder
                 $i++;
                 if ($i % 10 == 0) {
                     $this->command->line("User photo $i/$total copied");
-                }                
-            }            
+                }
+            }
         }
         $this->command->line("Total of $total user's photos were copied!");
         $this->directCopyFileToStorage('null_images', 'anonymous.png', 'users');

@@ -101,4 +101,5 @@ class SettingController extends Controller
             ->with('alert-type', 'success')
             ->with('alert-msg', 'Setting deleted successfully!');
     }
+
 }

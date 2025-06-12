@@ -1,8 +1,6 @@
 <?php
 
-use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
@@ -19,19 +17,133 @@ use App\Http\Controllers\SettingsShippingCostController;
 //    return view('welcome');
 //})->name('home');
 
+// Public Routes
 Route::view('/', 'home')->name('home');
+Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
+Route::get('orders/my', [OrderController::class, 'myOrders'])->name('orders.myOrders');
+Route::post('orders/store', [OrderController::class, 'store'])->name('orders.store');
+Route::resource('orders', OrderController::class);
 
+Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+Route::put('/cart/add-quantity/{id}', [CartController::class, 'addQuantity'])->name('cart.addQuantity');
+Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::put('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::patch('/cart/remove-quantity/{id}', [CartController::class, 'removeQuantity'])->name('cart.removeQuantity');
+Route::delete('/cart/clear', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm');
+
+// Authorized Users
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-    Route::middleware(['auth'])->group(function () {
-        Route::redirect('settings', 'settings/profile');
+Route::middleware(['auth'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
 
-        Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-        Volt::route('settings/password', 'settings.password')->name('settings.password');
-        Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-    });
+    Route::resource('users', UserController::class);
+    Route::resource('settings', SettingController::class);
+});
+/*
+//Member Routes
+Route::middleware(['auth', 'member'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
+
+    //Routes Order
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'create', 'store']);
+
+    //Routes Item Order
+    Route::resource('itemsOrders', ItemsOrderController::class)->only(['index', 'show']);
+
+    //Routes Product
+    Route::resource('products', ProductController::class)->only(['index', 'show']);
+
+    //Routes Setting
+    Route::resource('settings', SettingController::class)->only(['index', 'show']);
+});
+
+//Board Member Routes
+Route::middleware(['auth', 'board'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
+
+    //Routes User
+    Route::resource('users', UserController::class)->only(['index', 'show']);
+
+    //Routes Category
+    Route::resource('categories', CategoryController::class)->only(['index', 'show']);
+
+    //Routes Order
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
+
+    //Routes Item Order
+    Route::resource('itemsOrders', ItemsOrderController::class)->only(['index', 'show']);
+
+    //Routes Product
+    Route::resource('products', ProductController::class)->only(['index', 'show']);
+
+    //Routes Setting
+    Route::resource('settings', SettingController::class)->only(['index', 'show']);
+});
+
+// Employee Routes
+Route::middleware(['auth', 'employee'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
+
+    //Routes User
+    Route::resource('users', UserController::class)->only(['index', 'show']);
+
+    //Routes Category
+    Route::resource('categories', CategoryController::class)->only(['index', 'show']);
+
+    //Routes Order
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
+
+    //Routes Item Order
+    Route::resource('itemsOrders', ItemsOrderController::class)->only(['index', 'show']);
+
+    //Routes Product
+    Route::resource('products', ProductController::class)->only(['index', 'show']);
+
+    //Routes Setting
+    Route::resource('settings', SettingController::class)->only(['index', 'show']);
+});
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::redirect('settings', 'settings/profile');
+
+    //Routes User
+    Route::resource('users', UserController::class);
+
+    //Routes Category
+    Route::resource('categories', CategoryController::class);
+
+    //Routes Order
+    Route::resource('orders', OrderController::class);
+
+    //Routes Item Order
+    Route::resource('itemsOrders', ItemsOrderController::class);
+
+    //Routes Product
+    Route::resource('products', ProductController::class);
+
+    //Routes Setting
+    Route::resource('settings', SettingController::class);
+
+    //Routes Setting Shipping Cost
+    Route::resource('settingsShippingCosts', SettingsShippingCostController::class);
+
+    //Routes Stock Adjustment
+    Route::resource('stockAdjustments', StockAdjustmentController::class);
+
+    //Routes Supply Order
+    Route::resource('supplyOrders', SupplyOrderController::class);
+
+    //Routes Operation
+    Route::resource('operations', OperationController::class);
+});*/
 
 
 //Routes User
@@ -69,14 +181,5 @@ Route::resource('operations', OperationController::class);
 //Routes Card
 Route::resource('cards', CardController::class);
 
-//Route Cart
-Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
-Route::put('/cart/add-quantity/{id}', [CartController::class, 'addQuantity'])->name('cart.addQuantity');
-Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::put('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::patch('/cart/remove-quantity/{id}', [CartController::class, 'removeQuantity'])->name('cart.removeQuantity');
-Route::delete('/cart/clear', [CartController::class, 'destroy'])->name('cart.destroy');
 
 require __DIR__.'/auth.php';

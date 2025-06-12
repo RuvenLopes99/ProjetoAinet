@@ -9,7 +9,7 @@
         <flux:input
             name="product_id"
             label="Product ID"
-            :value="old('product_id', $supplyOrder->product_id)"
+            :value="old('product_id', isset($productId) ? $productId : ($supplyOrder->product_id !== null ? $supplyOrder->product_id : ''))"
             :disabled="$readonly"
         />
 
@@ -17,14 +17,14 @@
             name="registered_by_user_id"
             label="Registered By (User ID)"
             :value="old('registered_by_user_id', $supplyOrder->registered_by_user_id)"
-            :disabled="$readonly"
+            :disabled="true"
         />
 
         <flux:input
             name="status"
             label="Status"
-            :value="old('status', $supplyOrder->status)"
-            :disabled="$readonly"
+            :value="requested"
+            :disabled="true"
         />
 
         <flux:input

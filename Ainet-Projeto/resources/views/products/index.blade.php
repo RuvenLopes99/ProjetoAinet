@@ -11,6 +11,7 @@
                     :categoryId="old('category_id', $categoryId)"
                     :price="old('price', $price)"
                     :outOfStock="old('outOfStock', $outOfStock)"
+                    :belowThreshold="old('belowThreshold', $belowThreshold)"
                     class="mb-6"
                 />
                 <div class="flex items-center gap-4 mb-4">

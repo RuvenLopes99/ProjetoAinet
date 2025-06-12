@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderFormRequest;
 use App\Models\Order;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Requests\OrderFormRequest;
+use Illuminate\Database\Eloquent\Collection;
 
 class OrderController extends Controller
 {
@@ -55,26 +56,37 @@ class OrderController extends Controller
         ]);
     }
 
-    public function showCase(Request $request)
-    {
-        $query = Order::query();
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $orders = $query->orderByDesc('date')->paginate(12);
-
-        return view('orders.showcase', compact('orders'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Return the view for creating a new order
-        return view('orders.create');
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return back()->with('error', 'Your cart is empty.');
+        }
+
+        if (!$request->user()) {
+            return redirect()->route('login')->with('error', 'You must be logged in to place an order.');
+        }
+
+        $order = [
+            'member_id' => $request->user()->id,
+            'items' => json_encode($cart),
+            'status' => 'pending',
+            'date' => now(),
+            'total_items' => array_sum(array_column($cart, 'quantity')), // Assuming each item has a 'quantity' field
+            'shipping_cost' => 0, // Set shipping cost as needed
+            'total' => array_sum(array_map(function ($item) {
+                return $item['price'] * $item['quantity']; // Assuming each item has 'price' and 'quantity'
+            }, $cart)),
+            'nif' => $request->nif,
+            'delivery_address' => $request->delivery_address,
+            'pdf_receipt' => null,
+            'cancel_reason' => null
+        ];
+
+        return redirect()->route('orders.show', $order)->with('success', 'Order created successfully!');
     }
 
     /**
@@ -135,5 +147,16 @@ class OrderController extends Controller
         return redirect()->route('orders.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', 'Order deleted successfully!');
+    }
+
+    public function myOrders(Request $request)
+    {
+        $user = $request->user();
+        $orders = $user?->orders()?->paginate(20);
+        if (empty($orders)) {
+            return view('orders.myOrders')->with('orders', new Collection);
+        }
+
+        return view('orders.myOrders', compact('orders'));
     }
 }

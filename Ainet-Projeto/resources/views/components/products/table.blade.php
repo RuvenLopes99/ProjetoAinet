@@ -48,6 +48,7 @@
                 <a href="{{ sortUrl('stock_upper_limit') }}">Stock Maximum {!! sortArrow('stock_upper_limit') !!}</a>
             </th>
             @if($showView ?? false)
+                <th class="px-2 py-2 text-left">Add Supply Order</th>
                 <th class="px-2 py-2 text-left">View</th>
             @endif
             @if($showEdit ?? false)
@@ -75,6 +76,11 @@
                 <td class="px-2 py-2 text-left align-middle">{{ $product->stock_lower_limit }}</td>
                 <td class="px-2 py-2 text-left align-middle">{{ $product->stock_upper_limit }}</td>
                 @if($showView ?? false)
+                    <td class="px-2 py-2 text-center align-middle">
+                        <a href="{{ route('supplyOrders.create', ['product_id' => $product->id, 'registered_by_user_id' => auth()->user->id]) }}">
+                            <flux:icon.plus class="size-5 hover:text-green-600" />
+                        </a>
+                    </td>
                     <td class="px-2 py-2 text-center align-middle">
                         <a href="{{ route('products.show', ['product' => $product]) }}">
                             <flux:icon.eye class="size-5 hover:text-green-600" />

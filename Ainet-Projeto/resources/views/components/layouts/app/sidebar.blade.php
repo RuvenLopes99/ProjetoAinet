@@ -25,41 +25,45 @@
                 <flux:navlist.group :heading="'Pages'" class="grid">
                     <flux:navlist.item icon="cube" :href="route('products.showcase')" :current="request()->routeIs('products.showcase')" wire:navigate>Products</flux:navlist.item>
                     <flux:navlist.item icon="shopping-cart" :href="route('cart.show')" :current="request()->routeIs('cart.show')" wire:navigate>My Cart</flux:navlist.item>
-                    <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>My Orders</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" :href="route('orders.myOrders')" :current="request()->routeIs('orders.myOrders')" wire:navigate>My Orders</flux:navlist.item>
                </flux:navlist.group>
             </flux:navlist>
 
             {{-- Admin Sections --}}
-            <section class="mt-4">
-                <h3 class="px-4 py-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-                    Admin
-                </h3>
-                <flux:navlist variant="outline" heading="Admin Sections" class="grid">
-                    <flux:navlist.group :heading="'Inventory'" class="grid">
-                        <flux:navlist.item icon="cube" :href="route('products.index')" :current="request()->routeIs('products.index')" wire:navigate>Products</flux:navlist.item>
-                        <flux:navlist.item icon="shopping-cart" :href="route('orders.index')" :current="request()->routeIs('orders.index')" :current="false" wire:navigate>Orders</flux:navlist.item>
-                        <flux:navlist.item icon="list-bullet" :href="route('itemsOrders.index')" :current="request()->routeIs('itemsOrders.index')" :current="false" wire:navigate>Item Orders</flux:navlist.item>
-                        <flux:navlist.item icon="adjustments-horizontal" :href="route('stockAdjustments.index')" :current="request()->routeIs('stockAdjustments.index')" :current="false" wire:navigate>Stock Adjustments</flux:navlist.item>
-                        <flux:navlist.item icon="truck" :href="route('supplyOrders.index')" :current="request()->routeIs('supplyOrders.index')" :current="false" wire:navigate>Supply Orders</flux:navlist.item>
-                    </flux:navlist.group>
-                </flux:navlist>
+            @auth
+                @if(auth()->user()->type === 'admin')
+                    <section class="mt-4">
+                        <h3 class="px-4 py-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                            Admin
+                        </h3>
+                        <flux:navlist variant="outline" heading="Admin Sections" class="grid">
+                            <flux:navlist.group :heading="'Inventory'" class="grid">
+                                <flux:navlist.item icon="cube" :href="route('products.index')" :current="request()->routeIs('products.index')" wire:navigate>Products</flux:navlist.item>
+                                <flux:navlist.item icon="shopping-cart" :href="route('orders.index')" :current="request()->routeIs('orders.index')" :current="false" wire:navigate>Orders</flux:navlist.item>
+                                <flux:navlist.item icon="list-bullet" :href="route('itemsOrders.index')" :current="request()->routeIs('itemsOrders.index')" :current="false" wire:navigate>Item Orders</flux:navlist.item>
+                                <flux:navlist.item icon="adjustments-horizontal" :href="route('stockAdjustments.index')" :current="request()->routeIs('stockAdjustments.index')" :current="false" wire:navigate>Stock Adjustments</flux:navlist.item>
+                                <flux:navlist.item icon="truck" :href="route('supplyOrders.index')" :current="request()->routeIs('supplyOrders.index')" :current="false" wire:navigate>Supply Orders</flux:navlist.item>
+                            </flux:navlist.group>
+                        </flux:navlist>
 
-                <flux:navlist variant="outline">
-                    <flux:navlist.group :heading="'Users'" class="grid">
-                        <flux:navlist.item icon="users" icon:variant="solid" :href="route('users.index')" :current="request()->routeIs('users.index')" :current="false" wire:navigate>Users</flux:navlist.item>
-                        <flux:navlist.item icon="credit-card" icon:variant="solid" :href="route('cards.index')" :current="request()->routeIs('cards.index')" :current="false" wire:navigate>Cards</flux:navlist.item>
-                    </flux:navlist.group>
-                </flux:navlist>
+                        <flux:navlist variant="outline">
+                            <flux:navlist.group :heading="'Users'" class="grid">
+                                <flux:navlist.item icon="users" icon:variant="solid" :href="route('users.index')" :current="request()->routeIs('users.index')" :current="false" wire:navigate>Users</flux:navlist.item>
+                                <flux:navlist.item icon="credit-card" icon:variant="solid" :href="route('cards.index')" :current="request()->routeIs('cards.index')" :current="false" wire:navigate>Cards</flux:navlist.item>
+                            </flux:navlist.group>
+                        </flux:navlist>
 
-                <flux:navlist variant="outline">
-                    <flux:navlist.group :heading="'Settings'" class="grid">
-                        <flux:navlist.item icon="tag" icon:variant="solid" :href="route('categories.index')" :current="request()->routeIs('categories.index')" :current="false" wire:navigate>Categories</flux:navlist.item>
-                        <flux:navlist.item icon="wrench-screwdriver" icon:variant="solid" :href="route('operations.index')" :current="request()->routeIs('operations.index')" :current="false" wire:navigate>Operations</flux:navlist.item>
-                        <flux:navlist.item icon="cog" icon:variant="solid" :href="route('settings.index')" :current="request()->routeIs('settings.index')" :current="false" wire:navigate>Settings</flux:navlist.item>
-                        <flux:navlist.item icon="truck" icon:variant="solid" :href="route('settingsShippingCosts.index')" :current="request()->routeIs('settingsShippingCosts.index')" :current="false" wire:navigate>Settings of Shipping Costs</flux:navlist.item>
-                    </flux:navlist.group>
-                </flux:navlist>
-            </section>
+                        <flux:navlist variant="outline">
+                            <flux:navlist.group :heading="'Settings'" class="grid">
+                                <flux:navlist.item icon="tag" icon:variant="solid" :href="route('categories.index')" :current="request()->routeIs('categories.index')" :current="false" wire:navigate>Categories</flux:navlist.item>
+                                <flux:navlist.item icon="wrench-screwdriver" icon:variant="solid" :href="route('operations.index')" :current="request()->routeIs('operations.index')" :current="false" wire:navigate>Operations</flux:navlist.item>
+                                <flux:navlist.item icon="cog" icon:variant="solid" :href="route('settings.index')" :current="request()->routeIs('settings.index')" :current="false" wire:navigate>Settings</flux:navlist.item>
+                                <flux:navlist.item icon="truck" icon:variant="solid" :href="route('settingsShippingCosts.index')" :current="request()->routeIs('settingsShippingCosts.index')" :current="false" wire:navigate>Settings of Shipping Costs</flux:navlist.item>
+                            </flux:navlist.group>
+                        </flux:navlist>
+                    </section>
+                @endif
+            @endauth
 
             <flux:spacer/>
 
@@ -90,11 +94,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </flux:menu.radio.group>
-
-
-                        <flux:menu.radio.group>
-                            <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
                         </flux:menu.radio.group>
 
                         <flux:menu.separator />
@@ -150,11 +149,7 @@
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
-                    </flux:menu.radio.group>
-
+                    
                     <flux:menu.separator />
 
                     <form method="POST" action="{{ route('logout') }}" class="w-full">

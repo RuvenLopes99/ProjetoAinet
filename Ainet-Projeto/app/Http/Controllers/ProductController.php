@@ -20,6 +20,7 @@ class ProductController extends Controller
         $categoryId = $request->input('category_id');
         $price = $request->input('price');
         $outOfStock = $request->boolean('outOfStock');
+        $belowThreshold = $request->boolean('belowThreshold'); // Use boolean for checkbox
          // Use boolean for checkbox
 
         $query = Product::query();
@@ -47,9 +48,12 @@ class ProductController extends Controller
         if ($price) {
             $query->where('price', '>=', $price);
         }
+        if ($belowThreshold) {
+            $query->whereColumn('stock', '<', 'stock_lower_limit');
+        }
         if ($outOfStock) {
             // Show products where stock is less than stock_lower_limit
-            $query->whereColumn('stock', '<', 'stock_lower_limit');
+            $query->where('stock', 0);
         }
 
         $products = $query->paginate(20);
@@ -60,6 +64,7 @@ class ProductController extends Controller
             'categoryId' => $categoryId,
             'price' => $price,
             'outOfStock' => $outOfStock,
+            'belowThreshold' => $belowThreshold,
         ]);
     }
 
