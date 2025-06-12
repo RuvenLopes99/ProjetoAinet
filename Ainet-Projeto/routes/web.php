@@ -13,6 +13,8 @@ use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SettingsShippingCostController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\InventoryController;
+
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -122,6 +124,13 @@ Route::middleware(['auth', 'is_employee_or_admin'])->prefix('admin')->name('admi
     
     //atualizar estado da encomenda
     Route::patch('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    // gestão de invetário
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+
+    //encomenads de fornecimento
+    Route::get('/supply-orders/create', [SupplyOrderController::class, 'create'])->name('supply-orders.create');
+    Route::post('/supply-orders', [SupplyOrderController::class, 'store'])->name('supply-orders.store');
 
 });
 
