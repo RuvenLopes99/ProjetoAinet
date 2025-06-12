@@ -2,22 +2,26 @@
 
 namespace App\Models;
 
+// Importação do Enum para o tipo de utilizador
+use App\Enums\UserType;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-use SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    // Utiliza os traits standard do Laravel e o SoftDeletes
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que podem ser preenchidos em massa.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -34,9 +38,9 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Os atributos que devem ser escondidos durante a serialização.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -44,20 +48,67 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Os atributos que devem ser convertidos para tipos nativos.
+     * Esta é a forma moderna e correta de definir os casts, combinando as melhores
+     * ideias de ambos os ficheiros e removendo a redundância.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'type' => UserType::class, // Conversão para Enum
+        'blocked' => 'boolean',      // Conversão para booleano
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relações do Modelo (Relationships)
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Um utilizador pode ter muitas encomendas (como membro).
+     */
+    public function orders(): HasMany
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Order::class, 'member_id');
     }
 
     /**
-     * Get the user's initials
+     * Um utilizador pode ter vários cartões.
+     * Mantida a relação hasMany por ser mais flexível e consistente.
+     */
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
+
+    /**
+     * Um utilizador (funcionário/admin) pode registar muitos ajustes de stock.
+     */
+    public function registeredStockAdjustments(): HasMany
+    {
+        return $this->hasMany(StockAdjustment::class, 'registered_by_user_id');
+    }
+
+    /**
+     * Um utilizador (funcionário/admin) pode registar muitas encomendas a fornecedores.
+     */
+    public function registeredStockOrders(): HasMany
+    {
+        return $this->hasMany(SupplyOrder::class, 'registered_by_user_id');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Métodos Auxiliares (Accessors & Helpers)
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Obtém as iniciais do nome completo do utilizador.
      */
     public function initials(): string
     {
@@ -67,48 +118,28 @@ class User extends Authenticatable implements MustVerifyEmail
             ->implode('');
     }
 
+    /**
+     * Obtém a inicial do primeiro e do último nome.
+     */
     public function firstLastInitial(): string
     {
-        $allNames = Str::of($this->name)
-            ->explode(' ');
-        $firstName = $allNames->first();
+        $allNames = Str::of($this->name)->explode(' ');
+        $firstName = $allNames->first() ?? '';
         $lastName = $allNames->count() > 1 ? $allNames->last() : '';
         return Str::of($firstName)->substr(0, 1)
-            ->append(' ')
             ->append(Str::of($lastName)->substr(0, 1));
     }
 
+    /**
+     * Obtém o primeiro e o último nome do utilizador.
+     */
     public function firstLastName(): string
     {
-        $allNames = Str::of($this->name)
-            ->explode(' ');
-        $firstName = $allNames->first();
+        $allNames = Str::of($this->name)->explode(' ');
+        $firstName = $allNames->first() ?? '';
         $lastName = $allNames->count() > 1 ? $allNames->last() : '';
         return Str::of($firstName)
             ->append(' ')
             ->append(Str::of($lastName));
-    }
-
-    public function registeredStockAdjustments()
-    {
-        return $this->hasMany(StockAdjustment::class, 'registered_by_user_id');
-    }
-
-    // A user can register many stock orders
-    public function registeredStockOrders()
-    {
-        return $this->hasMany(SupplyOrder::class, 'registered_by_user_id');
-    }
-
-    // A user can have many orders (as member)
-    public function orders()
-    {
-        return $this->hasMany(Order::class, 'member_id');
-    }
-
-    // A user can have many cards
-    public function cards()
-    {
-        return $this->hasMany(Card::class);
     }
 }
