@@ -51,6 +51,61 @@ Route::middleware('auth')->group(function () {
     // Confirmação do Carrinho (requer login)
     Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm');
 
+    // ==================================================================
+    // SOLUÇÃO: Bloco de redirecionamento para chamadas incorretas
+    Route::get('/settings', function () {
+        return redirect()->route('admin.settings.index');
+    })->middleware('role:board')->name('settings.index');
+
+    Route::get('/settings/create', function () {
+        $setting = \App\Models\Setting::firstOrFail();
+        return redirect()->route('admin.settings.edit', $setting);
+    })->middleware('role:board')->name('settings.create');
+
+    Route::get('/settings/{setting}', function (\App\Models\Setting $setting) {
+        return redirect()->route('admin.settings.edit', $setting);
+    })->middleware('role:board')->name('settings.show');
+
+    Route::get('/settings/{setting}/edit', function (\App\Models\Setting $setting) {
+        return redirect()->route('admin.settings.edit', $setting);
+    })->middleware('role:board')->name('settings.edit');
+
+    Route::delete('/settings/{setting}', function () {
+        return back()->withErrors(['error' => 'Application settings cannot be deleted.']);
+    })->middleware('role:board')->name('settings.destroy');
+
+    // Redirecionamentos para os custos de envio
+    Route::get('/settings-shipping-costs', function () {
+        return redirect()->route('admin.settingsShippingCosts.index');
+    })->middleware('role:board')->name('settingsShippingCosts.index');
+
+    Route::get('/settings-shipping-costs/create', function () {
+        return redirect()->route('admin.settingsShippingCosts.create');
+    })->middleware('role:board')->name('settingsShippingCosts.create');
+
+    Route::get('/settings-shipping-costs/{settingsShippingCost}', function (\App\Models\SettingsShippingCost $settingsShippingCost) {
+        return redirect()->route('admin.settingsShippingCosts.show', $settingsShippingCost);
+    })->middleware('role:board')->name('settingsShippingCosts.show');
+
+    Route::get('/settings-shipping-costs/{settingsShippingCost}/edit', function (\App\Models\SettingsShippingCost $settingsShippingCost) {
+        return redirect()->route('admin.settingsShippingCosts.edit', $settingsShippingCost);
+    })->middleware('role:board')->name('settingsShippingCosts.edit');
+
+    Route::delete('/settings-shipping-costs/{settingsShippingCost}', function (\App\Models\SettingsShippingCost $settingsShippingCost) {
+        return redirect()->route('admin.settingsShippingCosts.destroy', $settingsShippingCost);
+    })->middleware('role:board')->name('settingsShippingCosts.destroy');
+
+    // Redirecionamento para a gestão de utilizadores
+    Route::get('/users', function () {
+        return redirect()->route('admin.users.index');
+    })->middleware('role:board')->name('users.index');
+
+    // CORRIGIDO: Adicionado redirecionamento para a criação de utilizadores
+    Route::get('/users/create', function () {
+        return redirect()->route('admin.users.create');
+    })->middleware('role:board')->name('users.create');
+    // ==================================================================
+
     /*
     |--------------------------------------------------------------------------
     | Área do Membro (Acessível a 'member' e 'board')
@@ -59,10 +114,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:member,board')->group(function () {
         Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
         Route::resource('orders', OrderController::class)->only(['show', 'create', 'store']);
-
-        // Rotas para as operações financeiras do membro (histórico, carregamentos, etc.)
         Route::resource('operations', OperationController::class);
-
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
         });
@@ -74,17 +126,10 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('role:employee,board')->prefix('admin')->name('admin.')->group(function () {
-        // Rotas de Gestão de Encomendas
+        // Rotas de gestão para Funcionários e Direção
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
-        Route::patch('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
-
-        // Rotas de Gestão de Inventário
         Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-        Route::get('/inventory/adjust/{product}', [InventoryController::class, 'showAdjustmentForm'])->name('inventory.adjust.form');
-        Route::post('/inventory/adjust/{product}', [InventoryController::class, 'storeAdjustment'])->name('inventory.adjust.store');
-        Route::resource('supply-orders', SupplyOrderController::class)->except(['show']);
-        Route::resource('stock-adjustments', StockAdjustmentController::class);
+        Route::resource('supply-orders', SupplyOrderController::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -100,15 +145,10 @@ Route::middleware('auth')->group(function () {
             Route::resource('categories', CategoryController::class);
             Route::resource('cards', CardController::class);
             Route::resource('settings', SettingController::class);
-
-            // ==================================================================
-            // CORRIGIDO: A linha abaixo estava comentada, impedindo a criação
-            // da rota 'admin.operations.index'. Agora está ativa.
             Route::resource('operations', OperationController::class);
-            // ==================================================================
-
             Route::resource('itemsOrders', ItemsOrderController::class);
             Route::resource('settingsShippingCosts', SettingsShippingCostController::class);
+            Route::resource('stock-adjustments', StockAdjustmentController::class);
 
             // Ações Específicas
             Route::patch('/users/{user}/block', [UserController::class, 'block'])->name('users.block');
