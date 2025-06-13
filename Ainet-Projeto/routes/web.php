@@ -30,8 +30,16 @@ Route::view('/', 'home')->name('home');
 Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 
-Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+// Rotas do Carrinho de Compras
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'show'])->name('show');
+    Route::post('/add/{product}', [CartController::class, 'add'])->name('add');
+    Route::patch('/update/{product}', [CartController::class, 'update'])->name('update');
+    Route::delete('/remove/{product}', [CartController::class, 'remove'])->name('remove');
+    Route::delete('/destroy', [CartController::class, 'destroy'])->name('destroy');
+    Route::post('/add-quantity/{product}', [CartController::class, 'addQuantity'])->name('addQuantity');
+    Route::post('/remove-quantity/{product}', [CartController::class, 'removeQuantity'])->name('removeQuantity');
+});
 
 
 /*
@@ -48,8 +56,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Confirmação do Carrinho (requer login)
+    // ==================================================================
+    // INÍCIO DAS MODIFICAÇÕES: Rotas de Confirmação do Carrinho
+    // ==================================================================
+    // ROTA ADICIONADA: Rota para MOSTRAR a página de confirmação.
+    Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
+
+    // Rota para PROCESSAR a confirmação do carrinho.
     Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm');
+    // ==================================================================
+    // FIM DAS MODIFICAÇÕES
+    // ==================================================================
+
 
     // ==================================================================
     // SOLUÇÃO: Bloco de redirecionamento para chamadas incorretas
