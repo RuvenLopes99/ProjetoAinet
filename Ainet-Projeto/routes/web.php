@@ -168,10 +168,19 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.supply-orders.edit', $supplyOrder);
     })->middleware('role:employee,board')->name('supplyOrders.edit');
 
-    // CORRIGIDO: Adicionado redirecionamento para apagar encomendas a fornecedores
     Route::delete('/supply-orders/{supplyOrder}', function (\App\Models\SupplyOrder $supplyOrder) {
         return redirect()->route('admin.supply-orders.destroy', $supplyOrder);
     })->middleware('role:employee,board')->name('supplyOrders.destroy');
+
+    // Redirecionamento para ajustes de stock
+    Route::get('/stock-adjustments', function () {
+        return redirect()->route('admin.stock-adjustments.index');
+    })->middleware('role:employee,board')->name('stockAdjustments.index');
+
+    // CORRIGIDO: Adicionado redirecionamento para a criação de ajustes de stock
+    Route::get('/stock-adjustments/create', function () {
+        return redirect()->route('admin.stock-adjustments.create');
+    })->middleware('role:employee,board')->name('stockAdjustments.create');
     // ==================================================================
 
     /*
@@ -196,8 +205,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:employee,board')->prefix('admin')->name('admin.')->group(function () {
         // Rotas de gestão para Funcionários e Direção
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
         Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
         Route::resource('supply-orders', SupplyOrderController::class);
+        Route::resource('stock-adjustments', StockAdjustmentController::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -216,7 +227,6 @@ Route::middleware('auth')->group(function () {
             Route::resource('operations', OperationController::class);
             Route::resource('itemsOrders', ItemsOrderController::class);
             Route::resource('settingsShippingCosts', SettingsShippingCostController::class);
-            Route::resource('stock-adjustments', StockAdjustmentController::class);
 
             // Ações Específicas
             Route::patch('/users/{user}/block', [UserController::class, 'block'])->name('users.block');
