@@ -1,34 +1,29 @@
 <?php
 
-// app/Http/Middleware/RoleMiddleware.php
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!Auth::check()) {
+        if (!Auth::check() || !$user = $request->user()) {
             return redirect('login');
         }
 
-        $user = Auth::user();
+        // Garante que o tipo do utilizador é um Enum e obtém o seu valor em string
+        $userRoleValue = $user->type?->value;
 
-        // Extrai o valor da string do Enum do utilizador (ex: 'board')
-        $userRoleValue = $user->type->value;
-
-        foreach ($roles as $role) {
-            // Agora compara duas strings (ex: 'board' == 'board')
-            if ($userRoleValue == $role) {
-                return $next($request);
-            }
+        // Se o tipo do utilizador estiver na lista de roles permitidas, deixa passar
+        if ($userRoleValue && in_array($userRoleValue, $roles)) {
+            return $next($request);
         }
 
-        // Se o utilizador não tiver a função necessária, aborta com um 403 Forbidden
+        // Caso contrário, nega o acesso
         abort(403, 'Acesso Não Autorizado.');
     }
 }
