@@ -122,7 +122,6 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.categories.show', $category);
     })->middleware('role:board')->name('categories.show');
 
-    // ESTA É A LINHA QUE ESTAVA COM O ERRO DE SINTAXE
     Route::get('/categories/{category}/edit', function (\App\Models\Category $category) {
         return redirect()->route('admin.categories.edit', $category);
     })->middleware('role:board')->name('categories.edit');
@@ -130,6 +129,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/categories/{category}', function (\App\Models\Category $category) {
         return app()->call('App\Http\Controllers\CategoryController@destroy', ['category' => $category]);
     })->middleware('role:board')->name('categories.destroy');
+
+    // Redirecionamento para a gestão de cartões
+    Route::get('/cards', function () {
+        return redirect()->route('admin.cards.index');
+    })->middleware('role:board')->name('cards.index');
+
+    Route::get('/cards/create', function () {
+        return redirect()->route('admin.cards.index');
+    })->middleware('role:board')->name('cards.create');
+
+    Route::get('/cards/{card}', function (\App\Models\Card $card) {
+        return redirect()->route('admin.cards.show', $card);
+    })->middleware('role:board')->name('cards.show');
+
+    Route::get('/cards/{card}/edit', function (\App\Models\Card $card) {
+        return redirect()->route('admin.cards.edit', $card);
+    })->middleware('role:board')->name('cards.edit');
+
+    // CORRIGIDO: Adicionado redirecionamento para apagar cartões
+    Route::delete('/cards/{card}', function (\App\Models\Card $card) {
+        return redirect()->route('admin.cards.destroy', $card);
+    })->middleware('role:board')->name('cards.destroy');
     // ==================================================================
 
     /*
