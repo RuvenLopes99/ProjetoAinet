@@ -17,9 +17,13 @@ class RoleMiddleware
         }
 
         $user = Auth::user();
+
+        // Extrai o valor da string do Enum do utilizador (ex: 'board')
+        $userRoleValue = $user->type->value;
+
         foreach ($roles as $role) {
-            // A linha foi corrigida aqui para uma comparação de strings simples
-            if ($user->type == $role) {
+            // Agora compara duas strings (ex: 'board' == 'board')
+            if ($userRoleValue == $role) {
                 return $next($request);
             }
         }
