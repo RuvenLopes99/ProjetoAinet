@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
         Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
         Route::resource('orders', OrderController::class)->only(['show', 'create', 'store']);
 
+        // Rotas para as operações financeiras do membro (histórico, carregamentos, etc.)
+        Route::resource('operations', OperationController::class);
+
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
         });
@@ -97,7 +100,13 @@ Route::middleware('auth')->group(function () {
             Route::resource('categories', CategoryController::class);
             Route::resource('cards', CardController::class);
             Route::resource('settings', SettingController::class);
+
+            // ==================================================================
+            // CORRIGIDO: A linha abaixo estava comentada, impedindo a criação
+            // da rota 'admin.operations.index'. Agora está ativa.
             Route::resource('operations', OperationController::class);
+            // ==================================================================
+
             Route::resource('itemsOrders', ItemsOrderController::class);
             Route::resource('settingsShippingCosts', SettingsShippingCostController::class);
 
@@ -114,4 +123,3 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 require __DIR__.'/auth.php';
-
