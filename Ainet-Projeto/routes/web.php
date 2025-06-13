@@ -147,10 +147,31 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.cards.edit', $card);
     })->middleware('role:board')->name('cards.edit');
 
-    // CORRIGIDO: Adicionado redirecionamento para apagar cartões
     Route::delete('/cards/{card}', function (\App\Models\Card $card) {
         return redirect()->route('admin.cards.destroy', $card);
     })->middleware('role:board')->name('cards.destroy');
+
+    // Redirecionamento para encomendas a fornecedores
+    Route::get('/supply-orders', function () {
+        return redirect()->route('admin.supply-orders.index');
+    })->middleware('role:employee,board')->name('supplyOrders.index');
+
+    Route::get('/supply-orders/create', function () {
+        return redirect()->route('admin.supply-orders.create');
+    })->middleware('role:employee,board')->name('supplyOrders.create');
+
+    Route::get('/supply-orders/{supplyOrder}', function (\App\Models\SupplyOrder $supplyOrder) {
+        return redirect()->route('admin.supply-orders.show', $supplyOrder);
+    })->middleware('role:employee,board')->name('supplyOrders.show');
+
+    Route::get('/supply-orders/{supplyOrder}/edit', function (\App\Models\SupplyOrder $supplyOrder) {
+        return redirect()->route('admin.supply-orders.edit', $supplyOrder);
+    })->middleware('role:employee,board')->name('supplyOrders.edit');
+
+    // CORRIGIDO: Adicionado redirecionamento para apagar encomendas a fornecedores
+    Route::delete('/supply-orders/{supplyOrder}', function (\App\Models\SupplyOrder $supplyOrder) {
+        return redirect()->route('admin.supply-orders.destroy', $supplyOrder);
+    })->middleware('role:employee,board')->name('supplyOrders.destroy');
     // ==================================================================
 
     /*
