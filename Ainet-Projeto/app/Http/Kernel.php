@@ -63,6 +63,6 @@ class Kernel extends HttpKernel
 
         // O SEU CÓDIGO ESTÁ AQUI, DENTRO DA ESTRUTURA CORRETA
         'role' => \App\Http\Middleware\RoleMiddleware::class,
-        'is_employee_or_admin' => \App\Http\Middleware\CheckEmployeeOrAdmin::class,
+        'verify_roles' => \App\Http\Middleware\VerifyUserRole::class,
     ];
 }

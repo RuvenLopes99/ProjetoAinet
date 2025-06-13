@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\InventoryController;
 
-use App\Http\Middleware\CheckEmployeeOrAdmin;
+use App\Http\Middleware\VerifyUserRole;
 
 use App\Http\Middleware\RoleMiddleware;
 
@@ -83,7 +83,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':member,board'])->group(func
 | Unifica todas as rotas de funcionários e administradores
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', CheckEmployeeOrAdmin::class]) // Middleware base para todo o painel                         // Prefixo de URL /admin para todas as rotas
+Route::middleware(['auth', VerifyUserRole::class]) // Middleware base para todo o painel                         // Prefixo de URL /admin para todas as rotas
     ->prefix('admin')
     ->name('admin.')                            // Prefixo de nome admin. para todas as rotas
     ->group(function () {
