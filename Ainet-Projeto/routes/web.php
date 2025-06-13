@@ -100,10 +100,36 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.users.index');
     })->middleware('role:board')->name('users.index');
 
-    // CORRIGIDO: Adicionado redirecionamento para a criação de utilizadores
     Route::get('/users/create', function () {
         return redirect()->route('admin.users.create');
     })->middleware('role:board')->name('users.create');
+
+    // Redirecionamento para a criação de produtos
+    Route::get('/products/create', function () {
+        return redirect()->route('admin.products.create');
+    })->middleware('role:board')->name('products.create');
+
+    // Redirecionamento para a gestão de categorias
+    Route::get('/categories', function () {
+        return redirect()->route('admin.categories.index');
+    })->middleware('role:board')->name('categories.index');
+
+    Route::get('/categories/create', function () {
+        return redirect()->route('admin.categories.create');
+    })->middleware('role:board')->name('categories.create');
+
+    Route::get('/categories/{category}', function (\App\Models\Category $category) {
+        return redirect()->route('admin.categories.show', $category);
+    })->middleware('role:board')->name('categories.show');
+
+    // ESTA É A LINHA QUE ESTAVA COM O ERRO DE SINTAXE
+    Route::get('/categories/{category}/edit', function (\App\Models\Category $category) {
+        return redirect()->route('admin.categories.edit', $category);
+    })->middleware('role:board')->name('categories.edit');
+
+    Route::delete('/categories/{category}', function (\App\Models\Category $category) {
+        return app()->call('App\Http\Controllers\CategoryController@destroy', ['category' => $category]);
+    })->middleware('role:board')->name('categories.destroy');
     // ==================================================================
 
     /*
