@@ -56,17 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ==================================================================
-    // INÍCIO DAS MODIFICAÇÕES: Rotas de Confirmação do Carrinho
-    // ==================================================================
-    // ROTA ADICIONADA: Rota para MOSTRAR a página de confirmação.
+    // Rotas de Confirmação do Carrinho
     Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
-
-    // Rota para PROCESSAR a confirmação do carrinho.
     Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm');
-    // ==================================================================
-    // FIM DAS MODIFICAÇÕES
-    // ==================================================================
 
 
     // ==================================================================
@@ -208,7 +200,15 @@ Route::middleware('auth')->group(function () {
     */
     Route::middleware('role:member,board')->group(function () {
         Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
-        Route::resource('orders', OrderController::class)->only(['show', 'create', 'store']);
+
+        // ==================================================================
+        // INÍCIO DA MODIFICAÇÃO: Adicionada a rota 'destroy'
+        // ==================================================================
+        Route::resource('orders', OrderController::class)->only(['show', 'create', 'store', 'edit', 'update', 'destroy']);
+        // ==================================================================
+        // FIM DA MODIFICAÇÃO
+        // ==================================================================
+
         Route::resource('operations', OperationController::class);
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
