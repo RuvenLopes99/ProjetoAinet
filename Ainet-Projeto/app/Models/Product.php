@@ -36,9 +36,8 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // A product has many order_products (pivot)
-    public function order()
-    {
-        return $this->hasMany(Order::class);
-    }
+    public function items_orders()
+{
+    return $this->hasMany(ItemsOrder::class);
+}
 }

@@ -17,9 +17,10 @@ use App\Http\Controllers\SettingsShippingCostController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SupplyOrderController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\StatisticsController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\InventoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -205,6 +206,7 @@ Route::middleware('auth')->group(function () {
         // ==================================================================
 
         Route::resource('operations', OperationController::class);
+        Route::get('/minhas-estatisticas', [\App\Http\Controllers\StatisticsController::class, 'memberIndex'])->name('member.statistics.index');
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
         });
@@ -224,7 +226,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
         Route::post('/inventory/adjust', [InventoryController::class, 'adjustStock'])->name('inventory.adjust');
-        
+
         Route::resource('supply-orders', SupplyOrderController::class);
         Route::resource('stock-adjustments', StockAdjustmentController::class);
 
@@ -249,6 +251,8 @@ Route::middleware('auth')->group(function () {
             // Ações Específicas
             Route::patch('/users/{user}/block', [UserController::class, 'block'])->name('users.block');
             Route::patch('/users/{user}/unblock', [UserController::class, 'unblock'])->name('users.unblock');
+
+            Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
         });
     });
 });

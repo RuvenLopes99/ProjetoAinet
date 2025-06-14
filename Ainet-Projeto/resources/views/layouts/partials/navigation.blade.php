@@ -91,6 +91,9 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Perfil') }}
                             </x-dropdown-link>
+                            <x-dropdown-link :href="route('member.statistics.index')">
+                                {{ __('Minhas Estatísticas') }}
+                            </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">

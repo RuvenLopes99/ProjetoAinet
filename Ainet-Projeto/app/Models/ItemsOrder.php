@@ -15,4 +15,14 @@ class ItemsOrder extends Model
         'subtotal',
     ];
     public $incrementing = false;
+
+    public function order()
+{
+    return $this->belongsTo(Order::class);
+}
+
+public function product()
+{
+    return $this->belongsTo(Product::class);
+}
 }

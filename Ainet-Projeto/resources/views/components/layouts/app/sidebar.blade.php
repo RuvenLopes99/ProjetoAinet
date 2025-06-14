@@ -58,7 +58,8 @@
                             @if($isMember || $isBoard)
                                 <flux:navlist.item icon="credit-card" :href="route('member.card.show')" :current="request()->routeIs('member.card.show')" wire:navigate>Meu Cartão</flux:navlist.item>
                                 <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>Minhas Encomendas</flux:navlist.item>
-                            @endif
+                                <flux:navlist.item icon="chart-pie" :href="route('member.statistics.index')" :current="request()->routeIs('member.statistics.index')" wire:navigate>Minhas Estatísticas</flux:navlist.item>
+                                @endif
                         </flux:navlist.group>
                     </flux:navlist>
 
