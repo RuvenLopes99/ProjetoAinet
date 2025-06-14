@@ -20,7 +20,6 @@
                             {{ __('Catálogo') }}
                         </x-nav-link>
 
-                        {{-- Member Area Links --}}
                         @if(Auth::user()->type == 'member' || Auth::user()->type == 'board')
                             <x-nav-link :href="route('orders.showcase')" :active="request()->routeIs('orders.showcase')">
                                 {{ __('Minhas Encomendas') }}
@@ -30,7 +29,6 @@
                             </x-nav-link>
                         @endif
 
-                        {{-- Management Dropdown for Admin/Staff --}}
                         @if(Auth::user()->type == 'board' || Auth::user()->type == 'employee')
                             <div class="hidden sm:flex sm:items-center sm:ms-6">
                                 <x-dropdown align="left" width="48">

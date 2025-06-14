@@ -13,7 +13,6 @@
                     <x-app-logo />
                 </a>
 
-                {{-- Guest Block --}}
                 @guest
                     <flux:navlist variant="outline">
                         <flux:navlist.group :heading="'Welcome!'" class="grid">
@@ -25,7 +24,6 @@
                     </flux:navlist>
                 @endguest
 
-                {{-- Authenticated User Block --}}
                 @auth
                     @php
                         $userType = auth()->user()?->type;
@@ -53,8 +51,7 @@
                         <flux:navlist.group :heading="'Store'" class="grid">
                             <flux:navlist.item icon="cube" :href="route('products.showcase')" :current="request()->routeIs('products.showcase')" wire:navigate>Catalog</flux:navlist.item>
                             <flux:navlist.item icon="shopping-cart" :href="route('cart.show')" :current="request()->routeIs('cart.show')" wire:navigate>My Cart</flux:navlist.item>
-                            
-                            {{-- ALTERAÇÃO FEITA AQUI: A condição @if foi removida para mostrar os links a todos os utilizadores autenticados --}}
+
                             <flux:navlist.item icon="credit-card" :href="route('card.my.show')" :current="request()->routeIs('card.my.show')" wire:navigate>My Card</flux:navlist.item>
                             <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>My Orders</flux:navlist.item>
 

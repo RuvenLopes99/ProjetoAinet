@@ -28,17 +28,12 @@ class StockAdjustment extends Model
         'custom',
     ];
 
-    /**
-     * Get the product that this adjustment belongs to.
-     */
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Get the user who registered this adjustment.
-     */
+
     public function registeredByUser()
     {
         return $this->belongsTo(User::class, 'registered_by_user_id');

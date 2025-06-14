@@ -1,4 +1,3 @@
-{{-- resources/views/orders/show.blade.php --}}
 <x-layouts.main-content :title="'Order #'.$order->id"
                         heading="Order Details"
                         :subheading="'Order #'.$order->id">

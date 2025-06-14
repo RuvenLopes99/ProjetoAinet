@@ -1,4 +1,3 @@
-{{-- resources/views/settings/partials/fields.blade.php --}}
 @php
     $setting = $setting ?? new \App\Models\Setting();
     $mode = $mode ?? 'edit';

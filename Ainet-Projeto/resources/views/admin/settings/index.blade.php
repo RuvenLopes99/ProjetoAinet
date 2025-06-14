@@ -1,7 +1,3 @@
-{{--
-This view extends the main app layout.
-It assumes you have a layouts.app file, which is standard in Laravel.
---}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -11,8 +7,6 @@ It assumes you have a layouts.app file, which is standard in Laravel.
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-            {{-- Membership Fee Management Card --}}
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <section>
@@ -26,9 +20,7 @@ It assumes you have a layouts.app file, which is standard in Laravel.
                             </p>
                         </header>
 
-                        {{-- The form assumes a $setting variable is passed from the SettingController --}}
-                        {{-- The controller should fetch the single row from the 'settings' table --}}
-                        <form method="post" action="{{ route('admin.settings.update', $setting) }}" class="mt-6 space-y-6">
+                       <form method="post" action="{{ route('admin.settings.update', $setting) }}" class="mt-6 space-y-6">
                             @csrf
                             @method('patch')
 
@@ -56,7 +48,6 @@ It assumes you have a layouts.app file, which is standard in Laravel.
                 </div>
             </div>
 
-            {{-- Other Settings Links Card --}}
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <section>
@@ -71,14 +62,12 @@ It assumes you have a layouts.app file, which is standard in Laravel.
                         </header>
 
                         <div class="mt-6 space-y-4">
-                           {{-- Link to manage Product Categories --}}
                             <div>
                                 <a href="{{ route('admin.categories.index') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25 transition">
                                     {{ __('Manage Categories') }}
                                 </a>
                             </div>
 
-                            {{-- Link to manage Shipping Costs --}}
                             <div>
                                 <a href="{{ route('admin.settingsShippingCosts.index') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25 transition">
                                     {{ __('Manage Shipping Costs') }}

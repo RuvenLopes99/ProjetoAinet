@@ -12,21 +12,12 @@ use App\Models\Category;
 
 class StatisticsController extends Controller
 {
-    /**
-     * Mostra o painel de estatísticas para os Administradores (Direção).
-     * Corresponde à rota: admin.statistics.index
-     */
     public function index()
     {
-        // Estatísticas Globais para a Direção
-
-        // Receita total de encomendas completas
         $totalRevenue = Order::where('status', 'completed')->sum('total');
 
-        // Número total de membros ativos (não pendentes)
         $totalMembers = User::whereIn('type', ['member', 'board'])->count();
 
-        // Vendas por categoria
         $salesByCategory = DB::table('items_orders')
             ->join('products', 'items_orders.product_id', '=', 'products.id')
             ->join('categories', 'products.category_id', '=', 'categories.id')
@@ -37,7 +28,6 @@ class StatisticsController extends Controller
             ->orderBy('total_sales', 'desc')
             ->get();
 
-        // Top 5 produtos mais vendidos (em quantidade)
         $topSellingProducts = DB::table('items_orders')
             ->join('products', 'items_orders.product_id', '=', 'products.id')
             ->join('orders', 'items_orders.order_id', '=', 'orders.id')
@@ -56,30 +46,20 @@ class StatisticsController extends Controller
         ));
     }
 
-    /**
-     * Mostra o painel de estatísticas para o Membro autenticado.
-     * Corresponde à rota: member.statistics.index
-     */
     public function memberIndex()
     {
         $member = Auth::user();
 
-        // Estatísticas Pessoais para o Membro
-
-        // Total gasto pelo membro em encomendas completas
         $totalSpent = $member->orders()->where('status', 'completed')->sum('total');
 
-        // Número total de encomendas feitas pelo membro
         $orderCount = $member->orders()->count();
 
-        // Últimas 5 operações no cartão
         $operations = DB::table('operations')
                         ->where('card_id', $member->id) // No seu projeto, card_id = user_id
                         ->latest('date')
                         ->limit(5)
                         ->get();
 
-        // Gastos por categoria para este membro
         $spendingByCategory = DB::table('items_orders')
             ->join('orders', 'items_orders.order_id', '=', 'orders.id')
             ->join('products', 'items_orders.product_id', '=', 'products.id')

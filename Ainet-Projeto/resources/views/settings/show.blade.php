@@ -1,4 +1,3 @@
-{{-- resources/views/settings/show.blade.php --}}
 <x-layouts.main-content :title="'Settings'"
                         heading="Settings"
                         subheading="Application Settings">

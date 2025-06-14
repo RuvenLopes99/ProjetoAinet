@@ -1,12 +1,3 @@
-{{-- resources/views/profile/partials/update-password-form.blade.php --}}
-
-{{--
-    Nota sobre o layout:
-    O problema visual de a secção ficar "presa" em baixo é provavelmente causado
-    pelo CSS do ficheiro que inclui este (ex: `profile/edit.blade.php`),
-    que pode estar a usar 'flex' ou 'grid' de uma forma que afeta este componente.
-    Envolver a <section> num <div> simples pode ajudar a normalizar o comportamento.
---}}
 <div>
     <section>
         <header>

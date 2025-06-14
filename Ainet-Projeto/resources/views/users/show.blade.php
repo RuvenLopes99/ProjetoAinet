@@ -1,4 +1,3 @@
-{{-- resources/views/users/show.blade.php --}}
 <x-layouts.main-content :title="'User #'.$user->id"
                         heading="User Details"
                         :subheading="$user->name">

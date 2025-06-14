@@ -1,4 +1,3 @@
-{{-- resources/views/settings/create.blade.php --}}
 <x-layouts.main-content title="New Setting"
                         heading="Create Setting"
                         subheading='Click on "Save" button to store the information.'>

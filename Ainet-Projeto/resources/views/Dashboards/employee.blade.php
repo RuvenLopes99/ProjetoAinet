@@ -16,7 +16,6 @@
                 </p>
             </div>
 
-            {{-- Secção de Ações Rápidas --}}
             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

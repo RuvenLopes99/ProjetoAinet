@@ -8,9 +8,7 @@ use Illuminate\Validation\Rule;       // <-- Adicionado
 
 class CardFormRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
         // Alterado para permitir a ação se o utilizador for um administrador

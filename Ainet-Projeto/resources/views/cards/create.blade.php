@@ -7,7 +7,6 @@
             <form method="POST" action="{{ route('admin.cards.store') }}">
                 @csrf
                 <div class="space-y-6">
-                    {{-- Inclui os campos no modo de criação --}}
                     @include('cards.partials.fields', ['mode' => 'create'])
                 </div>
                 <div class="mt-6 flex justify-end space-x-4">

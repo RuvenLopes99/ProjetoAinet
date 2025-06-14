@@ -14,7 +14,6 @@ class StockAdjustmentController extends Controller
 
     public function index(Request $request) : View
     {
-        // Fetch all stock adjustments with pagination
         $stockAdjustments = StockAdjustment::paginate(20);
 
         $filterByQuantityChanged = $request->input('quantity_changed');
@@ -39,7 +38,6 @@ class StockAdjustmentController extends Controller
             $stockAdjustments = $stockAdjustments->paginate(20);
         }
 
-        // Return the view with the stock adjustments
         return view('stockAdjustments.index', compact('stockAdjustments', 'filterByQuantityChanged', 'filterByUser', 'filterByProductId'));
     }
 
@@ -48,17 +46,14 @@ class StockAdjustmentController extends Controller
     {
         $stockAdjustment = new StockAdjustment();
 
-        // Return the view for creating a new stock adjustment
         return view('stockAdjustments.create', compact('stockAdjustment'));
     }
 
 
     public function store(StockAdjustmentFormRequest $request) : RedirectResponse
     {
-        // Validate and create a new stock adjustment
         $newStockAdjustment = StockAdjustment::create($request->validated());
 
-        // Redirect to the stock adjustments index with a success message
         $url = route('admin.stock-adjustments.show', ['stock_adjustment' => $newStockAdjustment]);
         $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$newStockAdjustment->id}</strong>
                     - </a> New Stock Adjustment has been created successfully!";
@@ -67,9 +62,6 @@ class StockAdjustmentController extends Controller
             ->with('alert-msg', $htmlMessage);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(StockAdjustment $stockAdjustment)
     {
         // Return the view for showing a specific stock adjustment

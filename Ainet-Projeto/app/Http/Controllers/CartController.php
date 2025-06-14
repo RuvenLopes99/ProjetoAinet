@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    /**
-     * Mostra o conteúdo do carrinho.
-     */
     public function show()
     {
         $cart = session()->get('cart', []);
@@ -43,9 +40,7 @@ class CartController extends Controller
         return view('cart.show', ['cart' => $cartWithDetails, 'total' => $subtotal]);
     }
 
-    /**
-     * Adiciona um produto ao carrinho.
-     */
+
     public function add(Request $request, Product $product)
     {
         $quantity = max(1, (int) $request->input('quantity', 1));
@@ -137,7 +132,7 @@ class CartController extends Controller
         $shippingPrice = $shippingCost ? $shippingCost->shipping_cost : 0;
         $total = $subtotal + $shippingPrice;
         $card = $user->card;
-        
+
         if ($card) {
             $balance = $card->balance;
         } else {

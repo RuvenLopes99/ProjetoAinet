@@ -1,4 +1,3 @@
-{{-- resources/views/stockAdjustments/show.blade.php --}}
 <x-layouts.main-content :title="'Stock Adjustment #'.$stockAdjustment->id"
                         heading="Stock Adjustment Details"
                         :subheading="'Stock Adjustment #'.$stockAdjustment->id">

@@ -20,7 +20,6 @@
                         <p class="text-2xl font-bold text-green-600">{{ number_format($card->balance, 2) }} €</p>
                     </div>
                 </div>
-                {{-- Adicione aqui o histórico de transações se desejar --}}
             </div>
         </div>
     </div>

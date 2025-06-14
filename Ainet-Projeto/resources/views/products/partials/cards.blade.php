@@ -1,4 +1,3 @@
-{{-- resources/views/products/partials/cards.blade.php --}}
 <div
     class="flex flex-col rounded-lg border border-zinc-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-800">
 
@@ -30,7 +29,6 @@
 
         <div class="flex-grow"></div>
 
-        {{-- PARTE INFERIOR (PREÇO E FORMULÁRIO COM QUANTIDADE) --}}
         <div class="mt-4">
             <p class="mb-2 text-2xl font-bold text-green-600">
                 {{ number_format($product->price, 2) }} €
@@ -38,19 +36,15 @@
 
             <form method="POST" action="{{ route('cart.add', ['product' => $product->id]) }}" class="w-full">
                 @csrf
-                {{-- [CORRIGIDO] Espaçamento entre elementos reduzido de space-x-3 para space-x-2 --}}
-                <div class="mb-4 flex items-center justify-center space-x-2">
+                    <div class="mb-4 flex items-center justify-center space-x-2">
 
-                    {{-- [CORRIGIDO] Padding horizontal reduzido de px-3 para px-2 --}}
                     <button type="button" onclick="changeQty('{{ $product->id }}', -1)"
                         class="rounded bg-red-600 px-2 py-1 text-white hover:bg-red-700">–</button>
 
-                    {{-- [CORRIGIDO] Largura do input reduzida de w-16 para w-12 --}}
                     <input id="qty-{{ $product->id }}" name="quantity" type="number" value="1" min="1"
                         class="w-12 rounded border-zinc-300 bg-zinc-100 p-1 text-center font-semibold text-zinc-800 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
                         readonly>
 
-                    {{-- [CORRIGIDO] Padding horizontal reduzido de px-3 para px-2 --}}
                     <button type="button" onclick="changeQty('{{ $product->id }}', 1)"
                         class="rounded bg-green-600 px-2 py-1 text-white hover:bg-green-700">+</button>
                 </div>
@@ -68,13 +62,12 @@
     </div>
 </div>
 
-{{-- O @once garante que este script só é adicionado uma vez à página --}}
 @once
     <script>
         function changeQty(id, delta) {
             const input = document.getElementById('qty-' + id);
             let value = parseInt(input.value) || 0;
-            value = Math.max(1, value + delta); // Garante que a quantidade mínima é 1
+            value = Math.max(1, value + delta); 
             input.value = value;
         }
     </script>

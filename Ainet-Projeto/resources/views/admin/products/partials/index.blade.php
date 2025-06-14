@@ -1,7 +1,6 @@
 <x-layouts.app>
     <div class="container py-5">
         <h1 class="mb-4">Gestão de Produtos</h1>
-        {{-- ADICIONE AQUI O SEU FORMULÁRIO DE FILTRO SE NECESSÁRIO --}}
         <div class="card">
             <div class="card-body">
                 <table class="table table-striped table-hover">

@@ -1,9 +1,7 @@
 <x-layouts.main-content>
 
-    {{-- Este código verifica se a view foi chamada pelo método do membro (que passa a variável $operations) --}}
     @if (isset($operations))
 
-        {{-- INÍCIO DO CÓDIGO PARA A PÁGINA DO MEMBRO --}}
         <div class="space-y-6">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">O Meu Cartão Grocery Club</h1>
 
@@ -123,11 +121,9 @@
             paymentTypeSelect.addEventListener('change', toggleFields);
         });
         </script>
-        {{-- FIM DO CÓDIGO PARA A PÁGINA DO MEMBRO --}}
 
     @else
 
-        {{-- INÍCIO DO CÓDIGO PARA A PÁGINA DE ADMIN --}}
         <div class="flex flex-col space-y-6">
             <div class="max-full">
                 <section>
@@ -153,8 +149,6 @@
                 </section>
             </div>
         </div>
-        {{-- FIM DO CÓDIGO PARA A PÁGINA DE ADMIN --}}
-
-    @endif
+      @endif
 
 </x-layouts.main-content>

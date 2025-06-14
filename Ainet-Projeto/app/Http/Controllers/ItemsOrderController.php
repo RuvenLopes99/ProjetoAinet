@@ -9,9 +9,7 @@ use App\Http\Requests\ItemsOrderFormRequest;
 
 class ItemsOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         $orderId = $request->input('order_id');
@@ -60,18 +58,11 @@ class ItemsOrderController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // Return the view for creating a new item order
         return view('itemsOrders.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ItemsOrderFormRequest $request)
     {
         $newItemsOrder = ItemsOrder::create($request->validated());
@@ -83,27 +74,16 @@ class ItemsOrderController extends Controller
             ->with('alert-msg', $htmlMessage);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ItemsOrder $itemsOrder)
     {
-        // Return the view for showing a specific item order
         return view('itemsOrders.show', compact('itemsOrder'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(ItemsOrder $itemsOrder)
     {
-        // Return the view for editing a specific item order
         return view('itemsOrders.edit', compact('itemsOrder'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ItemsOrderFormRequest $request, ItemsOrder $itemsOrder)
     {
         $itemsOrder->update($request->validated());
@@ -115,9 +95,6 @@ class ItemsOrderController extends Controller
             ->with('alert-msg', $htmlMessage);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ItemsOrder $itemsOrder)
     {
         try {

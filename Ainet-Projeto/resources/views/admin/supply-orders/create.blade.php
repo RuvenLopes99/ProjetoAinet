@@ -28,12 +28,11 @@
                                 <tr>
                                     <td>{{ $product->name }}</td>
                                     <td class="text-center">{{ $product->stock }}</td>
-                                    {{-- Calcula a quantidade para atingir o limite superior de stock  --}}
                                     <td class="text-center">{{ $product->stock_upper_limit - $product->stock }}</td>
                                     <td>
-                                        <input type="number" 
-                                               name="products[{{ $product->id }}][quantity]" 
-                                               class="form-control" 
+                                        <input type="number"
+                                               name="products[{{ $product->id }}][quantity]"
+                                               class="form-control"
                                                min="1"
                                                placeholder="0">
                                     </td>

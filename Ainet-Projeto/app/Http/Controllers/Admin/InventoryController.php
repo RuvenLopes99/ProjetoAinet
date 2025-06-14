@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
-    /**
-     * Mostra a página de gestão de inventário com filtros.
-     */
     public function index(Request $request)
     {
         $query = Product::query()->with('category');
@@ -29,9 +26,6 @@ class InventoryController extends Controller
         return view('admin.inventory.index', compact('products'));
     }
 
-    /**
-     * Guarda o ajuste de stock e regista a alteração.
-     */
     public function adjustStock(Request $request)
     {
         $request->validate([
@@ -48,16 +42,14 @@ class InventoryController extends Controller
         }
 
         DB::transaction(function () use ($product, $oldStock, $newStock) {
-            // 1. Cria o registo do ajuste
             StockAdjustment::create([
                 'product_id' => $product->id,
                 'registered_by_user_id' => Auth::id(),
                 'quantity_changed' => $newStock - $oldStock,
-                'created_at' => now(), // Adicionado para consistência de dados
-                'updated_at' => now(), // Adicionado para consistência de dados
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
-            // 2. Atualiza o stock do produto
             $product->stock = $newStock;
             $product->save();
         });

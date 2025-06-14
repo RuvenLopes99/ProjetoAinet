@@ -1,7 +1,6 @@
 <x-layouts.main-content title="Confirmar Compra" heading="Confirmar Compra">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 text-white">
 
-        {{-- Coluna da Esquerda: Detalhes da Entrega --}}
         <div class="md:col-span-7">
             @if (session('error'))
                 <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-gray-800 dark:text-red-400" role="alert">
@@ -46,7 +45,6 @@
             </div>
         </div>
 
-        {{-- Coluna da Direita: Resumo do Pedido --}}
         <div class="md:col-span-5">
             <div class="bg-gray-800 rounded-lg shadow p-6 space-y-4">
                 <h2 class="text-xl font-semibold border-b border-gray-700 pb-3">Resumo do Pedido</h2>

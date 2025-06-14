@@ -9,13 +9,8 @@ use App\Http\Requests\SettingsShippingCostFormRequest;
 
 class SettingsShippingCostController extends Controller
 {
-    /**
-     * Display the shipping cost settings.
-     */
-
     public function index(Request $request) : View
     {
-        // Fetch the shipping cost settings from the database
         $settingsShippingCosts = SettingsShippingCost::paginate(20);
 
         $filterByMinValue = $request->input('min_value_threshold');
@@ -40,7 +35,6 @@ class SettingsShippingCostController extends Controller
             $settingsShippingCosts = $settingsShippingCosts->paginate(20);
         }
 
-        // Return the view with the shipping cost settings
         return view('settingsShippingCosts.index', compact('settingsShippingCosts', 'filterByMinValue', 'filterByMaxValue', 'filterByShippingCost'));
     }
 
@@ -50,18 +44,12 @@ class SettingsShippingCostController extends Controller
         return view('settingsShippingCosts.show', compact('settingsShippingCost'));
     }
 
-    /**
-     * Show the form for editing the shipping cost settings.
-     */
     public function edit($id)
     {
         $settingsShippingCost = SettingsShippingCost::findOrFail($id);
         return view('settingsShippingCosts.edit', compact('settingsShippingCost'));
     }
 
-    /**
-     * Update the shipping cost settings in storage.
-     */
     public function update(SettingsShippingCostFormRequest $request, SettingsShippingCost $settingsShippingCost)
     {
         $settingsShippingCost->update($request->validated());

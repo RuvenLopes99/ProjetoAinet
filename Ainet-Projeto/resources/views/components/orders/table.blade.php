@@ -1,4 +1,3 @@
-{{-- filepath: resources/views/components/orders/table.blade.php --}}
 @php
     function sortUrl($column) {
         $direction = (request('sort') === $column && request('direction') === 'asc') ? 'desc' : 'asc';

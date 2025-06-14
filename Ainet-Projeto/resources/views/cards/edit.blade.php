@@ -5,9 +5,9 @@
         <section>
             <form method="POST" action="{{ route('admin.cards.update', $card) }}">
                 @csrf
-                @method('PUT') {{-- Importante para a atualização --}}
+                @method('PUT')
                 <div class="space-y-6">
-                    {{-- Reutiliza os mesmos campos, mas no modo de edição --}}
+              
                     @include('cards.partials.fields', ['card' => $card, 'mode' => 'edit'])
                 </div>
 

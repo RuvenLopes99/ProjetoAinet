@@ -6,9 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SettingsShippingCostFormRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         // Allow all users to make this request (adjust as needed)

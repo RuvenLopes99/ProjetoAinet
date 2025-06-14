@@ -1,4 +1,3 @@
-{{-- resources/views/settingShippingCosts/edit.blade.php --}}
 <x-layouts.main-content :title="'Edit Shipping Cost Setting #'.$settingsShippingCost->id"
                         heading="Edit Shipping Cost Setting"
                         :subheading="'Shipping Cost Setting #'.$settingsShippingCost->id">

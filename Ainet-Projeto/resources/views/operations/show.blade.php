@@ -1,4 +1,3 @@
-{{-- resources/views/operations/show.blade.php --}}
 <x-layouts.main-content :title="'Operation #'.$operation->id"
                         heading="Operation Details"
                         :subheading="'Operation #'.$operation->id">

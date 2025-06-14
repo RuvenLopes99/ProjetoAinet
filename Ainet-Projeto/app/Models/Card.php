@@ -26,18 +26,13 @@ class Card extends Model
         'balance',
     ];
 
-    /**
-     * Define a relação: um cartão pertence a um utilizador.
-     */
     public function user()
     {
         // CORREÇÃO 2: Especificamos que a chave estrangeira é a coluna 'id'
         return $this->belongsTo(User::class, 'id');
     }
 
-    /**
-     * Define a relação: um cartão tem muitas operações.
-     */
+
     public function operations()
     {
         return $this->hasMany(Operation::class);

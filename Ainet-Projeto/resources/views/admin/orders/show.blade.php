@@ -83,20 +83,18 @@
                     </tr>
                 </tfoot>
             </table>
-            
+
             @if ($order->status == 'pending')
             <hr>
             <h4>Ações</h4>
             <div class="d-flex flex-wrap gap-2">
-                {{-- Botão para marcar como concluída --}}
                 <form action="{{ route('admin.orders.complete', $order) }}" method="POST" class="d-inline">
                     @csrf
                     @method('PATCH')
                     <button type="submit" class="btn btn-success">Marcar como Concluída</button>
                 </form>
 
-                {{-- Formulário para cancelar (apenas para admins) --}}
-                @can('cancel', $order) {{-- Assumindo que tem uma Policy para autorização --}}
+                @can('cancel', $order)
                 <form action="{{ route('admin.orders.cancel', $order) }}" method="POST" class="d-inline">
                     @csrf
                     @method('PATCH')

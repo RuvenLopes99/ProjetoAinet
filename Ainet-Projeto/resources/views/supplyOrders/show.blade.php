@@ -1,4 +1,3 @@
-{{-- resources/views/supplyOrders/show.blade.php --}}
 <x-layouts.main-content :title="'Supply Order #'.$supplyOrder->id"
                         heading="Supply Order Details"
                         :subheading="'Supply Order #'.$supplyOrder->id">
