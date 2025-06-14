@@ -79,9 +79,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * Um utilizador pode ter vários cartões.
      * Mantida a relação hasMany por ser mais flexível e consistente.
      */
-    public function cards(): HasMany
+    public function card()
     {
-        return $this->hasMany(Card::class);
+        return $this->hasOne(Card::class, 'id', 'id');
     }
 
     /**

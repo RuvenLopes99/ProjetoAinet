@@ -17,7 +17,7 @@
             @each('orders.partials.cards', $orders, 'order')
         </div>
         <div class="mt-6">
-            {{ $orders->appends(request()->query())->links() }}
+            {{ $orders = Auth::user()->orders()->paginate(10) }}
         </div>
     @endif
 </x-layouts.main-content>

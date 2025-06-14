@@ -13,12 +13,16 @@
             :disabled="$readonly"
         />
 
-        <flux:input
+        <flux:select
             name="status"
             label="Status"
             :value="old('status', $order->status)"
             :disabled="$readonly"
-        />
+        >
+            <option value="completed">Completed</option>
+            <option value="canceled">Canceled</option>
+            <option value="pending">Pending</option>
+        </flux:select>
 
         <flux:input
             name="date"

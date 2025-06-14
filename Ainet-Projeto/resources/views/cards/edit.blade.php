@@ -1,26 +1,32 @@
+{{-- resources/views/cards/edit.blade.php --}}
 <x-layouts.main-content :title="'Edit Card #'.$card->id"
                         heading="Edit Card"
-                        :subheading="'Editing card for user '.$card->user->name">
-    <div class="p-8">
-        <section>
-            <form method="POST" action="{{ route('admin.cards.update', $card) }}">
-                @csrf
-                @method('PUT') {{-- Importante para a atualização --}}
-
-                <div class="space-y-6">
-                    {{-- Reutiliza os mesmos campos, mas no modo de edição --}}
-                    @include('cards.partials.fields', ['card' => $card, 'mode' => 'edit'])
+                        :subheading="'Card #'.$card->id">
+    <div class="flex flex-col space-y-6">
+        <div class="max-full">
+            <section>
+                <div class="static sm:absolute -top-2 right-0 flex flex-wrap justify-start sm:justify-end items-center gap-4">
+                    <flux:button variant="primary" href="{{ route('cards.create', ['card' => $card]) }}">New</flux:button>
+                    <flux:button href="{{ route('cards.show', ['card' => $card]) }}">View</flux:button>
+                    <form method="POST" action="{{ route('cards.destroy', ['card' => $card]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <flux:button variant="danger" type="submit">Delete</flux:button>
+                    </form>
                 </div>
 
-                <div class="mt-6 flex justify-end space-x-4">
-                     <a href="{{ route('admin.cards.index') }}" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                        Cancel
-                    </a>
-                    <button type="submit" class="rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-                        Save Changes
-                    </button>
-                </div>
-            </form>
-        </section>
+                <form method="POST" action="{{ route('cards.update', ['card' => $card]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mt-6 space-y-4">
+                        @include('cards.partials.fields', ['mode' => 'edit'])
+                    </div>
+                    <div class="flex mt-6">
+                        <flux:button variant="primary" type="submit" class="uppercase">Save</flux:button>
+                        <flux:button class="uppercase ms-4" href="{{ url()->full() }}">Cancel</flux:button>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
 </x-layouts.main-content>

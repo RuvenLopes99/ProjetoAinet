@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductFormRequest;
-use App\Http\Requests\SupplyOrderFormRequest;
+use id;
 use Illuminate\View\View;
 use App\Models\SupplyOrder;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductFormRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\SupplyOrderFormRequest;
 
 class SupplyOrderController extends Controller
 {
@@ -58,7 +60,7 @@ class SupplyOrderController extends Controller
             $request->session()->put('product_id', $productId);
         }
 
-        $registed_by_user_id = auth()->user->id;
+        $registed_by_user_id = Auth::user()->id ?? null;
 
         return view('supplyOrders.create', ['productId' => $productId ?? null, 'registed_by_user_id' => $registed_by_user_id]);
     }
@@ -72,7 +74,7 @@ class SupplyOrderController extends Controller
         $newSupplyOrder = SupplyOrder::create($request->validated());
 
         // Redirect to the supply orders index with a success message
-        $url = route('supplyOrders.show', ['supplyOrders' => $newSupplyOrder]);
+        $url = route('supplyOrders.index', ['supplyOrders' => $newSupplyOrder]);
         $htmlMessage = "Supply Order <a href='$url'><strong>{$newSupplyOrder->id}</strong>
                     - </a> New Supply Order has been created successfully!";
         return redirect()->route('supplyOrders.index')

@@ -10,7 +10,6 @@
                         <flux:select.option value="" :selected="$status === ''">All</flux:select.option>
                         <flux:select.option value="pending" :selected="$status === 'pending'">Pending</flux:select.option>
                         <flux:select.option value="completed" :selected="$status === 'completed'">Completed</flux:select.option>
-                        <flux:select.option value="cancelled" :selected="$status === 'cancelled'">Cancelled</flux:select.option>
                     </flux:select>
                 </div>
             </div>

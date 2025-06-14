@@ -6,7 +6,7 @@
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
                 <x-supplyOrders.filter-card
-                    :filterAction="route('supplyOrders.index')"
+                    :filterAction="route('admin.supply-orders.index')"
                     :resetUrl="route('supplyOrders.index')"
                     :supplyOrders="$supplyOrders"
                     :productId="old('productId', $filterByProductId)"
@@ -26,7 +26,7 @@
                     />
                 </div>
                 <div class="mt-4">
-                    {{ $supplyOrders->links() }}
+                    {{ $supplyOrders->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

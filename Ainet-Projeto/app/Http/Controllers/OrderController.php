@@ -4,29 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderFormRequest;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource for an admin.
-     * (Este método provavelmente não será usado por membros, mas mantemo-lo)
-     */
-    public function index(Request $request)
+
+    public function index(Request $request) : View
     {
+        $memberId = $request->input('member_id');
+        $status = $request->input('status');
+        $nif = $request->input('nif');
+
         $query = Order::query();
-        // ... (A sua lógica de filtro continua aqui) ...
-        $orders = $query->latest()->paginate(20);
-        return view('orders.index', compact('orders'));
+
+        if ($memberId) {
+            $query->where('member_id', $memberId);
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
+        if ($nif) {
+            $query->where('nif', $nif);
+        }
+
+        $orders = $query->paginate(20);
+
+        return view('orders.index', [
+            'orders' => $orders,
+            'memberId' => $memberId,
+            'status' => $status,
+            'nif' => $nif,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * Deverá mostrar a página de checkout.
-     */
+
     public function create()
     {
         // Esta função deve mostrar a página de checkout, que terá um formulário
@@ -110,6 +125,10 @@ class OrderController extends Controller
         // Obtém as encomendas do utilizador, ordenadas pela mais recente
         $orders = $user?->orders()->latest()->paginate(20);
 
+        if($request->filled('status')) {
+            // Filtra as encomendas pelo status, se fornecido
+            $orders = $orders->where('status', $request->input('status'));
+        }
         // O compact('orders') já funciona mesmo que a coleção esteja vazia.
         return view('orders.myOrders', compact('orders'));
     }

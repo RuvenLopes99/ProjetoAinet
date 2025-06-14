@@ -17,15 +17,18 @@
             name="registered_by_user_id"
             label="Registered By (User ID)"
             :value="old('registered_by_user_id', $supplyOrder->registered_by_user_id)"
-            :disabled="true"
+            :disabled="$readonly"
         />
 
-        <flux:input
+        <flux:select
             name="status"
             label="Status"
-            :value="requested"
-            :disabled="true"
-        />
+            :value="old('status', $supplyOrder->status)"
+            :disabled="$readonly"
+        >
+            <option value="requested">Requested</option>
+            <option value="completed">Completed</option>
+        </flux:select>
 
         <flux:input
             name="quantity"

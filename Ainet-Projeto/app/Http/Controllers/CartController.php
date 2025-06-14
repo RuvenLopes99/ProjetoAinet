@@ -136,7 +136,13 @@ class CartController extends Controller
 
         $shippingPrice = $shippingCost ? $shippingCost->shipping_cost : 0;
         $total = $subtotal + $shippingPrice;
-        $balance = $user->card->balance;
+        $card = $user->card;
+        
+        if ($card) {
+            $balance = $card->balance;
+        } else {
+           return redirect()->route('cart.show')->with('error', 'Não tem um cartão associado. Por favor, associe um cartão para continuar.');
+        }
         $hasEnoughFunds = $balance >= $total;
 
         return view('cart.confirm', compact('cartWithDetails', 'subtotal', 'shippingPrice', 'total', 'user', 'hasEnoughFunds'));

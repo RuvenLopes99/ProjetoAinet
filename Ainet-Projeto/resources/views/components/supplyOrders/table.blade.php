@@ -1,4 +1,3 @@
-<!-- filepath: c:\laragon\www\Ainet-Projeto\resources\views\components\supplyOrders\table.blade.php -->
 <div>
     <table class="table-auto border-collapse w-full">
         <thead>

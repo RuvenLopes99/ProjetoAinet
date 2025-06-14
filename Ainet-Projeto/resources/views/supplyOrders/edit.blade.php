@@ -4,16 +4,17 @@
     <div class="flex flex-col space-y-6">
         <div class="max-full">
             <section>
-                <div class="flex flex-wrap justify-start items-center gap-4 mb-4">                     <flux:button variant="primary" href="{{ route('supplyOrders.create', ['supplyOrder' => $supplyOrder]) }}">New</flux:button>
-                    <flux:button href="{{ route('supplyOrders.show', ['supplyOrder' => $supplyOrder]) }}">View</flux:button>
-                    <form method="POST" action="{{ route('supplyOrders.destroy', ['supplyOrder' => $supplyOrder]) }}">
+                <div class="flex flex-wrap justify-start items-center gap-4 mb-4">
+                    <flux:button variant="primary" href="{{ route('admin.supply-orders.create') }}">New</flux:button>
+                    <flux:button href="{{ route('admin.supply-orders.show', ['supply_order' => $supplyOrder]) }}">View</flux:button>
+                    <form method="POST" action="{{ route('admin.supply-orders.destroy', ['supply_order' => $supplyOrder]) }}">
                         @csrf
                         @method('DELETE')
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
 
-                <form method="POST" action="{{ route('supplyOrders.update', ['supplyOrder' => $supplyOrder]) }}">
+                <form method="POST" action="{{ route('admin.supply-orders.update', ['supply_order' => $supplyOrder]) }}">
                     @csrf
                     @method('PUT')
                     <div class="mt-6 space-y-4">

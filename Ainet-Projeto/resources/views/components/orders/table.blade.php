@@ -1,3 +1,4 @@
+{{-- filepath: resources/views/components/orders/table.blade.php --}}
 @php
     function sortUrl($column) {
         $direction = (request('sort') === $column && request('direction') === 'asc') ? 'desc' : 'asc';
@@ -10,73 +11,114 @@
         return '';
     }
 @endphp
-<div>
-    <table class="table-auto border-collapse w-full">
+
+<div class="overflow-x-auto rounded-lg shadow bg-gray-900">
+    <table class="min-w-full text-sm text-left text-gray-200">
         <thead>
-        <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('id') }}">ID {!! sortArrow('id') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('member_id') }}">Member ID {!! sortArrow('member_id') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('status') }}">Status {!! sortArrow('status') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('date') }}">Date {!! sortArrow('date') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('total_items') }}">Total Items {!! sortArrow('total_items') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('shipping_cost') }}">Shipping Cost {!! sortArrow('shipping_cost') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('total') }}">Total {!! sortArrow('total') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('nif') }}">NIF {!! sortArrow('nif') !!}</a></th>
-            <th class="px-2 py-2 text-left"><a href="{{ sortUrl('delivery_address') }}">Delivery Address {!! sortArrow('delivery_address') !!}</a></th>
-            <th class="px-2 py-2 text-left">PDF Receipt</th>
-            <th class="px-2 py-2 text-left">Cancel Reason</th>
+        <tr class="bg-gray-800 border-b border-gray-700">
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('id') }}" class="hover:underline flex items-center gap-1">
+                    ID {!! sortArrow('id') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('member_id') }}" class="hover:underline flex items-center gap-1">
+                    Member ID {!! sortArrow('member_id') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('status') }}" class="hover:underline flex items-center gap-1">
+                    Status {!! sortArrow('status') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('date') }}" class="hover:underline flex items-center gap-1">
+                    Date {!! sortArrow('date') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('total_items') }}" class="hover:underline flex items-center gap-1">
+                    Total Items {!! sortArrow('total_items') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('shipping_cost') }}" class="hover:underline flex items-center gap-1">
+                    Shipping Cost {!! sortArrow('shipping_cost') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('total') }}" class="hover:underline flex items-center gap-1">
+                    Total {!! sortArrow('total') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('nif') }}" class="hover:underline flex items-center gap-1">
+                    NIF {!! sortArrow('nif') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">
+                <a href="{{ sortUrl('delivery_address') }}" class="hover:underline flex items-center gap-1">
+                    Delivery Address {!! sortArrow('delivery_address') !!}
+                </a>
+            </th>
+            <th class="px-3 py-2 font-semibold">PDF Receipt</th>
+            <th class="px-3 py-2 font-semibold">Cancel Reason</th>
             @if($showView ?? false)
-                <th></th>
+                <th class="px-2"></th>
             @endif
             @if($showEdit ?? false)
-                <th></th>
+                <th class="px-2"></th>
             @endif
             @if($showDelete ?? false)
-                <th></th>
+                <th class="px-2"></th>
             @endif
         </tr>
         </thead>
         <tbody>
-        @foreach ($orders as $order)
-            <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
-                <td class="px-2 py-2 text-left">{{ $order->id }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->member_id }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->status }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->date }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->total_items }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->shipping_cost }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->total }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->nif }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->delivery_address }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->pdf_receipt }}</td>
-                <td class="px-2 py-2 text-left">{{ $order->cancel_reason }}</td>
+        @forelse ($orders as $order)
+            <tr class="border-b border-gray-800 hover:bg-gray-800 transition">
+                <td class="px-3 py-2">{{ $order->id }}</td>
+                <td class="px-3 py-2">{{ $order->member_id }}</td>
+                <td class="px-3 py-2">{{ $order->status }}</td>
+                <td class="px-3 py-2">{{ $order->date }}</td>
+                <td class="px-3 py-2">{{ $order->total_items }}</td>
+                <td class="px-3 py-2">{{ $order->shipping_cost }}</td>
+                <td class="px-3 py-2">{{ $order->total }}</td>
+                <td class="px-3 py-2">{{ $order->nif }}</td>
+                <td class="px-3 py-2">{{ $order->delivery_address }}</td>
+                <td class="px-3 py-2">{{ $order->pdf_receipt }}</td>
+                <td class="px-3 py-2">{{ $order->cancel_reason }}</td>
                 @if($showView ?? false)
-                    <td class="ps-2 px-0.5">
-                        <a href="{{ route('orders.show', ['order' => $order]) }}">
-                            <flux:icon.eye class="size-5 hover:text-green-600" />
+                    <td class="px-2">
+                        <a href="{{ route('orders.show', ['order' => $order]) }}" title="Ver">
+                            <flux:icon.eye class="size-5 hover:text-green-400" />
                         </a>
                     </td>
                 @endif
                 @if($showEdit ?? false)
-                    <td class="px-0.5">
-                        <a href="{{ route('orders.edit', ['order' => $order]) }}">
-                            <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
+                    <td class="px-2">
+                        <a href="{{ route('orders.edit', ['order' => $order]) }}" title="Editar">
+                            <flux:icon.pencil-square class="size-5 hover:text-blue-400" />
                         </a>
                     </td>
                 @endif
                 @if($showDelete ?? false)
-                    <td class="px-0.5">
-                        <form method="POST" action="{{ route('orders.destroy', ['order' => $order]) }}" class="flex items-center">
+                    <td class="px-2">
+                        <form method="POST" action="{{ route('orders.destroy', ['order' => $order]) }}" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit">
-                                <flux:icon.trash class="size-5 hover:text-red-600" />
+                            <button type="submit" title="Apagar">
+                                <flux:icon.trash class="size-5 hover:text-red-400" />
                             </button>
                         </form>
                     </td>
                 @endif
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="100%" class="px-3 py-4 text-center text-gray-400">Sem encomendas.</td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
 </div>

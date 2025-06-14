@@ -1,6 +1,6 @@
 <x-layouts.main-content title="Confirmar Compra" heading="Confirmar Compra">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 text-white">
-        
+
         {{-- Coluna da Esquerda: Detalhes da Entrega --}}
         <div class="md:col-span-7">
             @if (session('error'))
@@ -30,7 +30,7 @@
                     </div>
                     <div class="pt-6 border-t border-gray-700">
                         <div class="flex gap-4">
-                            <button type="submit" 
+                            <button type="submit"
                                     class="w-full px-6 py-3 rounded text-white font-semibold transition
                                            {{ $hasEnoughFunds ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-500 cursor-not-allowed' }}"
                                     {{ !$hasEnoughFunds ? 'disabled' : '' }}>
@@ -50,7 +50,7 @@
         <div class="md:col-span-5">
             <div class="bg-gray-800 rounded-lg shadow p-6 space-y-4">
                 <h2 class="text-xl font-semibold border-b border-gray-700 pb-3">Resumo do Pedido</h2>
-                
+
                 <div class="space-y-2">
                     @foreach($cartWithDetails as $id => $details)
                         <div class="flex justify-between text-sm">
@@ -59,7 +59,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
                 <div class="pt-4 border-t border-gray-700 space-y-2">
                     <div class="flex justify-between">
                         <span class="text-gray-400">Subtotal</span>
@@ -77,7 +77,6 @@
                         <span>€{{ number_format($total, 2) }}</span>
                     </div>
                 </div>
-
                 <div class="pt-4 border-t border-gray-700">
                     <p class="text-sm text-gray-400">Pagamento com o seu cartão de membro.</p>
                     <div class="flex justify-between font-medium">
