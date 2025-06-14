@@ -34,4 +34,12 @@ class Order extends Model
     {
         return $this->hasMany(ItemsOrder::class);
     }
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 }

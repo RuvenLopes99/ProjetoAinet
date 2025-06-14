@@ -1,88 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">‹ Voltar para Encomendas Pendentes</a>    
+<div class="container py-5">
+    <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary mb-3">‹ Voltar para Encomendas</a>
+
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
         </div>
     @endif
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Detalhes da Encomenda #{{ $order->id }}</h3>
-            <strong>Estado:</strong> <span class="badge badge-primary">{{ ucfirst($order->status) }}</span>
+            @php
+                $statusClass = [
+                    'pending' => 'warning',
+                    'completed' => 'success',
+                    'canceled' => 'danger'
+                ][$order->status] ?? 'secondary';
+            @endphp
+            <strong>Estado:</strong> <span class="badge bg-{{ $statusClass }}">{{ ucfirst($order->status) }}</span>
         </div>
         <div class="card-body">
-            <h4>Informação do Cliente</h4>
-            <p><strong>Nome:</strong> {{ $order->member->name }}</p>
-            <p><strong>Email:</strong> {{ $order->member->email }}</p>
-            <p><strong>Morada de Entrega:</strong> {{ $order->delivery_address }}</p>
-            <p><strong>NIF:</strong> {{ $order->nif }}</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Informação do Cliente</h4>
+                    <p><strong>Nome:</strong> {{ $order->member->name }}</p>
+                    <p><strong>Email:</strong> {{ $order->member->email }}</p>
+                    <p><strong>NIF:</strong> {{ $order->nif ?? 'N/A' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Informação de Entrega</h4>
+                    <p><strong>Morada de Entrega:</strong> {{ $order->delivery_address }}</p>
+                    @if($order->status == 'completed' && $order->pdf_receipt)
+                        <p><strong>Recibo:</strong> <a href="{{ asset('storage/' . $order->pdf_receipt) }}" target="_blank">Ver PDF</a></p>
+                    @endif
+                     @if($order->status == 'canceled')
+                        <p><strong>Motivo do Cancelamento:</strong> {{ $order->cancel_reason }}</p>
+                    @endif
+                </div>
+            </div>
             <hr>
 
             <h4>Itens da Encomenda</h4>
-            <table class="table">
-                <thead>
+            <table class="table table-bordered">
+                <thead class="table-light">
                     <tr>
                         <th>Produto</th>
-                        <th>Quantidade</th>
-                        <th>Preço Unitário</th>
-                        <th class="text-right">Subtotal</th>
+                        <th class="text-center">Quantidade</th>
+                        <th class="text-end">Preço Unitário</th>
+                        <th class="text-end">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->items_orders as $item)
+                    @foreach ($order->items as $item)
                     <tr>
                         <td>{{ $item->product->name }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->unit_price, 2, ',', '.') }} €</td>
-                        <td class="text-right">{{ number_format($item->subtotal, 2, ',', '.') }} €</td>
+                        <td class="text-center">{{ $item->quantity }}</td>
+                        <td class="text-end">{{ number_format($item->unit_price, 2, ',', '.') }} €</td>
+                        <td class="text-end">{{ number_format($item->subtotal, 2, ',', '.') }} €</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-right"><strong>Subtotal Itens:</strong></td>
-                        <td class="text-right">{{ number_format($order->total_items, 2, ',', '.') }} €</td>
+                        <td colspan="3" class="text-end"><strong>Subtotal Itens:</strong></td>
+                        <td class="text-end">{{ number_format($order->total_items, 2, ',', '.') }} €</td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="text-right"><strong>Custos de Envio:</strong></td>
-                        <td class="text-right">{{ number_format($order->shipping_costs, 2, ',', '.') }} €</td>
+                        <td colspan="3" class="text-end"><strong>Custos de Envio:</strong></td>
+                        <td class="text-end">{{ number_format($order->shipping_costs, 2, ',', '.') }} €</td>
                     </tr>
-                    <tr>
-                        <td colspan="3" class="text-right"><h4>Total da Encomenda:</h4></td>
-                        <td class="text-right"><h4>{{ number_format($order->total, 2, ',', '.') }} €</h4></td>
+                    <tr class="table-group-divider">
+                        <td colspan="3" class="text-end"><h4>Total da Encomenda:</h4></td>
+                        <td class="text-end"><h4>{{ number_format($order->total, 2, ',', '.') }} €</h4></td>
                     </tr>
                 </tfoot>
             </table>
-            <hr>
-
-            <h4>Ações</h4>
-            {{-- Mostra os botões apenas se a encomenda estiver pendente --}}
+            
             @if ($order->status == 'pending')
+            <hr>
+            <h4>Ações</h4>
+            <div class="d-flex flex-wrap gap-2">
                 {{-- Botão para marcar como concluída --}}
-                <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="d-inline">
+                <form action="{{ route('admin.orders.complete', $order) }}" method="POST" class="d-inline">
                     @csrf
                     @method('PATCH')
-                    <input type="hidden" name="status" value="completed">
                     <button type="submit" class="btn btn-success">Marcar como Concluída</button>
                 </form>
 
-                {{-- Botão para cancelar (apenas para admins) --}}
-                @if (Auth::user()->type == 'board')
-                <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="d-inline ml-2">
+                {{-- Formulário para cancelar (apenas para admins) --}}
+                @can('cancel', $order) {{-- Assumindo que tem uma Policy para autorização --}}
+                <form action="{{ route('admin.orders.cancel', $order) }}" method="POST" class="d-inline">
                     @csrf
                     @method('PATCH')
-                    <input type="hidden" name="status" value="canceled">
-                    {{-- Opcional: Adicionar um campo para o motivo do cancelamento --}}
-                    {{-- <input type="text" name="cancel_reason" placeholder="Motivo do cancelamento"> --}}
-                    <button type="submit" class="btn btn-danger">Cancelar Encomenda</button>
+                    <div class="input-group">
+                        <input type="text" name="cancel_reason" class="form-control" placeholder="Motivo do cancelamento" required>
+                        <button type="submit" class="btn btn-danger">Cancelar Encomenda</button>
+                    </div>
                 </form>
-                @endif
-            @else
-                <p>Esta encomenda já foi processada.</p>
+                @endcan
+            </div>
             @endif
         </div>
     </div>

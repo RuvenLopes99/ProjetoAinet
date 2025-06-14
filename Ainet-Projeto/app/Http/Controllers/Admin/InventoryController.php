@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\StockAdjustment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
@@ -16,71 +16,52 @@ class InventoryController extends Controller
      */
     public function index(Request $request)
     {
-        // Começa a query para obter os produtos
-        $query = Product::query();
+        $query = Product::query()->with('category');
 
-        // Aplica o filtro se ele for enviado no pedido
-        if ($request->has('filter')) {
-            switch ($request->filter) {
-                case 'low_stock':
-                    // Filtra produtos onde o stock é menor ou igual ao limite inferior
-                    $query->whereColumn('stock', '<=', 'stock_lower_limit');
-                    break;
-                case 'out_of_stock':
-                    // Filtra produtos com stock zero
-                    $query->where('stock', '=', 0);
-                    break;
-            }
+        if ($request->filter === 'low_stock') {
+            $query->whereColumn('stock', '<=', 'stock_lower_limit')->where('stock', '>', 0);
+        } elseif ($request->filter === 'out_of_stock') {
+            $query->where('stock', '=', 0);
         }
 
-        // Obtém os produtos com paginação
-        $products = $query->latest()->paginate(20);
+        $products = $query->orderBy('name')->paginate(25)->withQueryString();
 
-        // Envia os produtos para a vista
-        return view('admin.inventory.index', [
-            'products' => $products,
-            'currentFilter' => $request->filter // Para manter o filtro selecionado na view
-        ]);
-    }
-    /**
-     * Mostra o formulário para ajustar manualmente o stock de um produto.
-     */
-    public function showAdjustmentForm(Product $product)
-    {
-        return view('admin.inventory.adjust', ['product' => $product]);
+        return view('admin.inventory.index', compact('products'));
     }
 
     /**
      * Guarda o ajuste de stock e regista a alteração.
      */
-    public function storeAdjustment(Request $request, Product $product)
+    public function adjustStock(Request $request)
     {
         $request->validate([
+            'product_id' => 'required|exists:products,id',
             'new_stock' => 'required|integer|min:0',
         ]);
 
-        $newStock = (int) $request->input('new_stock');
+        $product = Product::findOrFail($request->product_id);
         $oldStock = $product->stock;
-        
-        // Calcula a diferença para registar no log
-        $quantityChanged = $newStock - $oldStock;
+        $newStock = (int) $request->new_stock;
 
-        // Se não houver alteração, não faz nada
-        if ($quantityChanged == 0) {
-            return redirect()->route('admin.inventory.index')->with('info', 'Nenhuma alteração de stock foi feita.');
+        if ($oldStock == $newStock) {
+            return back();
         }
 
-        // 1. Regista o ajuste na tabela de logs
-        StockAdjustment::create([
-            'product_id' => $product->id,
-            'registered_by_user_id' => Auth::id(),
-            'quantity_changed' => $quantityChanged,
-        ]);
+        DB::transaction(function () use ($product, $oldStock, $newStock) {
+            // 1. Cria o registo do ajuste
+            StockAdjustment::create([
+                'product_id' => $product->id,
+                'registered_by_user_id' => Auth::id(),
+                'quantity_changed' => $newStock - $oldStock,
+                'created_at' => now(), // Adicionado para consistência de dados
+                'updated_at' => now(), // Adicionado para consistência de dados
+            ]);
 
-        // 2. Atualiza o stock do produto para o novo valor
-        $product->stock = $newStock;
-        $product->save();
+            // 2. Atualiza o stock do produto
+            $product->stock = $newStock;
+            $product->save();
+        });
 
-        return redirect()->route('admin.inventory.index')->with('success', "Stock do produto '{$product->name}' atualizado com sucesso!");
+        return back()->with('success', "Stock do produto '{$product->name}' ajustado com sucesso.");
     }
 }

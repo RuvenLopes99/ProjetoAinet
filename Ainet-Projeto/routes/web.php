@@ -41,6 +41,11 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::post('/remove-quantity/{product}', [CartController::class, 'removeQuantity'])->name('removeQuantity');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/meu-cartao', [CardController::class, 'showMyCard'])->name('card.my.show');
+    Route::post('/meu-cartao/carregar', [CardController::class, 'topUp'])->name('card.topup');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -56,21 +61,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ==================================================================
-    // INÍCIO DAS MODIFICAÇÕES: Rotas de Confirmação do Carrinho
-    // ==================================================================
-    // ROTA ADICIONADA: Rota para MOSTRAR a página de confirmação.
+    // Rotas de Confirmação do Carrinho
     Route::get('/cart/confirm', [CartController::class, 'confirm'])->name('cart.confirm');
-
-    // Rota para PROCESSAR a confirmação do carrinho.
     Route::post('/cart/processConfirm', [CartController::class, 'processConfirm'])->name('cart.processConfirm');
-    // ==================================================================
-    // FIM DAS MODIFICAÇÕES
-    // ==================================================================
 
 
-    // ==================================================================
-    // SOLUÇÃO: Bloco de redirecionamento para chamadas incorretas
+    // Bloco de redirecionamento para chamadas incorretas
     Route::get('/settings', function () {
         return redirect()->route('admin.settings.index');
     })->middleware('role:board')->name('settings.index');
@@ -92,7 +88,6 @@ Route::middleware('auth')->group(function () {
         return back()->withErrors(['error' => 'Application settings cannot be deleted.']);
     })->middleware('role:board')->name('settings.destroy');
 
-    // Redirecionamentos para os custos de envio
     Route::get('/settings-shipping-costs', function () {
         return redirect()->route('admin.settingsShippingCosts.index');
     })->middleware('role:board')->name('settingsShippingCosts.index');
@@ -113,7 +108,6 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.settingsShippingCosts.destroy', $settingsShippingCost);
     })->middleware('role:board')->name('settingsShippingCosts.destroy');
 
-    // Redirecionamento para a gestão de utilizadores
     Route::get('/users', function () {
         return redirect()->route('admin.users.index');
     })->middleware('role:board')->name('users.index');
@@ -122,12 +116,10 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.users.create');
     })->middleware('role:board')->name('users.create');
 
-    // Redirecionamento para a criação de produtos
     Route::get('/products/create', function () {
         return redirect()->route('admin.products.create');
     })->middleware('role:board')->name('products.create');
 
-    // Redirecionamento para a gestão de categorias
     Route::get('/categories', function () {
         return redirect()->route('admin.categories.index');
     })->middleware('role:board')->name('categories.index');
@@ -148,7 +140,6 @@ Route::middleware('auth')->group(function () {
         return app()->call('App\Http\Controllers\CategoryController@destroy', ['category' => $category]);
     })->middleware('role:board')->name('categories.destroy');
 
-    // Redirecionamento para a gestão de cartões
     Route::get('/cards', function () {
         return redirect()->route('admin.cards.index');
     })->middleware('role:board')->name('cards.index');
@@ -169,7 +160,6 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.cards.destroy', $card);
     })->middleware('role:board')->name('cards.destroy');
 
-    // Redirecionamento para encomendas a fornecedores
     Route::get('/supply-orders', function () {
         return redirect()->route('admin.supply-orders.index');
     })->middleware('role:employee,board')->name('supplyOrders.index');
@@ -190,16 +180,13 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('admin.supply-orders.destroy', $supplyOrder);
     })->middleware('role:employee,board')->name('supplyOrders.destroy');
 
-    // Redirecionamento para ajustes de stock
     Route::get('/stock-adjustments', function () {
         return redirect()->route('admin.stock-adjustments.index');
     })->middleware('role:employee,board')->name('stockAdjustments.index');
 
-    // CORRIGIDO: Adicionado redirecionamento para a criação de ajustes de stock
     Route::get('/stock-adjustments/create', function () {
         return redirect()->route('admin.stock-adjustments.create');
     })->middleware('role:employee,board')->name('stockAdjustments.create');
-    // ==================================================================
 
     /*
     |--------------------------------------------------------------------------
@@ -224,7 +211,12 @@ Route::middleware('auth')->group(function () {
         // Rotas de gestão para Funcionários e Direção
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+        Route::patch('/orders/{order}/complete', [AdminOrderController::class, 'complete'])->name('orders.complete');
+        Route::patch('/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])->name('orders.cancel');
+
         Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+        Route::post('/inventory/adjust', [InventoryController::class, 'adjustStock'])->name('inventory.adjust');
+        
         Route::resource('supply-orders', SupplyOrderController::class);
         Route::resource('stock-adjustments', StockAdjustmentController::class);
 
