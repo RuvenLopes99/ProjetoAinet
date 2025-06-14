@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Adicionado
@@ -35,4 +34,13 @@ class Card extends Model
         // CORREÇÃO 2: Especificamos que a chave estrangeira é a coluna 'id'
         return $this->belongsTo(User::class, 'id');
     }
+
+    /**
+     * Define a relação: um cartão tem muitas operações.
+     */
+    public function operations()
+    {
+        return $this->hasMany(Operation::class);
+    }
+}
 
