@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\InventoryController;
 |--------------------------------------------------------------------------
 */
 Route::view('/', 'home')->name('home');
+Route::redirect('/', '/products/showcase');
 Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 
@@ -54,8 +55,7 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-    // Dashboard
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+
 
     // Perfil do Utilizador
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

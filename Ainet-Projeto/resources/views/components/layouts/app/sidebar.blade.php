@@ -33,11 +33,6 @@
                         $isPending = $userType === \App\Enums\UserType::PENDING_MEMBER;
                     @endphp
 
-                    <flux:navlist variant="outline">
-                        <flux:navlist.group :heading="'Management'" class="grid">
-                            <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>Dashboard</flux:navlist.item>
-                        </flux:navlist.group>
-                    </flux:navlist>
 
                     @if($isPending)
                         <div class="m-2">
