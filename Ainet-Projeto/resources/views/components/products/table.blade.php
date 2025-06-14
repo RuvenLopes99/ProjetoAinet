@@ -77,26 +77,26 @@
                 <td class="px-2 py-2 text-left align-middle">{{ $product->stock_upper_limit }}</td>
                 @if($showView ?? false)
                     <td class="px-2 py-2 text-center align-middle">
-                        <a href="{{ route('supplyOrders.create', ['product_id' => $product->id, 'registered_by_user_id' => auth()->user->id]) }}">
+                        <a href="{{ route('supplyOrders.create', ['product_id' => $product->id, 'registered_by_user_id' => Auth::user()->id]) }}">
                             <flux:icon.plus class="size-5 hover:text-green-600" />
                         </a>
                     </td>
                     <td class="px-2 py-2 text-center align-middle">
-                        <a href="{{ route('products.show', ['product' => $product]) }}">
+                        <a href="{{ route('admin.products.show', ['product' => $product]) }}">
                             <flux:icon.eye class="size-5 hover:text-green-600" />
                         </a>
                     </td>
                 @endif
                 @if($showEdit ?? false)
                     <td class="px-2 py-2 text-center align-middle">
-                        <a href="{{ route('products.edit', ['product' => $product]) }}">
+                        <a href="{{ route('admin.products.edit', ['product' => $product]) }}">
                             <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
                         </a>
                     </td>
                 @endif
                 @if($showDelete ?? false)
                     <td class="px-2 py-2 text-center align-middle">
-                        <form method="POST" action="{{ route('products.destroy', ['product' => $product]) }}" class="flex items-center justify-center">
+                        <form method="POST" action="{{ route('admin.products.destroy', ['product' => $product]) }}" class="flex items-center justify-center">
                             @csrf
                             @method('DELETE')
                             <button type="submit">

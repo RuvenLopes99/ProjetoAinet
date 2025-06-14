@@ -4,7 +4,7 @@
     <div class="flex flex-col space-y-6">
         <div class="max-full">
             <section>
-               <form method="POST" action="{{ route('stockAdjustments.store') }}"
+               <form method="POST" action="{{ route('admin.stock-adjustments.store') }}"
  enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">

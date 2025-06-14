@@ -6,9 +6,9 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-start items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('stockAdjustments.edit', ['stockAdjustment' => $stockAdjustment]) }}">Edit</flux:button>
-                    <flux:button href="{{ route('stockAdjustments.create') }}">New</flux:button>
-                    <form method="POST" action="{{ route('stockAdjustments.destroy', ['stockAdjustment' => $stockAdjustment]) }}">
+                    <flux:button variant="primary" href="{{ route('admin.stock-adjustments.edit', ['stock_adjustment' => $stockAdjustment]) }}">Edit</flux:button>
+                    <flux:button href="{{ route('admin.stock-adjustments.create') }}">New</flux:button>
+                    <form method="POST" action="{{ route('admin.stock-adjustments.destroy', ['stock_adjustment' => $stockAdjustment]) }}">
                         @csrf
                         @method('DELETE')
                         <flux:button variant="danger" type="submit">Delete</flux:button>

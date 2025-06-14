@@ -104,9 +104,40 @@ class CardController extends Controller
 
     public function index(Request $request): View
     {
+        // 1. Inicia a "montagem" da consulta (query)
         $query = Card::query()->with('user');
-        $cards = $query->paginate(20);
-        return view('cards.index', compact('cards'));
+
+        // 2. Aplica os filtros com a lógica corrigida e completa
+
+        // Filtro por ID (EXATO)
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
+        }
+
+        // Filtro por Número de Cartão (EXATO)
+        if ($request->filled('card_number')) {
+            // Alterado de 'like' para uma correspondência exata
+            $query->where('card_number', $request->card_number);
+        }
+
+        // Filtro por Saldo Mínimo (maior ou igual a)
+        if ($request->filled('balance')) {
+            $query->where('balance', '>=', $request->balance);
+        }
+
+        // Filtro opcional para pesquisar pelo nome do utilizador
+        // Para usar este, precisaria de adicionar um campo name="user_search" no seu formulário de filtro
+        if ($request->filled('user_search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->user_search . '%');
+            });
+        }
+
+        // 3. Executa a consulta final com paginação e ordenação
+        $cards = $query->latest('id')->paginate(20)->appends($request->query());
+
+        // 4. Retorna a view, passando os cartões e os valores dos filtros para os campos manterem os valores
+        return view('cards.index', compact('cards'))->with($request->all());
     }
 
     public function create()

@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class StockAdjustmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request) : View
     {
         // Fetch all stock adjustments with pagination
@@ -38,16 +36,14 @@ class StockAdjustmentController extends Controller
                 $stockAdjustments->where('product_id', $filterByProductId);
             }
 
-            $supplyOrders = $stockAdjustments->paginate(20);
+            $stockAdjustments = $stockAdjustments->paginate(20);
         }
 
         // Return the view with the stock adjustments
         return view('stockAdjustments.index', compact('stockAdjustments', 'filterByQuantityChanged', 'filterByUser', 'filterByProductId'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create() : View
     {
         $stockAdjustment = new StockAdjustment();
@@ -56,16 +52,14 @@ class StockAdjustmentController extends Controller
         return view('stockAdjustments.create', compact('stockAdjustment'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StockAdjustmentFormRequest $request) : RedirectResponse
     {
         // Validate and create a new stock adjustment
         $newStockAdjustment = StockAdjustment::create($request->validated());
 
         // Redirect to the stock adjustments index with a success message
-        $url = route('stockAdjustments.show', ['stockAdjustments' => $newStockAdjustment]);
+        $url = route('admin.stock-adjustments.show', ['stock_adjustment' => $newStockAdjustment]);
         $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$newStockAdjustment->id}</strong>
                     - </a> New Stock Adjustment has been created successfully!";
         return redirect()->route('stockAdjustments.index')
@@ -82,25 +76,18 @@ class StockAdjustmentController extends Controller
         return view('stockAdjustments.show', compact('stockAdjustment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(StockAdjustment $stockAdjustment)
     {
         // Return the view for editing a specific stock adjustment
         return view('stockAdjustments.edit', compact('stockAdjustment'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StockAdjustmentFormRequest $request, StockAdjustment $stockAdjustment)
     {
         // Validate and update the stock adjustment
         $stockAdjustment->update($request->validated());
 
-        // Redirect back to the stock adjustments index with a success message
-        $url = route('stockAdjustments.show', ['stockAdjustments' => $stockAdjustment]);
+        $url = route('admin.stock-adjustments.show', ['stock_adjustment' => $stockAdjustment]); // <-- FIXED
         $htmlMessage = "Stock Adjustment <a href='$url'><strong>{$stockAdjustment->id}</strong>
                     - </a> has been updated successfully!";
         return redirect()->route('stockAdjustments.index')
@@ -108,9 +95,6 @@ class StockAdjustmentController extends Controller
             ->with('alert-msg', $htmlMessage);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(StockAdjustment $stockAdjustment)
     {
         // Delete the stock adjustment

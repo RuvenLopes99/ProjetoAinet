@@ -5,7 +5,7 @@
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
                 <x-stockAdjustments.filter-card
-                    :filterAction="route('stockAdjustments.index')"
+                    :filterAction="route('admin.stock-adjustments.index')"
                     :resetUrl="route('stockAdjustments.index')"
                     :stockAdjustments="$stockAdjustments"
                     :productId="old('productId', $filterByProductId)"
@@ -24,7 +24,7 @@
                     />
                 </div>
                 <div class="mt-4">
-                    {{ $stockAdjustments->links() }}
+                    {{ $stockAdjustments->appends(request()->query())->links()}}
                 </div>
             </div>
         </div>

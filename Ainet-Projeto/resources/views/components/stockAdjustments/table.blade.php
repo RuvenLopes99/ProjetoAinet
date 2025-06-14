@@ -27,21 +27,21 @@
                 <td class="px-2 py-2 text-left align-middle">{{ $stockAdjustment->quantity_changed }}</td>
                 @if($showView ?? false)
                     <td class="ps-2 px-0.5">
-                        <a href="{{ route('stockAdjustments.show', ['stockAdjustment' => $stockAdjustment]) }}">
+                        <a href="{{ route('admin.stock-adjustments.show', ['stock_adjustment' => $stockAdjustment]) }}">
                             <flux:icon.eye class="size-5 hover:text-green-600" />
                         </a>
                     </td>
                 @endif
                 @if($showEdit ?? false)
                     <td class="px-0.5">
-                        <a href="{{ route('stockAdjustments.edit', ['stockAdjustment' => $stockAdjustment]) }}">
+                        <a href="{{ route('admin.stock-adjustments.edit', ['stock_adjustment' => $stockAdjustment]) }}">
                             <flux:icon.pencil-square class="size-5 hover:text-blue-600" />
                         </a>
                     </td>
                 @endif
                 @if($showDelete ?? false)
                     <td class="px-0.5">
-                        <form method="POST" action="{{ route('stockAdjustments.destroy', ['stockAdjustment' => $stockAdjustment]) }}" class="flex items-center">
+                        <form method="POST" action="{{ route('admin.stock-adjustments.destroy', ['stock_adjustment' => $stockAdjustment]) }}" class="flex items-center">
                             @csrf
                             @method('DELETE')
                             <button type="submit">

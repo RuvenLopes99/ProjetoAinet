@@ -4,17 +4,17 @@
     <div class="flex flex-col space-y-6">
         <div class="max-full">
             <section>
-                <div class="flex flex-wrap justify-start items-center gap-4 mb-4">                      <form method="POST" action="{{ route('users.destroy', ['user' => $user]) }}">
-                    <flux:button variant="primary" href="{{ route('stockAdjustments.create', ['stockAdjustment' => $stockAdjustment]) }}">New</flux:button>
-                    <flux:button href="{{ route('stockAdjustments.show', ['stockAdjustment' => $stockAdjustment]) }}">View</flux:button>
-                    <form method="POST" action="{{ route('stockAdjustments.destroy', ['stockAdjustment' => $stockAdjustment]) }}">
+                <div class="flex flex-wrap justify-start items-center gap-4 mb-4">
+                    <flux:button variant="primary" href="{{ route('admin.stock-adjustments.create', ['stock_adjustment' => $stockAdjustment]) }}">New</flux:button>
+                    <flux:button href="{{ route('admin.stock-adjustments.show', ['stock_adjustment' => $stockAdjustment]) }}">View</flux:button>
+                    <form method="POST" action="{{ route('admin.stock-adjustments.destroy', ['stock_adjustment' => $stockAdjustment]) }}">
                         @csrf
                         @method('DELETE')
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
 
-                <form method="POST" action="{{ route('stockAdjustments.update', ['stockAdjustment' => $stockAdjustment]) }}">
+                <form method="POST" action="{{ route('admin.stock-adjustments.update', ['stock_adjustment' => $stockAdjustment]) }}">
                     @csrf
                     @method('PUT')
                     <div class="mt-6 space-y-4">
