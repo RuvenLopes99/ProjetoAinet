@@ -28,16 +28,16 @@
         </select>
 
         <label class="flex items-center space-x-2">
-            <input type="checkbox" name="only_discount" value="1" {{ request('only_discount') ? 'checked' : '' }}>
-            <span class="text-white">Only products with discount</span>
-        </label>
+    <input type="checkbox" name="only_discount" value="1" {{ request('only_discount') ? 'checked' : '' }}>
+    <span class="text-zinc-800 dark:text-zinc-200">Only products with discount</span>
+</label>
 
         <button type="submit" class="sm:ml-2 px-4 py-2 bg-blue-600 text-white rounded">
             Filter
         </button>
     </form>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-6">
-        @each('products.partials.cards', $products, 'product')
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    @each('products.partials.cards', $products, 'product')
     </div>
     <div class="mt-6">
         {{ $products->appends(request()->query())->links() }}
