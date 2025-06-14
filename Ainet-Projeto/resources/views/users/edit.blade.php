@@ -11,7 +11,7 @@
                     </form>
                 </div>
 
-                <form method="POST" action="{{ route('users.update', ['user' => $user]) }}">
+                <form method="POST" action="{{ route('admin.users.update', ['user' => $user]) }}">
                     @csrf
                     @method('PUT')
                     <div class="mt-6 space-y-4">

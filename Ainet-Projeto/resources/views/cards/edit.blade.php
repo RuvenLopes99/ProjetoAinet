@@ -6,12 +6,9 @@
             <form method="POST" action="{{ route('admin.cards.update', $card) }}">
                 @csrf
                 @method('PUT') {{-- Importante para a atualização --}}
-
                 <div class="space-y-6">
                     {{-- Reutiliza os mesmos campos, mas no modo de edição --}}
                     @include('cards.partials.fields', ['card' => $card, 'mode' => 'edit'])
-
-
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-4">

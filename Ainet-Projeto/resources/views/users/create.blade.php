@@ -4,7 +4,7 @@
     <div class="flex flex-col space-y-6">
         <div class="max-full">
             <section>
-                <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">
                         @include('users.partials.fields', ['mode' => 'create'])

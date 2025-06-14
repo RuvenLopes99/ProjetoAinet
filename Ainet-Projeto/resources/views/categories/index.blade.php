@@ -5,14 +5,14 @@
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
                 <x-categories.filter-card
-                    :filterAction="route('categories.index')"
+                    :filterAction="route('admin.categories.index')"
                     :resetUrl="route('categories.index')"
                     :name="old('name', $name ?? '')"
                     :image="old('image', $image ?? '')"
                     class="mb-6"
                 />
                 <div class="flex items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('categories.create') }}">Create a new Category</flux:button>
+                    <flux:button variant="primary" href="{{ route('admin.categories.create') }}">Create a new Category</flux:button>
                 </div>
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                     <x-categories.table :categories="$allCategories"

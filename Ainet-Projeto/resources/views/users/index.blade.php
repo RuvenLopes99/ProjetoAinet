@@ -5,14 +5,19 @@
         <div class="flex justify-start ">
             <div class="my-4 p-6 ">
                 <x-users.filter-card
-                    :filterAction="route('users.index')"
+                    :filterAction="route('admin.users.index')"
                     :resetUrl="route('users.index')"
                     :name="old('name', $name ?? '')"
                     :email="old('email', $email ?? '')"
+                    :type="old('type', $type ?? '')"
+                    :blocked="old('blocked', $blocked ?? '')"
+                    :gender="old('gender', $gender ?? '')"
+                    :photo="old('photo', $photo ?? '')"
+                    :nif="old('nif', $nif ?? '')"
                     class="mb-6"
                 />
                 <div class="flex items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('users.create') }}">Create a new user</flux:button>
+                    <flux:button variant="primary" href="{{ route('admin.users.create') }}">Create a new user</flux:button>
                 </div>
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                     <x-users.table :users="$users"

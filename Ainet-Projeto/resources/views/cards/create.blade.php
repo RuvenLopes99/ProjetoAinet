@@ -2,6 +2,7 @@
                         heading="Create a Card"
                         subheading='Click on "Save" button to store the information.'>
     <div class="p-8">
+
         <section>
             <form method="POST" action="{{ route('admin.cards.store') }}">
                 @csrf
@@ -20,4 +21,5 @@
             </form>
         </section>
     </div>
+
 </x-layouts.main-content>

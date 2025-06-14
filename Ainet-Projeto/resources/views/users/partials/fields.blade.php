@@ -29,12 +29,16 @@
             :disabled="$readonly"
         />
 
-        <flux:input
+        <flux:select
             name="type"
             label="Type"
             :value="old('type', $user->type)"
             :disabled="$readonly"
-        />
+        >
+            <option value="board">Board</option>
+            <option value="member">Member</option>
+            <option value="employee">Employee</option>
+        </flux:select>
 
         <flux:input
             name="blocked"

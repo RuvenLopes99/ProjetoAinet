@@ -5,9 +5,9 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-start items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('categories.edit', ['category' => $category]) }}">Edit</flux:button>
-                    <flux:button href="{{ route('categories.create') }}">New</flux:button>
-                    <form method="POST" action="{{ route('categories.destroy', ['category' => $category]) }}">
+                    <flux:button variant="primary" href="{{ route('admin.categories.edit', ['category' => $category]) }}">Edit</flux:button>
+                    <flux:button href="{{ route('admin.categories.create') }}">New</flux:button>
+                    <form method="POST" action="{{ route('admin.categories.destroy', ['category' => $category]) }}">
                         @csrf
                         @method('DELETE')
                         <flux:button variant="danger" type="submit">Delete</flux:button>
