@@ -1,10 +1,9 @@
-{{-- Código final que inclui o seletor de quantidade --}}
+{{-- resources/views/products/partials/cards.blade.php --}}
 <div
     class="flex flex-col rounded-lg border border-zinc-200 bg-white shadow-md transition-shadow duration-300 hover:shadow-xl dark:border-zinc-700 dark:bg-zinc-800">
 
     <a href="{{ route('products.show', $product) }}" class="relative w-full" style="padding-top: 75%;">
-
-        <img src="{{ asset('storage/products/' . $product->photo) }}" alt="{{ $product->name }}"
+        <img src="{{ $product->photo ? asset('storage/products/' . $product->photo) : asset('images/default_product.png') }}" alt="{{ $product->name }}"
             class="absolute top-0 left-0 h-full w-full object-cover">
         @if (!is_null($product->discount_min_qty) && !is_null($product->discount))
             <div class="absolute top-2 right-2 rounded-full bg-yellow-400 px-2 py-1 text-xs font-bold text-zinc-900">
@@ -41,16 +40,21 @@
 
             <form method="POST" action="{{ route('cart.add', ['product' => $product->id]) }}" class="w-full">
                 @csrf
-                <div class="mb-4 flex items-center justify-center space-x-3">
-                    <button type="button" onclick="changeQty('{{ $product->id }}', -1)"
-                        class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">–</button>
+                {{-- [CORRIGIDO] Espaçamento entre elementos reduzido de space-x-3 para space-x-2 --}}
+                <div class="mb-4 flex items-center justify-center space-x-2">
 
+                    {{-- [CORRIGIDO] Padding horizontal reduzido de px-3 para px-2 --}}
+                    <button type="button" onclick="changeQty('{{ $product->id }}', -1)"
+                        class="rounded bg-red-600 px-2 py-1 text-white hover:bg-red-700">–</button>
+
+                    {{-- [CORRIGIDO] Largura do input reduzida de w-16 para w-12 --}}
                     <input id="qty-{{ $product->id }}" name="quantity" type="number" value="1" min="1"
-                        class="w-16 rounded border-zinc-300 bg-zinc-100 p-1 text-center font-semibold text-zinc-800 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+                        class="w-12 rounded border-zinc-300 bg-zinc-100 p-1 text-center font-semibold text-zinc-800 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
                         readonly>
 
+                    {{-- [CORRIGIDO] Padding horizontal reduzido de px-3 para px-2 --}}
                     <button type="button" onclick="changeQty('{{ $product->id }}', 1)"
-                        class="rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700">+</button>
+                        class="rounded bg-green-600 px-2 py-1 text-white hover:bg-green-700">+</button>
                 </div>
 
                 <button type="submit"
@@ -60,15 +64,13 @@
                             d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H7.118l-.421-1.684A1 1 0 005.695 1H3zM6 16a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
                     </svg>
                     <span>Adicionar</span>
-
-
                 </button>
             </form>
         </div>
     </div>
 </div>
 
-{{-- O @once garante que este script só é adicionado uma vez à página, mesmo que hajam 20 produtos --}}
+{{-- O @once garante que este script só é adicionado uma vez à página --}}
 @once
     <script>
         function changeQty(id, delta) {
