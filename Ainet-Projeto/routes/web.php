@@ -195,7 +195,15 @@ Route::middleware('auth')->group(function () {
     */
     Route::middleware('role:member,board')->group(function () {
         Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
-        Route::resource('orders', OrderController::class)->only(['show', 'create', 'store']);
+
+        // ==================================================================
+        // INÍCIO DA MODIFICAÇÃO: Adicionada a rota 'destroy'
+        // ==================================================================
+        Route::resource('orders', OrderController::class)->only(['show', 'create', 'store', 'edit', 'update', 'destroy']);
+        // ==================================================================
+        // FIM DA MODIFICAÇÃO
+        // ==================================================================
+
         Route::resource('operations', OperationController::class);
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
