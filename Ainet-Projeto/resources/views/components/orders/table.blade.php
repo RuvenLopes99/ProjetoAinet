@@ -12,7 +12,7 @@
     }
 @endphp
 
-<div class="overflow-x-auto rounded-lg shadow bg-gray-900">
+<div class="overflow-x-auto rounded-lg shadow bg-gray-900 w-full">
     <table class="min-w-full text-sm text-left text-gray-200">
         <thead>
         <tr class="bg-gray-800 border-b border-gray-700">

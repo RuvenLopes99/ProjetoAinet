@@ -1,6 +1,5 @@
-<!-- filepath: c:\laragon\www\Ainet-Projeto\resources\views\components\stockAdjustments\table.blade.php -->
-<div>
-    <table class="table-auto border-collapse w-full">
+<div class="w-full overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse">
         <thead>
         <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
             <th class="px-2 py-2 text-left">ID</th>

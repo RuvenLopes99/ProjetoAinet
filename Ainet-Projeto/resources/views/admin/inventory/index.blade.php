@@ -1,5 +1,5 @@
 <x-layouts.main-content>
-    <div class="container py-5">
+    <div class="container py-5 w-full max-w-25xl mx-auto">
         <h1 class="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">Gestão de Inventário</h1>
 
         @if (session('success'))
@@ -8,7 +8,7 @@
             </div>
         @endif
 
-        <div class="p-6 mb-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+        <div class="p-6 mb-4 bg-white dark:bg-gray-800 rounded-lg shadow w-full">
             <form action="{{ route('admin.inventory.index') }}" method="GET" class="flex flex-col sm:flex-row items-end gap-4">
                 <div class="flex-grow">
                     <label for="filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filtrar Por</label>
@@ -24,9 +24,9 @@
             </form>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden w-full">
              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 w-full">
                     <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Produto</th>
@@ -56,7 +56,7 @@
                                     <form action="{{ route('admin.inventory.adjust') }}" method="POST" class="flex items-center gap-2">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="number" name="new_stock" value="{{ $product->stock }}" min="0" 
+                                        <input type="number" name="new_stock" value="{{ $product->stock }}" min="0"
                                                class="w-24 block text-center border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                         <button type="submit" class="inline-flex justify-center py-1 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Ajustar</button>
                                     </form>

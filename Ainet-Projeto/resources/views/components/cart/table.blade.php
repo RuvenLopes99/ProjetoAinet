@@ -9,7 +9,7 @@
         Your cart is empty.
     </div>
 @else
-    <table class="min-w-full bg-white dark:bg-zinc-800 rounded shadow">
+    <table class="min-w-full bg-white dark:bg-zinc-800 rounded shadow w-full">
         <thead>
             <tr>
                 <th class="px-4 py-2 text-left">Product</th>
