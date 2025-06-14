@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use SoftDeletes;
+
 class Order extends Model
 {
    protected $fillable = [
@@ -19,21 +19,23 @@ class Order extends Model
         'cancel_reason',
     ];
 
+    /**
+     * Obtém o membro que fez o pedido.
+     */
     public function member()
     {
         return $this->belongsTo(User::class, 'member_id');
     }
 
-    // Each order has many order_products (pivot)
-    public function order()
+    /**
+     * Obtém os itens do pedido.
+     * Um pedido (Order) tem muitos itens (ItemsOrder).
+     */
+    public function items()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(ItemsOrder::class, 'order_id');
     }
 
-    public function items_orders()
-    {
-        return $this->hasMany(ItemsOrder::class);
-    }
     /**
      * The attributes that should be cast.
      *
