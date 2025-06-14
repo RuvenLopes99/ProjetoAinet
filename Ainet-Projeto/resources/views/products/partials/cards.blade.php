@@ -13,11 +13,9 @@
     </a>
 
     <div class="flex flex-1 flex-col p-4">
-        <a href="{{ route('admin.products.show', $product) }}">
-            <h2
-                class="text-lg font-semibold text-zinc-800 hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
-                {{ $product->name }}</h2>
-        </a>
+        <h2
+            class="text-lg font-semibold text-zinc-800 hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
+            {{ $product->name }}</h2>
         <p class="mb-2 text-sm text-zinc-500 dark:text-zinc-400">{{ $product->category?->name ?? 'Sem Categoria' }}</p>
 
         <p class="mb-4 text-sm text-zinc-600 dark:text-zinc-300 line-clamp-2">
