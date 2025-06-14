@@ -15,7 +15,7 @@
                     class="mb-6"
                 />
                 <div class="flex items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('products.create') }}">Create a new Product</flux:button>
+                    <flux:button variant="primary" href="{{ route('admin.products.create') }}">Create a new Product</flux:button>
                 </div>
                 <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                     <x-products.table :products="$products"

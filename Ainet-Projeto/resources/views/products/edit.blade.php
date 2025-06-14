@@ -5,16 +5,16 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-start items-center gap-4 mb-4">
-                    <flux:button variant="primary" href="{{ route('products.create', ['product' => $product]) }}">New</flux:button>
-                    <flux:button href="{{ route('products.show', ['product' => $product]) }}">View</flux:button>
-                    <form method="POST" action="{{ route('products.destroy', ['product' => $product]) }}">
+                    <flux:button variant="primary" href="{{ route('admin.products.create', ['product' => $product]) }}">New</flux:button>
+                    <flux:button href="{{ route('admin.products.show', ['product' => $product]) }}">View</flux:button>
+                    <form method="POST" action="{{ route('admin.products.destroy', ['product' => $product]) }}">
                         @csrf
                         @method('DELETE')
                         <flux:button variant="danger" type="submit">Delete</flux:button>
                     </form>
                 </div>
 
-                <form method="POST" action="{{ route('products.update', ['product' => $product]) }}">
+                <form method="POST" action="{{ route('admin.products.update', ['product' => $product]) }}">
                     @csrf
                     @method('PUT')
                     <div class="mt-6 space-y-4">

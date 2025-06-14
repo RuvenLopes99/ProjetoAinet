@@ -119,7 +119,7 @@ class ProductController extends Controller
         $newProduct = Product::create($request->validated());
 
         // Redirect to the products index with a success message
-        $url = route('products.show', ['product' => $newProduct]);
+        $url = route('admin.products.show', ['product' => $newProduct]);
         $htmlMessage = "Product <a href='$url'><strong>{$newProduct->id}</strong>
                     - </a> New Product has been created successfully!";
         return redirect()->route('products.index')
