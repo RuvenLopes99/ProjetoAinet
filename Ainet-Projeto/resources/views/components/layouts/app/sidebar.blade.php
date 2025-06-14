@@ -53,10 +53,11 @@
                         <flux:navlist.group :heading="'Store'" class="grid">
                             <flux:navlist.item icon="cube" :href="route('products.showcase')" :current="request()->routeIs('products.showcase')" wire:navigate>Catalog</flux:navlist.item>
                             <flux:navlist.item icon="shopping-cart" :href="route('cart.show')" :current="request()->routeIs('cart.show')" wire:navigate>My Cart</flux:navlist.item>
-                            @if($isMember || $isBoard)
-                                <flux:navlist.item icon="credit-card" :href="route('card.my.show')" :current="request()->routeIs('card.my.show')" wire:navigate>My Card</flux:navlist.item>
-                                <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>My Orders</flux:navlist.item>
-                            @endif
+                            
+                            {{-- ALTERAÇÃO FEITA AQUI: A condição @if foi removida para mostrar os links a todos os utilizadores autenticados --}}
+                            <flux:navlist.item icon="credit-card" :href="route('card.my.show')" :current="request()->routeIs('card.my.show')" wire:navigate>My Card</flux:navlist.item>
+                            <flux:navlist.item icon="list-bullet" :href="route('orders.showcase')" :current="request()->routeIs('orders.showcase')" wire:navigate>My Orders</flux:navlist.item>
+
                         </flux:navlist.group>
                     </flux:navlist>
 
@@ -93,10 +94,7 @@
                                     <flux:navlist.item icon="chart-bar" :href="route('admin.statistics.index')" :current="request()->routeIs('admin.statistics.*')" wire:navigate>Statistics</flux:navlist.item>
                                     <flux:navlist.item icon="wrench-screwdriver" :href="route('admin.operations.index')" :current="request()->routeIs('admin.operations.*')" wire:navigate>Operations</flux:navlist.item>
                                     <flux:navlist.item icon="cog" :href="route('admin.settings.index')" :current="request()->routeIs('admin.settings.*')" wire:navigate>General Settings</flux:navlist.item>
-                                    
-                                    {{-- LINHA CORRIGIDA --}}
                                     <flux:navlist.item icon="truck" :href="route('admin.settingsShippingCosts.index')" :current="request()->routeIs('admin.settingsShippingCosts.*')" wire:navigate>Shipping Costs</flux:navlist.item>
-                                
                                 </flux:navlist.group>
                             </flux:navlist>
                         </section>
