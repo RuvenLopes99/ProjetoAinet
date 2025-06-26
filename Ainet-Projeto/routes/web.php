@@ -55,7 +55,8 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-
+    // Dashboard - Redirecionador inteligente para a página de estatísticas apropriada
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Perfil do Utilizador
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -196,17 +197,9 @@ Route::middleware('auth')->group(function () {
     */
     Route::middleware('role:member,board')->group(function () {
         Route::get('orders/showcase', [OrderController::class, 'showCase'])->name('orders.showcase');
-
-        // ==================================================================
-        // INÍCIO DA MODIFICAÇÃO: Adicionada a rota 'destroy'
-        // ==================================================================
         Route::resource('orders', OrderController::class)->only(['show', 'create', 'store', 'edit', 'update', 'destroy']);
-        // ==================================================================
-        // FIM DA MODIFICAÇÃO
-        // ==================================================================
-
         Route::resource('operations', OperationController::class);
-        Route::get('/minhas-estatisticas', [\App\Http\Controllers\StatisticsController::class, 'memberIndex'])->name('member.statistics.index');
+        Route::get('/minhas-estatisticas', [StatisticsController::class, 'memberIndex'])->name('member.statistics.index');
         Route::prefix('member')->name('member.')->group(function () {
             Route::get('/card', [CardController::class, 'show'])->name('card.show');
         });
@@ -251,8 +244,6 @@ Route::middleware('auth')->group(function () {
             // Ações Específicas
             Route::patch('/users/{user}/block', [UserController::class, 'block'])->name('users.block');
             Route::patch('/users/{user}/unblock', [UserController::class, 'unblock'])->name('users.unblock');
-
-            Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
         });
     });
 });
